@@ -1,0 +1,145 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import Icon from '../../components/Icon.astro';
+import { SITE, digits } from '../../config';
+import { POSTS, type BlogPost } from '../../data/blog';
+import { getTreatment } from '../../data/treatments';
+
+export const getStaticPaths = (() => POSTS.map((post) => ({ params: { slug: post.slug }, props: { post } }))) satisfies GetStaticPaths;
+
+interface Props {
+  post: BlogPost;
+}
+
+const { post: p } = Astro.props;
+const treatment = getTreatment(p.treatmentSlug);
+const more = POSTS.filter((o) => o.slug !== p.slug);
+const sectionId = (heading: string) => heading.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  headline: p.title,
+  description: p.excerpt,
+  publisher: { '@type': 'Hospital', name: SITE.name },
+};
+---
+
+<Layout title={p.title} description={p.excerpt}>
+  <PageHero crumbs={[{ label: 'Blog', href: '/blog' }, { label: p.tag }]} eyebrow={p.tag} title={p.title} lead={p.excerpt}>
+    <span class="inline-flex items-center gap-2 text-sm text-white/70">
+      <Icon name="clock" class="size-4 text-amber-400" />
+      {p.readMinutes} min read
+    </span>
+  </PageHero>
+
+  <section class="section">
+    <div class="container-x grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16">
+      <article class="min-w-0 max-w-3xl">
+        <div class="relative mb-10 aspect-[16/8] overflow-hidden rounded-3xl bg-gradient-to-br from-brand-300 to-brand-700">
+          <img src={p.image} alt="" class="size-full object-cover" onerror="this.parentElement.remove()" />
+        </div>
+
+        <aside class="card bg-brand-50" aria-label="Key takeaways">
+          <h2 class="heading-4">Key takeaways</h2>
+          <ul class="mt-4 space-y-2.5">
+            {
+              p.keyTakeaways.map((k) => (
+                <li class="text-body flex gap-3 sm:text-base">
+                  <Icon name="check" class="mt-1 size-4 shrink-0 text-brand-600" />
+                  {k}
+                </li>
+              ))
+            }
+          </ul>
+        </aside>
+
+        {
+          p.sections.map((s) => (
+            <section id={sectionId(s.heading)} class="mt-12">
+              <h2 class="heading-3">{s.heading}</h2>
+              <div class="text-lead mt-4 space-y-4 text-base sm:text-[17px]">
+                {s.paragraphs.map((para) => <p>{para}</p>)}
+              </div>
+              {s.list && (
+                <ul class="mt-5 space-y-2.5">
+                  {s.list.map((li) => (
+                    <li class="flex gap-3 text-base leading-relaxed text-ink-900/80">
+                      <span class="mt-2.5 size-1.5 shrink-0 rounded-full bg-amber-500" />
+                      {li}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          ))
+        }
+
+        <p class="text-meta mt-12 border-t border-brand-100 pt-6">
+          This article is for general information and is not a substitute for medical advice. Please consult a specialist
+          about your symptoms. <a href="/medical-disclaimer" class="underline hover:text-brand-700">Medical disclaimer</a>
+        </p>
+      </article>
+
+      <aside class="space-y-5 lg:sticky lg:top-28 lg:self-start">
+        <nav aria-label="In this article" class="card hidden border border-brand-100 bg-white lg:block">
+          <p class="text-kicker text-brand-400">In this article</p>
+          <ul class="mt-3 space-y-1">
+            {
+              p.sections.map((s) => (
+                <li>
+                  <a href={`#${sectionId(s.heading)}`} class="block py-1 text-sm font-medium text-ink-900/70 transition hover:text-brand-700">
+                    {s.heading}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+
+        {
+          treatment && (
+            <a href={`/treatments/${treatment.slug}`} class="card group block bg-brand-50 transition hover:bg-brand-100">
+              <p class="text-kicker text-brand-400">Related treatment</p>
+              <p class="heading-4 mt-2">{treatment.name}</p>
+              <p class="text-body mt-1">{treatment.short}</p>
+              <span class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-brand-600">
+                Learn more <Icon name="arrowRight" class="size-4 transition group-hover:translate-x-1" />
+              </span>
+            </a>
+          )
+        }
+
+        <div class="card bg-ink-900 text-white">
+          <p class="heading-4">Worried about your symptoms?</p>
+          <p class="mt-2 text-sm text-white/70">Book a private, one-to-one consultation with our specialists.</p>
+          <div class="mt-5 grid gap-3">
+            <a href="#book" class="btn btn-primary w-full">Book an appointment</a>
+            <a href={`tel:${digits(SITE.phone)}`} class="btn btn-outline-light w-full"><Icon name="phone" class="size-4" /> Call {SITE.phone}</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  {
+    more.length > 0 && (
+      <section class="section bg-brand-50/60">
+        <div class="container-x">
+          <SectionHeader eyebrow="Keep reading" title="More " highlight="articles">
+            <a slot="action" href="/blog" class="btn btn-outline">All articles <Icon name="arrowRight" class="size-4" /></a>
+          </SectionHeader>
+          <ul class="section-body grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {more.map((o, i) => <li><ArticleCard post={o} index={i + 1} /></li>)}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(articleLd)} />
+</Layout>

@@ -1,0 +1,30 @@
+---
+// Accurate for the current build: the site itself sets no cookies. Update if analytics etc. are added.
+// TODO: have this reviewed by the hospital's legal/compliance advisor before launch.
+import LegalPage from '../layouts/LegalPage.astro';
+import { SITE } from '../config';
+---
+
+<LegalPage title="Cookie policy" description={`How the ${SITE.name} website uses cookies.`} updated="October 2026">
+  <p>Cookies are small text files that websites can store in your browser. This page explains how this website uses them.</p>
+
+  <h2>Cookies set by this website</h2>
+  <p>This website does not set its own cookies, and it does not use analytics or advertising cookies.</p>
+
+  <h2>Cookies from embedded services</h2>
+  <p>Some pages include content from other services, which may set their own cookies when you use them:</p>
+  <ul>
+    <li><strong>Google Maps</strong> on our contact page.</li>
+    <li><strong>YouTube</strong> videos, which load in YouTube's privacy-enhanced mode and only after you press play.</li>
+  </ul>
+  <p>These cookies are controlled by the providers, and their own cookie policies apply.</p>
+
+  <h2>Managing cookies</h2>
+  <p>
+    You can block or delete cookies in your browser settings. Blocking cookies from embedded services may stop maps or
+    videos from working, but the rest of this website will work normally.
+  </p>
+
+  <h2>Contact</h2>
+  <p>Questions about cookies can be sent to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+</LegalPage>

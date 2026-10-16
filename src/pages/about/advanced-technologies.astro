@@ -1,0 +1,531 @@
+---
+// Layout follows two reference designs (light medical-equipment showcase):
+// circle hero + overlapping icon cards, outline-icon feature row, trust split with a cut-out photo,
+// bento tiles, tabbed equipment cards, "Precise diagnoses" banner, icon principles grid.
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import WhatsAppIcon from '../../components/WhatsAppIcon.astro';
+import { whatsappLink } from '../../config';
+import { IMAGES } from '../../data/home';
+import { CONDITION_LABELS, INNOVATIONS, VRS, FISTULA_SCAN, PROCEDURES, PRINCIPLES, PILLARS } from '../../data/technologies';
+
+const heroCards = [
+  { icon: 'target', title: 'Early detection', text: 'Spotting anal gland infection before it becomes a fistula.', href: '#innovations' },
+  { icon: 'scan', title: '360° mapping', text: 'Real-time ultrasound shows the complete extent of disease.', href: '#fistula-scan' },
+  { icon: 'zap', title: 'Day-care surgery', text: 'Minimally invasive procedures designed for faster recovery.', href: '#procedures' },
+] as const;
+
+const features = [
+  { icon: 'clock', text: 'Most procedures\nas day-care' },
+  { icon: 'users', text: 'Scans performed by\nthe operating surgeon' },
+  { icon: 'shield', text: 'Sphincter-preserving\napproach' },
+  { icon: 'leaf', text: 'Surgery, medicines\nand Ayurveda' },
+] as const;
+
+const trustStats = [
+  { icon: 'clipboard', value: '38+ years', label: 'in proctology' },
+  { icon: 'zap', value: `${PROCEDURES.length} advanced`, label: 'procedures' },
+  { icon: 'star', value: '4.7 rating', label: 'on Google' },
+  { icon: 'shield', value: 'NABH', label: 'certified' },
+] as const;
+
+// Bento: tiles 1, 4 and 6 span two columns on desktop (3 rows × 3 columns, no gaps)
+const wide = new Set([0, 3, 5]);
+
+const tabs = [{ key: 'all', label: 'All procedures' }, ...Object.entries(CONDITION_LABELS).map(([key, c]) => ({ key, label: c.label }))];
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'About Us', href: '/about' }, { label: 'Advanced Technologies' }];
+
+---
+
+<Layout
+  overlayHeader
+  title="Advanced Technologies"
+  description="CHIPRO sign, Visual Rectoscope System, 360° fistula scan, CEREG, laser, DGHAL, RF and harmonic surgery: the technology behind day-care proctology at Chirag Global Hospitals, Bengaluru."
+>
+  <!-- ============ HERO: matches the home hero (dark, amber highlight, pill tags, overlay header) ============ -->
+  <section class="relative isolate overflow-hidden bg-ink-900 text-white">
+    <!-- Background layers -->
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10">
+      <div class="absolute -left-40 top-1/3 size-[32rem] rounded-full bg-brand-500/25 blur-3xl"></div>
+      <div class="absolute -right-24 top-24 size-[30rem] rounded-full bg-brand-400/25 blur-3xl"></div>
+      <div class="absolute bottom-0 right-1/3 size-[22rem] rounded-full bg-amber-400/10 blur-3xl"></div>
+      <div class="tech-hero-dots absolute inset-0"></div>
+    </div>
+
+    <div class="container-x grid items-center gap-12 pb-40 pt-32 sm:pt-36 lg:grid-cols-[1.05fr_1fr] lg:gap-8 lg:pb-48 lg:pt-44 xl:pt-48">
+      <div class="relative z-10">
+        <nav aria-label="Breadcrumb">
+          <ol class="flex flex-wrap items-center gap-1.5 text-sm text-white/60">
+            {
+              crumbs.map((c, i) => (
+                <li class="flex items-center gap-1.5">
+                  {i > 0 && <Icon name="chevronRight" class="size-3.5 text-white/40" />}
+                  {c.href ? <a href={c.href} class="transition hover:text-white">{c.label}</a> : <span aria-current="page" class="text-white/90">{c.label}</span>}
+                </li>
+              ))
+            }
+          </ol>
+        </nav>
+
+        <!-- Pill tags: same style as the home hero -->
+        <ul class="mt-6 flex flex-wrap gap-2 text-xs font-semibold sm:text-sm">
+          <li class="btn-amber rounded-full px-3.5 py-1.5">Advanced proctology</li>
+          <li class="rounded-full border border-white/30 bg-ink-900/30 px-3.5 py-1.5 backdrop-blur-sm">Day-care procedures</li>
+          <li class="hidden rounded-full border border-white/30 bg-ink-900/30 px-3.5 py-1.5 backdrop-blur-sm sm:block">Since 1986</li>
+        </ul>
+
+        <h1 class="heading-1 mt-5 max-w-2xl lg:mt-6">
+          High-tech care for a <span class="text-amber-400">precise diagnosis.</span>
+        </h1>
+
+        <p class="mt-5 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg lg:mt-6">
+          Minimally invasive techniques, real-time imaging and modern surgery combined with Ayurveda, so every patient
+          gets the right treatment and a faster recovery.
+        </p>
+
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a href="#book" class="btn btn-lg btn-primary">Book Appointment <Icon name="arrowRight" class="size-4" /></a>
+          <a href="#procedures" class="btn btn-lg btn-outline-light bg-ink-900/30 backdrop-blur-sm">View procedures</a>
+        </div>
+
+        <!-- Trust row (glass card, like the home "9 specialists" card) -->
+        <dl class="mt-10 grid grid-cols-3 items-center gap-3 rounded-3xl border border-white/15 bg-ink-900/55 px-4 py-4 backdrop-blur-md sm:inline-flex sm:gap-x-7 sm:px-6">
+          <div>
+            <dt class="sr-only">Experience</dt>
+            <dd class="text-xl font-black sm:text-2xl">38+ <span class="text-sm font-medium text-white/70">years</span></dd>
+          </div>
+          <div class="hidden h-8 w-px bg-white/15 sm:block" aria-hidden="true"></div>
+          <div>
+            <dt class="sr-only">Google rating</dt>
+            <dd class="flex items-center gap-1 text-xl font-black sm:gap-1.5 sm:text-2xl">
+              4.7 <Icon name="star" class="size-5 text-amber-400" />
+              <span class="text-xs font-medium text-white/70 sm:text-sm">Google</span>
+            </dd>
+          </div>
+          <div class="hidden h-8 w-px bg-white/15 sm:block" aria-hidden="true"></div>
+          <div>
+            <dt class="sr-only">Accreditation</dt>
+            <dd class="flex items-center gap-2">
+              <span class="grid size-9 place-items-center rounded-lg bg-white p-1"><img src={IMAGES.nabh} alt="" width="1024" height="717" class="h-auto w-full" /></span>
+              <span class="text-sm font-semibold leading-tight">NABH<br /><span class="font-normal text-white/70">certified</span></span>
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- Visual -->
+      <div class="relative mx-auto aspect-square w-full max-w-[36rem]">
+        <div aria-hidden="true" class="absolute inset-[2%] rounded-full bg-gradient-to-br from-brand-500/25 to-transparent"></div>
+        <div aria-hidden="true" class="tech-spin absolute inset-[6%] rounded-full border-2 border-dashed border-white/20">
+          <span class="absolute -top-1.5 left-1/2 size-3 -translate-x-1/2 rounded-full bg-amber-400 shadow-[0_0_0_6px_rgba(251,180,74,0.25)]"></span>
+        </div>
+        <div aria-hidden="true" class="absolute -inset-x-[6%] inset-y-[24%] -rotate-[14deg] rounded-[50%] border border-white/15"></div>
+
+        <div class="absolute inset-[15%] overflow-hidden rounded-full shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)] ring-[12px] ring-white/10">
+          <img src="/technologies/vrs-guided-surgery.webp" alt="Surgeons performing a visual-guided procedure at Chirag" fetchpriority="high" class="size-full scale-110 object-cover" />
+          <div class="absolute inset-0 bg-gradient-to-t from-ink-900/50 via-transparent to-transparent"></div>
+        </div>
+
+        <!-- Floating info cards -->
+        <div class="tech-float absolute left-0 top-[10%] flex items-center gap-3 rounded-2xl bg-white p-3 pr-5 text-ink-900 shadow-xl shadow-ink-950/40 sm:-left-4">
+          <span class="grid size-11 place-items-center rounded-xl bg-ink-900 text-amber-400"><Icon name="scan" class="size-5" /></span>
+          <div>
+            <p class="text-sm font-semibold">360° Fistula Scan</p>
+            <p class="text-meta">By the operating surgeon</p>
+          </div>
+        </div>
+
+        <div class="tech-float tech-float-delay absolute bottom-[8%] right-0 flex items-center gap-3 rounded-2xl bg-white p-3 pr-5 text-ink-900 shadow-xl shadow-ink-950/40 sm:-right-4">
+          <span class="btn-amber grid size-11 place-items-center rounded-xl"><Icon name="activity" class="size-5" /></span>
+          <div>
+            <p class="text-sm font-semibold">CEREG</p>
+            <p class="text-meta">Real-time echo-guided</p>
+          </div>
+        </div>
+
+        <div class="absolute right-[2%] top-[22%] hidden rounded-2xl bg-amber-400 px-4 py-3 text-ink-900 shadow-xl sm:block">
+          <p class="text-2xl font-black leading-none">{PROCEDURES.length}</p>
+          <p class="mt-1 text-[11px] font-semibold">advanced<br />procedures</p>
+        </div>
+
+        <ul class="absolute bottom-[26%] left-[-2%] hidden flex-col gap-2 sm:flex">
+          {
+            ['Laser', 'DGHAL', 'RF surgery'].map((t) => (
+              <li class="w-fit rounded-full border border-white/30 bg-ink-900/60 px-3 py-1.5 text-xs font-semibold backdrop-blur-sm">{t}</li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .tech-hero-dots {
+      background-image: radial-gradient(rgb(255 255 255 / 0.08) 1px, transparent 1px);
+      background-size: 22px 22px;
+      mask-image: radial-gradient(ellipse 70% 60% at 60% 45%, #000 25%, transparent 75%);
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .tech-spin {
+        animation: tech-spin 28s linear infinite;
+      }
+      .tech-float {
+        animation: tech-float 5s ease-in-out infinite;
+      }
+      .tech-float-delay {
+        animation-delay: -2.5s;
+      }
+    }
+    @keyframes tech-spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    @keyframes tech-float {
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+  </style>
+
+  <!-- ============ Overlapping white cards: centred icon, title, text, "Read more ›" ============ -->
+  <section class="relative z-10 -mt-28 lg:-mt-32" aria-label="Highlights">
+    <div class="container-x">
+      <ul class="grid gap-4 md:grid-cols-3 lg:gap-6">
+        {
+          heroCards.map((c) => (
+            <li class="flex flex-col items-center rounded-3xl bg-white px-6 pb-6 pt-7 text-center shadow-xl shadow-brand-200/40 ring-1 ring-brand-100">
+              <span class="grid size-14 place-items-center rounded-2xl bg-brand-50 text-brand-600">
+                <Icon name={c.icon} class="size-7" strokeWidth={1.6} />
+              </span>
+              <h2 class="heading-3 mt-4">{c.title}</h2>
+              <p class="text-body mt-2 max-w-xs">{c.text}</p>
+              <a href={c.href} class="mt-5 inline-flex items-center gap-1 text-sm font-semibold hover:text-brand-700">
+                Read more <Icon name="chevronRight" class="size-4" />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <!-- Feature row: outline-circle icons + two-line text -->
+      <ul class="mt-12 grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4">
+        {
+          features.map((f) => (
+            <li class="flex items-center gap-3">
+              <span class="grid size-11 shrink-0 place-items-center rounded-full border border-brand-200 text-brand-600">
+                <Icon name={f.icon} class="size-5" strokeWidth={1.6} />
+              </span>
+              <span class="text-xs font-semibold uppercase lg:whitespace-pre-line leading-snug tracking-wide text-ink-900/75 sm:text-[13px]">{f.text}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ Trust split: text + icon stats | tinted card with cut-out photo rising out of it ============ -->
+  <section class="section">
+    <div class="container-x grid items-end gap-12 lg:grid-cols-2 lg:gap-16">
+      <div class="self-center">
+        <h2 class="heading-2">Proctology care that <span class="text-brand-600">you can trust</span></h2>
+        <p class="text-lead mt-5">
+          Every technology here serves one goal: finding the full extent of the disease and treating it completely, while
+          protecting continence and keeping recovery short. Our surgeons choose the technique after examining you, never
+          the other way round.
+        </p>
+        <a href="/about" class="mt-5 inline-flex items-center gap-1 text-sm font-semibold hover:text-brand-700">
+          About Chirag <Icon name="chevronRight" class="size-4" />
+        </a>
+        <ul class="mt-10 grid grid-cols-2 gap-x-6 gap-y-8">
+          {
+            trustStats.map((s) => (
+              <li class="flex items-center gap-3">
+                <span class="grid size-12 shrink-0 place-items-center rounded-2xl bg-brand-50 text-brand-600">
+                  <Icon name={s.icon} class="size-6" strokeWidth={1.6} />
+                </span>
+                <span class="text-lg font-semibold leading-tight sm:text-xl">
+                  {s.value}
+                  <span class="block font-normal text-ink-900/70">{s.label}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="relative mx-auto w-full max-w-md pt-16 lg:max-w-none">
+        <div class="absolute inset-x-0 bottom-0 top-28 rounded-[2.5rem] bg-gradient-to-b from-brand-100 to-brand-200/70"></div>
+        <img
+          src={IMAGES.chairman}
+          alt="Dr. Rajasekhar M. R., Founder and Chairman"
+          width="462"
+          height="650"
+          loading="lazy"
+          class="relative mx-auto h-[26rem] w-auto object-contain object-bottom mix-blend-multiply sm:h-[30rem]"
+        />
+        <div class="absolute bottom-6 left-6 rounded-2xl bg-white px-4 py-3 shadow-lg">
+          <p class="text-sm font-semibold">Dr. Rajasekhar M. R.</p>
+          <p class="text-meta">Founder and Chairman</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Bento tiles: tinted, icon top-right, label bottom-left ============ -->
+  <section id="innovations" class="section">
+    <div class="container-x">
+      <h2 class="heading-2 max-w-3xl">
+        Unique innovations in <span class="text-brand-600">minimally invasive proctology</span>
+      </h2>
+      <ul class="section-body grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+        {
+          INNOVATIONS.map((n, i) => (
+            <li
+              class:list={[
+                'group relative flex min-h-60 flex-col justify-end overflow-hidden rounded-3xl bg-brand-50 p-6 transition hover:bg-brand-100 sm:p-7',
+                wide.has(i) && 'lg:col-span-2',
+              ]}
+            >
+              <span class:list={['absolute right-6 top-6 grid place-items-center rounded-full bg-white text-brand-600 shadow-sm ring-1 ring-brand-100 transition group-hover:scale-105', wide.has(i) ? 'size-24' : 'size-16']}>
+                <Icon name={n.icon} class={wide.has(i) ? 'size-11' : 'size-8'} strokeWidth={1.4} />
+              </span>
+              <p class="text-kicker text-brand-500">{n.tag}</p>
+              <h3 class="heading-4 mt-1">{n.title}</h3>
+              <p class:list={['text-body mt-2', wide.has(i) && 'max-w-md']}>{n.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ VRS: light rounded box with orbit line (reference 2 hero box) ============ -->
+  <section class="section">
+    <div class="container-x">
+      <div class="grid items-center gap-10 overflow-hidden rounded-[2.5rem] bg-brand-50 p-6 sm:p-10 lg:grid-cols-2 lg:p-14">
+        <div>
+          <p class="text-kicker text-brand-500">Advanced visualisation</p>
+          <h2 class="heading-2 mt-3">Visual Rectoscope System</h2>
+          <p class="text-lead mt-5">
+            High-resolution, real-time imaging of the anal canal. Pocket-sized and disposable, it improves hygiene and lets
+            you see and understand your own condition.
+          </p>
+          <ul class="mt-7 grid gap-x-6 gap-y-3 sm:grid-cols-2">
+            {
+              VRS.features.map((f) => (
+                <li class="text-body flex gap-2.5">
+                  <Icon name="check" class="mt-0.5 size-4 shrink-0 text-brand-600" />
+                  {f}
+                </li>
+              ))
+            }
+          </ul>
+          <a href="#book" class="btn btn-primary mt-8">Book an examination</a>
+        </div>
+
+        <div class="relative mx-auto aspect-square w-full max-w-sm">
+          <div aria-hidden="true" class="absolute -inset-x-[10%] inset-y-[18%] rotate-[18deg] rounded-[50%] border border-brand-300/70"></div>
+          <div class="absolute inset-[12%] grid place-items-center rounded-full bg-white shadow-2xl shadow-brand-300/50">
+            <div class="grid size-1/2 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-white">
+              <Icon name="camera" class="size-1/2" strokeWidth={1.4} />
+            </div>
+          </div>
+          {
+            VRS.specs.map((s, i) => (
+              <div
+                class:list={[
+                  'absolute rounded-2xl bg-white px-3.5 py-2 shadow-lg shadow-brand-200/60',
+                  ['left-0 top-[8%]', 'right-0 top-[20%]', 'left-[-2%] bottom-[22%]', 'right-[4%] bottom-[4%]'][i],
+                ]}
+              >
+                <p class="text-[10px] font-bold uppercase tracking-widest text-brand-400">{s.label}</p>
+                <p class="text-sm font-semibold">{s.value}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Equipment cards with pill tabs (reference 2 catalogue) ============ -->
+  <section id="procedures" class="section" data-proc>
+    <div class="container-x">
+      <h2 class="heading-2 max-w-3xl">
+        Advanced procedures for <span class="text-brand-600">faster recovery</span> and minimal pain
+      </h2>
+
+      <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div role="group" aria-label="Filter procedures by condition" class="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:px-0">
+          {
+            tabs.map((t, i) => (
+              <button
+                type="button"
+                data-filter={t.key}
+                aria-pressed={i === 0 ? 'true' : 'false'}
+                class="shrink-0 rounded-full border border-ink-900/15 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-ink-900/80 transition hover:border-brand-400 aria-pressed:border-brand-600 aria-pressed:text-brand-700 aria-pressed:ring-1 aria-pressed:ring-brand-600"
+              >
+                {t.label}
+              </button>
+            ))
+          }
+        </div>
+        <a href="/treatments" class="inline-flex shrink-0 items-center gap-1 text-xs font-semibold uppercase tracking-wide text-brand-700 hover:underline">
+          Go to treatments <Icon name="arrowRight" class="size-3.5 -rotate-45" />
+        </a>
+      </div>
+
+      <ul class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" aria-live="polite">
+        {
+          PROCEDURES.map((p) => (
+            <li data-conditions={p.conditions.join(' ')}>
+              <article class="flex h-full flex-col rounded-3xl border border-brand-100 bg-white p-5 transition hover:border-brand-200 hover:shadow-xl hover:shadow-brand-200/40">
+                <div class="flex justify-end">
+                  <span class="rounded-md border border-brand-300 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-brand-600">
+                    {p.short}
+                  </span>
+                </div>
+                <div class:list={['mt-4 aspect-[4/3] overflow-hidden rounded-2xl', p.fit === 'contain' ? 'bg-ink-950' : 'bg-brand-50']}>
+                  <img src={p.image} alt={p.name} loading="lazy" class:list={['size-full', p.fit === 'contain' ? 'object-contain p-4' : 'object-cover']} />
+                </div>
+                <h3 class="heading-4 mt-5">{p.name}</h3>
+                <p class="text-body mt-2">{p.text}</p>
+                <p class="text-meta mt-4">
+                  Used for:{' '}
+                  {p.conditions.map((c, i) => (
+                    <>
+                      {i > 0 && ', '}
+                      <a href={`/treatments/${CONDITION_LABELS[c].slug}`} class="font-medium text-ink-900/80 underline-offset-2 hover:text-brand-700 hover:underline">
+                        {CONDITION_LABELS[c].label}
+                      </a>
+                    </>
+                  ))}
+                </p>
+                <div class="mt-auto pt-5">
+                  <a
+                    href={whatsappLink(`Hi, I'd like to know if ${p.name.toLowerCase()} is suitable for me.`)}
+                    target="_blank"
+                    rel="noopener"
+                    class="btn btn-primary"
+                  >
+                    Ask about this
+                  </a>
+                </div>
+              </article>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ Banner: "Precise diagnoses. Trusted results." (reference 1) ============ -->
+  <section id="fistula-scan" class="relative overflow-hidden bg-gradient-to-r from-brand-50 via-brand-50 to-brand-100 py-14 lg:py-20">
+    <div aria-hidden="true" class="absolute -right-24 top-1/2 hidden size-[38rem] -translate-y-1/2 rounded-full bg-white/60 lg:block"></div>
+    <div class="container-x relative grid items-center gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+      <div>
+        <p class="text-kicker text-brand-500">360° Fistula Scan · CEREG</p>
+        <h2 class="heading-2 mt-3">Precise mapping.<br />Complete treatment.</h2>
+        <p class="text-lead mt-5 max-w-xl">
+          Endoanal ultrasound and sonofistulogram, performed by the operating surgeon, map the complete fistula before
+          surgery. The same real-time imaging guides CEREG, Circumferential Endoanal Real-time Echo-Guided surgery.
+        </p>
+        <ul class="mt-7 space-y-3">
+          {
+            FISTULA_SCAN.benefits.map((b) => (
+              <li class="flex items-center gap-3 text-sm font-medium sm:text-base">
+                <span class="grid size-6 shrink-0 place-items-center rounded-full bg-white text-brand-600 shadow-sm">
+                  <Icon name="check" class="size-3.5" />
+                </span>
+                {b}
+              </li>
+            ))
+          }
+        </ul>
+        <a href="/treatments/fistula" class="btn btn-lg btn-primary mt-8">Make an appointment</a>
+      </div>
+      <div class="relative mx-auto w-full max-w-sm">
+        <img
+          src={FISTULA_SCAN.image}
+          alt="Endoanal ultrasound system used for 360° fistula scans"
+          loading="lazy"
+          class="relative mx-auto max-h-[30rem] w-auto rounded-[2rem] shadow-2xl shadow-brand-400/30 ring-8 ring-white"
+        />
+        <span class="absolute -left-4 top-10 rounded-full bg-amber-400 px-4 py-2 text-xs font-semibold shadow-lg sm:-left-10">Real-time ultrasound</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Principles: outline-circle icon grid ============ -->
+  <section class="section">
+    <div class="container-x">
+      <h2 class="heading-2 max-w-2xl">Principles of <span class="text-brand-600">surgery</span></h2>
+      <ol class="section-body grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          PRINCIPLES.map((p, i) => (
+            <li class="flex gap-4">
+              <span class="grid size-12 shrink-0 place-items-center rounded-full border border-brand-200 text-sm font-bold text-brand-600">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <div>
+                <h3 class="heading-4">{p.title}</h3>
+                <p class="text-body mt-1.5">{p.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ Right treatment: white cards with icon avatar (reference 1 testimonial cards) ============ -->
+  <section class="section bg-gradient-to-b from-white to-brand-50/70">
+    <div class="container-x">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <h2 class="heading-2 max-w-xl">Right treatment, <span class="text-brand-600">not just surgery</span></h2>
+        <a
+          href={whatsappLink('Hi, I would like to know which treatment is right for me.')}
+          target="_blank"
+          rel="noopener"
+          class="btn btn-outline shrink-0"
+        >
+          <WhatsAppIcon class="size-5" /> WhatsApp a health expert
+        </a>
+      </div>
+      <p class="text-lead mt-4 max-w-2xl">
+        Some conditions need surgery, some respond to medicines, and some benefit from integrated Ayurvedic care.
+      </p>
+      <ul class="section-body grid gap-5 md:grid-cols-3">
+        {
+          PILLARS.map((p) => (
+            <li class="rounded-3xl bg-white p-6 shadow-lg shadow-brand-200/30 ring-1 ring-brand-100 sm:p-7">
+              <div class="flex items-center gap-4">
+                <span class="grid size-12 place-items-center rounded-full bg-brand-100 text-brand-600">
+                  <Icon name={p.icon} class="size-6" strokeWidth={1.6} />
+                </span>
+                <h3 class="heading-4">{p.title}</h3>
+              </div>
+              <p class="text-body mt-4 sm:text-base">{p.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-proc]').forEach((root) => {
+    const buttons = root.querySelectorAll<HTMLButtonElement>('[data-filter]');
+    const items = root.querySelectorAll<HTMLElement>('[data-conditions]');
+    buttons.forEach((btn) =>
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.filter!;
+        buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+        items.forEach((li) => (li.hidden = key !== 'all' && !li.dataset.conditions!.split(' ').includes(key)));
+      }),
+    );
+  });
+</script>

@@ -1,0 +1,135 @@
+---
+import Icon from '../Icon.astro';
+import Select from '../Select.astro';
+import SectionHeader from '../SectionHeader.astro';
+import { SITE, digits, whatsappLink, WHATSAPP_MESSAGE } from '../../config';
+import { CONCERNS } from '../../data/home';
+
+interface Props {
+  /** Show a map card beside the booking panel */
+  withMap?: boolean;
+}
+
+const { withMap = false } = Astro.props;
+
+const tiles = [
+  { label: 'Call', value: SITE.phone, href: `tel:${digits(SITE.phone)}` },
+  { label: 'WhatsApp', value: SITE.whatsapp, href: whatsappLink() },
+  { label: 'Mon to Sat', value: SITE.hours.weekdays },
+  { label: 'Sunday', value: SITE.hours.sunday },
+];
+---
+
+<section id="book" class="section">
+  <div class:list={['container-x', withMap && 'grid gap-5 xl:grid-cols-[minmax(0,1fr)_22rem]']}>
+    <div
+      class="panel relative grid gap-10 bg-gradient-to-br from-ink-950 via-ink-800 to-brand-700 text-white lg:grid-cols-[1.2fr_1fr] lg:items-center lg:gap-12"
+    >
+      <div aria-hidden="true" class="pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]">
+        <div class="absolute -bottom-24 -left-16 size-72 rounded-full bg-amber-400/20 blur-3xl"></div>
+      </div>
+
+      <div class="relative">
+        <SectionHeader tone="dark" eyebrow="Book your visit" title="Take the first step today. " highlight="It's completely confidential." />
+
+        <ul class="mt-8 grid grid-cols-2 gap-3">
+          {
+            tiles.map((t) => {
+              const Tag = t.href ? 'a' : 'div';
+              return (
+                <li>
+                  <Tag
+                    href={t.href}
+                    target={t.href?.startsWith('http') ? '_blank' : undefined}
+                    rel={t.href?.startsWith('http') ? 'noopener' : undefined}
+                    class="block h-full rounded-2xl border border-white/15 bg-white/5 p-4 transition hover:bg-white/10"
+                  >
+                    <span class="text-kicker block text-amber-400">{t.label}</span>
+                    <span class="mt-1 block text-sm font-semibold sm:text-base">{t.value}</span>
+                  </Tag>
+                </li>
+              );
+            })
+          }
+        </ul>
+
+        <p class="mt-6 flex gap-2 text-sm text-white/80">
+          <Icon name="pin" class="mt-0.5 size-4 shrink-0 text-amber-400" />
+          <span>
+            {SITE.address} ·
+            <a href={SITE.mapsUrl} target="_blank" rel="noopener" class="font-semibold text-white underline">Get directions</a>
+          </span>
+        </p>
+      </div>
+
+      <form data-whatsapp-form class="relative rounded-3xl bg-white p-6 text-ink-900 shadow-2xl sm:p-8">
+        <h3 class="heading-3">Request an appointment</h3>
+        <label class="mt-5 block">
+          <span class="text-sm font-medium">Full name</span>
+          <input
+            name="name"
+            required
+            autocomplete="name"
+            placeholder="Your name"
+            class="mt-2 w-full rounded-xl bg-brand-50 px-4 py-3.5 outline-none ring-brand-400 focus:ring-2"
+          />
+        </label>
+        <label class="mt-4 block">
+          <span class="text-sm font-medium">Phone number</span>
+          <input
+            name="phone"
+            type="tel"
+            required
+            inputmode="tel"
+            autocomplete="tel"
+            pattern="(\+?91)?[\s-]?[6-9]\d{4}[\s-]?\d{5}"
+            placeholder="+91"
+            class="mt-2 w-full rounded-xl bg-brand-50 px-4 py-3.5 outline-none ring-brand-400 focus:ring-2"
+          />
+        </label>
+        <Select name="concern" label="Concern" options={CONCERNS} class="mt-4" />
+        <button type="submit" class="btn btn-lg btn-primary mt-6 w-full">
+          Book appointment
+        </button>
+        <p class="text-meta mt-3 text-center">Seen only by our care team.</p>
+      </form>
+    </div>
+    {
+      withMap && (
+        <aside class="flex flex-col overflow-hidden rounded-[2rem] bg-brand-50 ring-1 ring-brand-100 lg:rounded-[2.5rem]">
+          <iframe
+            src={`https://maps.google.com/maps?q=${encodeURIComponent(`${SITE.name}, ${SITE.address}`)}&z=16&output=embed`}
+            title={`Map showing ${SITE.name}`}
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            class="h-64 w-full border-0 xl:h-auto xl:flex-1"
+          />
+          <div class="p-6">
+            <h3 class="heading-4">Visit the hospital</h3>
+            <p class="text-body mt-1">{SITE.address}</p>
+            <a href={SITE.mapsUrl} target="_blank" rel="noopener" class="btn btn-dark mt-5">
+              <Icon name="pin" class="size-4" /> Get directions
+            </a>
+          </div>
+        </aside>
+      )
+    }
+  </div>
+</section>
+
+<script define:vars={{ whatsapp: SITE.whatsapp.replace(/\D/g, ''), greeting: WHATSAPP_MESSAGE }}>
+  // No backend yet: forms open a pre-filled WhatsApp message to the care team.
+  // Swap this for a real form endpoint when one is available.
+  document.querySelectorAll('[data-whatsapp-form]').forEach((form) =>
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const labels = { name: 'Name', phone: 'Phone', concern: 'Concern', when: 'Preferred time' };
+      const lines = Object.entries(labels)
+        .filter(([key]) => data.get(key))
+        .map(([key, label]) => `${label}: ${data.get(key)}`);
+      const msg = [greeting, ...lines].join('\n');
+      window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+    }),
+  );
+</script>

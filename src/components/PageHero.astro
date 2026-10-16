@@ -1,0 +1,104 @@
+---
+// Dark banner at the top of every inner page: breadcrumbs → eyebrow → h1 → lead → actions.
+// Optional image on the right from lg up.
+import Icon from './Icon.astro';
+
+export interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  title: string;
+  highlight?: string;
+  eyebrow?: string;
+  lead?: string;
+  crumbs: Crumb[];
+  image?: string;
+  imageAlt?: string;
+  /** 'cover' fills the frame (photos) · 'portrait' sits a cut-out at the bottom (doctor photos) */
+  imageFit?: 'cover' | 'portrait';
+}
+
+const { title, highlight, eyebrow, lead, crumbs, image, imageAlt = '', imageFit = 'cover' } = Astro.props;
+const all: Crumb[] = [{ label: 'Home', href: '/' }, ...crumbs];
+
+const site = Astro.site ?? Astro.url;
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: all.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: c.label,
+    ...(c.href ? { item: new URL(c.href, site).href } : {}),
+  })),
+};
+---
+
+<section class="relative isolate overflow-hidden bg-ink-900 text-white">
+  <div aria-hidden="true" class="absolute -left-40 -top-20 -z-10 size-[30rem] rounded-full bg-brand-500/30 blur-3xl"></div>
+  <div aria-hidden="true" class="absolute -bottom-40 right-0 -z-10 size-[26rem] rounded-full bg-amber-400/10 blur-3xl"></div>
+
+  <div
+    class:list={[
+      'container-x grid gap-10 py-12 sm:py-14 lg:py-16',
+      image && 'lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-14',
+    ]}
+  >
+    <div>
+      <nav aria-label="Breadcrumb">
+        <ol class="flex flex-wrap items-center gap-1.5 text-sm text-white/60">
+          {
+            all.map((c, i) => (
+              <li class="flex items-center gap-1.5">
+                {i > 0 && <Icon name="chevronRight" class="size-3.5 text-white/40" />}
+                {c.href && i < all.length - 1 ? (
+                  <a href={c.href} class="transition hover:text-white">
+                    {c.label}
+                  </a>
+                ) : (
+                  <span aria-current="page" class="text-white/90">
+                    {c.label}
+                  </span>
+                )}
+              </li>
+            ))
+          }
+        </ol>
+      </nav>
+
+      {eyebrow && <span class="eyebrow mt-6 bg-white/10 text-amber-400">{eyebrow}</span>}
+      <h1 class:list={['heading-1 max-w-3xl', eyebrow ? 'mt-4' : 'mt-6']}>
+        {title}
+        {highlight && <span class="text-amber-400">{highlight}</span>}
+      </h1>
+      {lead && <p class="mt-5 max-w-2xl text-base leading-relaxed text-white/75 sm:text-lg">{lead}</p>}
+      {Astro.slots.has('default') && <div class="mt-8 flex flex-wrap gap-3"><slot /></div>}
+    </div>
+
+    {
+      image && (
+        <div
+          class:list={[
+            'relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-400/40 to-ink-800 lg:rounded-[2.5rem]',
+            imageFit === 'portrait' ? 'mx-auto aspect-square w-full max-w-md' : 'aspect-[4/3]',
+          ]}
+        >
+          <img
+            src={image}
+            alt={imageAlt}
+            fetchpriority="high"
+            class:list={[
+              'absolute inset-0 size-full',
+              imageFit === 'portrait' ? 'object-contain object-bottom pt-6' : 'object-cover',
+            ]}
+            onerror="this.remove()"
+          />
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />

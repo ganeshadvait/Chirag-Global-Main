@@ -1,0 +1,58 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import DoctorCard from '../../components/DoctorCard.astro';
+import Icon from '../../components/Icon.astro';
+import { DOCTORS } from '../../data/doctors';
+
+const promises = [
+  { icon: 'users', title: 'One team, start to finish', text: 'The specialist who diagnoses you stays involved through treatment and follow-up.' },
+  { icon: 'lock', title: 'Private consultations', text: 'Every consultation is one-to-one, in a private room.' },
+  { icon: 'smile', title: 'Women surgeons available', text: 'Tell us your preference when you book and we will arrange it.' },
+] as const;
+---
+
+<Layout
+  title="Our Doctors"
+  description="Meet the colorectal surgeons, proctologists and specialists at Chirag Global Hospitals, BTM 2nd Stage, Bengaluru."
+>
+  <PageHero
+    crumbs={[{ label: 'Our Doctors' }]}
+    eyebrow="Our specialists"
+    title="Meet our "
+    highlight="expert doctors"
+    lead="Colorectal surgeons, proctologists, anaesthesiologists and a gynaecologist under one roof, so your care stays with one team from first visit to full recovery."
+  >
+    <a href="#book" class="btn btn-lg btn-primary">Book an appointment <Icon name="arrowRight" class="size-4" /></a>
+  </PageHero>
+
+  <section class="section">
+    <div class="container-x">
+      <ul class="grid grid-cols-1 gap-5 min-[480px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {
+          DOCTORS.map((d) => (
+            <li>
+              <DoctorCard doctor={d} as="h2" />
+            </li>
+          ))
+        }
+      </ul>
+
+      <ul class="section-body grid gap-4 md:grid-cols-3">
+        {
+          promises.map((p) => (
+            <li class="card flex gap-4 bg-brand-50">
+              <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-white text-brand-600">
+                <Icon name={p.icon} class="size-5" />
+              </span>
+              <div>
+                <h2 class="heading-4">{p.title}</h2>
+                <p class="text-body mt-1">{p.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Layout>

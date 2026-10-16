@@ -1,0 +1,110 @@
+---
+import Icon from '../Icon.astro';
+import SectionHeader from '../SectionHeader.astro';
+import { SITE } from '../../config';
+import { INTERNATIONAL } from '../../data/home';
+
+const [first] = INTERNATIONAL;
+---
+
+<section id="international" class="section">
+  <div class="container-x">
+    <div class="panel bg-brand-100/70" data-intl>
+      <SectionHeader
+        eyebrow="International patient services"
+        eyebrowClass="bg-white/70"
+        title="Travelling from abroad? "
+        highlight="Here's your journey with us."
+        lead="Our medical travel team supports you at every stage. Select a stage to see how."
+      />
+
+      <div class="section-body relative">
+        <div aria-hidden="true" class="absolute inset-x-[12%] top-7 hidden h-0.5 bg-brand-200 sm:block"></div>
+        <ol role="tablist" aria-label="International patient journey" class="relative grid grid-cols-2 gap-6 sm:grid-cols-4">
+          {
+            INTERNATIONAL.map((s, i) => (
+              <li>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-controls="intl-panel"
+                  aria-selected={i === 0 ? 'true' : 'false'}
+                  data-stage={i}
+                  class="group flex w-full flex-col items-center text-center"
+                >
+                  <span class="grid size-14 place-items-center rounded-full border border-brand-200 bg-white text-ink-900 transition group-hover:scale-105 group-aria-selected:border-transparent group-aria-selected:bg-amber-400 group-aria-selected:ring-8 group-aria-selected:ring-amber-400/25">
+                    <Icon name={s.icon} class="size-5" />
+                  </span>
+                  <span class="text-kicker mt-4 text-brand-400">Stage {i + 1}</span>
+                  <span class="heading-5 mt-1">{s.label}</span>
+                </button>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <div class="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-[1.4fr_1fr]">
+        <div id="intl-panel" role="tabpanel" aria-live="polite" class="card bg-white sm:p-8">
+          <p class="text-kicker text-ink-900/60" data-intl-label>
+            Stage 1 · {first.label}
+          </p>
+          <h3 class="heading-3 mt-3" data-intl-heading>{first.heading}</h3>
+          <ul class="text-body mt-5 space-y-3 sm:text-base" data-intl-points>
+            {
+              first.points.map((p) => (
+                <li class="flex gap-3">
+                  <Icon name="check" class="mt-0.5 size-4 shrink-0 text-brand-600" /> {p}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="card flex flex-col bg-ink-900 text-white sm:p-8">
+          <h3 class="heading-3">Talk to our international desk</h3>
+          <p class="mt-2 text-sm text-white/70">
+            Share your reports and we'll send a treatment plan and cost estimate before you travel.
+          </p>
+          <div class="mt-auto space-y-3 pt-6">
+            <a href="#book" class="btn btn-primary w-full">
+              Plan my treatment
+            </a>
+            <a
+              href={`mailto:${SITE.email}`}
+              class="block truncate rounded-full border border-white/25 px-4 py-3.5 text-center text-sm font-semibold transition hover:bg-white/10"
+            >
+              <span class="sm:hidden">Email our desk</span><span class="hidden sm:inline">Email {SITE.email}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ stages: INTERNATIONAL }}>
+  const root = document.querySelector('[data-intl]');
+  const tabs = root.querySelectorAll('[data-stage]');
+  const label = root.querySelector('[data-intl-label]');
+  const heading = root.querySelector('[data-intl-heading]');
+  const list = root.querySelector('[data-intl-points]');
+  const template = list.firstElementChild.cloneNode(true);
+
+  tabs.forEach((tab) =>
+    tab.addEventListener('click', () => {
+      const i = Number(tab.dataset.stage);
+      const s = stages[i];
+      tabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
+      label.textContent = `Stage ${i + 1} · ${s.label}`;
+      heading.textContent = s.heading;
+      list.replaceChildren(
+        ...s.points.map((p) => {
+          const li = template.cloneNode(true);
+          li.lastChild.textContent = ` ${p}`;
+          return li;
+        }),
+      );
+    }),
+  );
+</script>

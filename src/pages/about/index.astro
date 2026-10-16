@@ -1,0 +1,484 @@
+---
+// About Us — follows the supplied About reference layout, with content from the live
+// About Us page (vision, mission, "Pioneers / Leaders / Innovators", conditions treated, full team).
+import Layout from '../../layouts/Layout.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import Icon from '../../components/Icon.astro';
+import WhatsAppIcon from '../../components/WhatsAppIcon.astro';
+import Chairman from '../../components/home/Chairman.astro';
+import Doctors from '../../components/home/Doctors.astro';
+import { SITE, whatsappLink } from '../../config';
+import { IMAGES, VIDEOS } from '../../data/home';
+import { ABOUT_LINKS } from '../../data/about';
+import { EVENTS, eventDay } from '../../data/events';
+import { DOCTORS } from '../../data/doctors';
+import { PROCEDURES } from '../../data/technologies';
+import { POSTS } from '../../data/blog';
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'About Us' }];
+
+const stats = [
+  { value: '38+', label: 'Years of experience' },
+  { value: String(DOCTORS.length), label: 'Specialists on one team' },
+  { value: '4.7★', label: 'From 1,428 Google reviews' },
+  { value: 'NABH', label: 'Entry Level certified' },
+];
+
+const conditions = [
+  'Piles', 'Fistula', 'Fissure', 'Pilonidal sinus', 'Incontinence',
+  'Constipation', 'Rectal and colon cancer', 'IBD', 'IBS',
+];
+
+const purpose = [
+  {
+    label: 'Our vision',
+    image: IMAGES.hero,
+    text: 'To be a leading tertiary care referral centre for ',
+    highlight: 'proctology.',
+  },
+  {
+    label: 'Our mission',
+    image: '/technologies/vrs-guided-surgery.webp',
+    text: 'A trusted referral centre for complex anus, rectum and colon disorders, ',
+    highlight: 'especially recurrent fistulas.',
+  },
+];
+
+const eras = [
+  { icon: 'clipboard', title: 'Pioneers from the past', text: 'Focused on colorectal and anorectal care in Bengaluru since 1986.' },
+  { icon: 'users', title: 'Leaders at present', text: 'Thousands of patients treated each year by one dedicated specialist team.' },
+  { icon: 'zap', title: 'Innovators of the future', text: 'Techniques such as CHIPRO sign, 360° fistula scan and CEREG surgery.' },
+] as const;
+
+const values = [
+  { icon: 'lock', title: 'Privacy first', text: 'One-to-one consultations in private rooms.', tone: 'brand' },
+  { icon: 'search', title: 'Diagnosis before decisions', text: 'A clear explanation of your condition and options first.', tone: 'cream' },
+  { icon: 'users', title: 'One dedicated team', text: 'Surgeons, proctologists and anaesthesiologists together.', tone: 'brand' },
+  { icon: 'clipboard', title: 'Protocol-based care', text: 'A structured approach from first visit to follow-up.', tone: 'cream' },
+  { icon: 'clock', title: 'Day-care recovery', text: 'Most procedures let you go home the same day.', tone: 'dark' },
+] as const;
+
+const safety = [
+  { icon: 'lock', title: 'Private consultation rooms', text: 'Your examination happens one-to-one, never in a shared space.' },
+  { icon: 'users', title: 'Women surgeons available', text: 'Tell us your preference when you book and we will arrange it.' },
+  { icon: 'shield', title: 'NABH quality standards', text: 'Accredited processes for safety, hygiene and patient care.' },
+  { icon: 'file', title: 'Confidential records', text: 'Your details are only seen by the team caring for you.' },
+] as const;
+
+// "Take a tour" — add photos of reception, rooms and OT here as they become available.
+const tour = [
+  { label: 'Hospital building', image: IMAGES.building, caption: 'Our hospital in Dollar Layout, BTM 2nd Stage, Bengaluru.' },
+  { label: 'Our team', image: IMAGES.hero, caption: 'Colorectal surgeons, proctologists, anaesthesiologists and nursing staff.' },
+  { label: 'Operation theatre', image: '/technologies/vrs-guided-surgery.webp', caption: 'Minimally invasive procedures, most planned as day-care.' },
+  { label: 'Equipment', image: '/technologies/radiofrequency-surgery.webp', caption: 'Radiofrequency, laser, harmonic and Doppler-guided systems.' },
+];
+
+const equipment = PROCEDURES.slice(0, 4);
+
+const recentEvents = EVENTS.slice(0, 4);
+
+const news = [
+  { icon: 'youtube', kind: 'In the news', title: VIDEOS[0].title, meta: VIDEOS[0].speaker, href: '/about/educational-videos' },
+  ...POSTS.slice(0, 2).map((p) => ({ icon: 'file', kind: 'In medicine', title: p.title, meta: `${p.tag} · ${p.readMinutes} min read`, href: `/blog/${p.slug}` })),
+] as const;
+---
+
+<Layout
+  overlayHeader
+  bookingMap
+  title="About Us"
+  description="Chirag Global Hospitals: pioneers in proctology and colorectal care in BTM 2nd Stage, Bengaluru since 1986. NABH Entry Level certified, with a dedicated specialist team."
+>
+  <!-- ============ HERO (matches home hero) ============ -->
+  <section class="relative isolate overflow-hidden bg-ink-900 text-white">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10">
+      <div class="absolute -left-40 top-1/3 size-[32rem] rounded-full bg-brand-500/25 blur-3xl"></div>
+      <div class="absolute -right-24 top-24 size-[30rem] rounded-full bg-brand-400/25 blur-3xl"></div>
+    </div>
+
+    <div class="container-x grid items-center gap-12 pb-40 pt-32 sm:pt-36 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:pb-48 lg:pt-44 xl:pt-48">
+      <div>
+        <nav aria-label="Breadcrumb">
+          <ol class="flex flex-wrap items-center gap-1.5 text-sm text-white/60">
+            {
+              crumbs.map((c, i) => (
+                <li class="flex items-center gap-1.5">
+                  {i > 0 && <Icon name="chevronRight" class="size-3.5 text-white/40" />}
+                  {c.href ? <a href={c.href} class="transition hover:text-white">{c.label}</a> : <span aria-current="page" class="text-white/90">{c.label}</span>}
+                </li>
+              ))
+            }
+          </ol>
+        </nav>
+        <ul class="mt-6 flex flex-wrap gap-2 text-xs font-semibold sm:text-sm">
+          <li class="btn-amber rounded-full px-3.5 py-1.5">Since 1986</li>
+          <li class="rounded-full border border-white/30 bg-ink-900/30 px-3.5 py-1.5 backdrop-blur-sm">NABH certified</li>
+          <li class="hidden rounded-full border border-white/30 bg-ink-900/30 px-3.5 py-1.5 backdrop-blur-sm sm:block">Referral centre</li>
+        </ul>
+        <h1 class="heading-1 mt-5 max-w-2xl lg:mt-6">
+          Pioneers in <span class="text-amber-400">proctology and colon care.</span>
+        </h1>
+        <p class="mt-5 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg lg:mt-6">
+          For over three decades, Chirag Global Hospitals has cared for patients with piles, fistula, fissure and other
+          colorectal conditions, with privacy, a clear diagnosis and one dedicated team.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a href="#book" class="btn btn-lg btn-primary">Book Appointment <Icon name="arrowRight" class="size-4" /></a>
+          <a href="#doctors" class="btn btn-lg btn-outline-light bg-ink-900/30 backdrop-blur-sm">Meet our doctors</a>
+        </div>
+      </div>
+
+      <div class="relative mx-auto w-full max-w-xl">
+        <div aria-hidden="true" class="absolute -bottom-4 -left-4 h-2/3 w-2/3 rounded-[2rem] bg-amber-400 lg:-bottom-5 lg:-left-5"></div>
+        <div class="relative aspect-[4/3] overflow-hidden rounded-[2rem] ring-8 ring-white/10 lg:rounded-[2.5rem]">
+          <img src={IMAGES.hero} alt="The Chirag Global Hospitals team of doctors" width="1024" height="522" fetchpriority="high" class="size-full object-cover" />
+          <div class="absolute inset-0 bg-gradient-to-t from-ink-900/60 via-transparent to-transparent"></div>
+        </div>
+        <div class="absolute -top-5 right-4 flex items-center gap-3 rounded-2xl bg-white p-3 pr-5 text-ink-900 shadow-xl shadow-ink-950/40">
+          <img src={IMAGES.experience} alt="" width="125" height="125" class="size-12" />
+          <div>
+            <p class="text-sm font-semibold">38+ years</p>
+            <p class="text-meta">of experience</p>
+          </div>
+        </div>
+        <div class="absolute bottom-5 right-5 flex items-center gap-3 rounded-2xl border border-white/15 bg-ink-900/70 px-4 py-3 backdrop-blur-md">
+          <div class="flex -space-x-2">
+            {DOCTORS.filter((d) => d.photo).slice(0, 4).map((d) => <img src={d.photo} alt="" class="size-9 rounded-full border-2 border-ink-900 bg-brand-50 object-cover object-top" />)}
+          </div>
+          <p class="text-sm font-semibold">{DOCTORS.length} specialists</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats card overlapping the hero edge -->
+  <section class="relative z-10 -mt-24 lg:-mt-28" aria-label="At a glance">
+    <div class="container-x">
+      <dl class="grid grid-cols-2 gap-y-6 rounded-3xl bg-white p-6 shadow-2xl shadow-ink-900/10 ring-1 ring-brand-100 sm:p-8 lg:grid-cols-4">
+        {
+          stats.map((s, i) => (
+            <div class:list={['px-2 sm:px-4', i % 2 === 1 && 'border-l border-brand-100', i > 0 && 'lg:border-l lg:border-brand-100']}>
+              <dt class="sr-only">{s.label}</dt>
+              <dd>
+                <span class="text-3xl font-black tracking-tight text-brand-600 sm:text-4xl">{s.value}</span>
+                <span class="mt-1 block text-xs text-ink-900/70 sm:text-sm">{s.label}</span>
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ Intro split: building photo + one purpose + conditions ============ -->
+  <section class="section">
+    <div class="container-x grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <div class="relative mx-auto w-full max-w-xl">
+        <div aria-hidden="true" class="absolute -bottom-4 -left-4 top-1/3 w-1/2 rounded-[2rem] bg-amber-400"></div>
+        <div class="relative aspect-[4/3.3] overflow-hidden rounded-[2rem] rounded-tl-[8rem] lg:rounded-[2.5rem] lg:rounded-tl-[10rem]">
+          <img src={IMAGES.building} alt="Chirag Global Hospitals building in BTM 2nd Stage, Bengaluru" loading="lazy" class="size-full object-cover object-[60%_center]" />
+        </div>
+      </div>
+      <div>
+        <SectionHeader eyebrow="Who we are" title="A proctology and colorectal hospital built for " highlight="one purpose." />
+        <div class="text-lead mt-5 space-y-4">
+          <p>
+            With over three decades of experience, Chirag Global Hospitals is a pioneer in proctology and colorectal care
+            in South India, and a referral centre for complex conditions of the anus, rectum and colon.
+          </p>
+          <p>
+            Our team treats thousands of patients every year, using advanced, minimally invasive techniques and a
+            structured, protocol-based approach to every case.
+          </p>
+        </div>
+        <p class="text-kicker mt-8 text-brand-400">Conditions we treat</p>
+        <ul class="mt-3 flex flex-wrap gap-2">
+          {conditions.map((c) => <li class="rounded-full bg-brand-50 px-3.5 py-1.5 text-sm font-medium text-brand-700 ring-1 ring-brand-100">{c}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Our purpose: vision / mission image cards + three eras ============ -->
+  <section class="section bg-brand-50/60">
+    <div class="container-x">
+      <SectionHeader align="center" eyebrow="Vision and mission" title="Our purpose, " highlight="since 1986" lead="Why we exist, and where we are going." />
+      <ul class="section-body grid gap-5 md:grid-cols-2">
+        {
+          purpose.map((p) => (
+            <li class="relative flex min-h-80 flex-col justify-end overflow-hidden rounded-3xl bg-ink-800 p-6 text-white sm:p-8">
+              <img src={p.image} alt="" loading="lazy" class="absolute inset-0 size-full object-cover" />
+              <div class="absolute inset-0 bg-gradient-to-t from-ink-950/95 via-ink-900/60 to-ink-900/10" />
+              <span class="absolute left-6 top-6 inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-ink-900 sm:left-8 sm:top-8">
+                <span class="size-2 rounded-full bg-amber-400" /> {p.label}
+              </span>
+              <p class="relative max-w-md text-xl font-semibold leading-snug sm:text-2xl">
+                {p.text}<span class="text-amber-400">{p.highlight}</span>
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+      <ol class="mt-5 grid gap-5 md:grid-cols-3">
+        {
+          eras.map((e, i) => (
+            <li class:list={['card relative overflow-hidden', i === 1 ? 'bg-ink-900 text-white' : 'bg-white ring-1 ring-brand-100']}>
+              <span aria-hidden="true" class:list={['absolute right-5 top-3 text-5xl font-black', i === 1 ? 'text-white/10' : 'text-brand-100']}>
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span class:list={['grid size-11 place-items-center rounded-xl', i === 1 ? 'bg-amber-400 text-ink-900' : 'bg-brand-100 text-brand-600']}>
+                <Icon name={e.icon} class="size-5" />
+              </span>
+              <h3 class="heading-4 mt-5">{e.title}</h3>
+              <p class:list={['mt-2 text-sm leading-relaxed', i === 1 ? 'text-white/75' : 'text-ink-900/70']}>{e.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <Chairman />
+
+  <!-- ============ Values: five tiles, last one dark ============ -->
+  <section class="section">
+    <div class="container-x">
+      <SectionHeader eyebrow="Our values" title="Care that puts " highlight="you first">
+        <p slot="action" class="text-body max-w-xs">The principles behind every consultation, procedure and follow-up.</p>
+      </SectionHeader>
+      <ul class="section-body grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        {
+          values.map((v, i) => (
+            <li
+              class:list={[
+                'card relative flex flex-col',
+                v.tone === 'brand' && 'bg-brand-50',
+                v.tone === 'cream' && 'bg-cream-50 ring-1 ring-cream-100',
+                v.tone === 'dark' && 'bg-ink-900 text-white sm:col-span-2 lg:col-span-1',
+              ]}
+            >
+              <div class="flex items-center justify-between">
+                <span class:list={['grid size-11 place-items-center rounded-xl', v.tone === 'dark' ? 'bg-amber-400 text-ink-900' : 'bg-white text-brand-600 shadow-sm']}>
+                  <Icon name={v.icon} class="size-5" />
+                </span>
+                <span class:list={['text-kicker', v.tone === 'dark' ? 'text-white/40' : 'text-brand-300']}>{String(i + 1).padStart(2, '0')}</span>
+              </div>
+              <h3 class="heading-4 mt-6">{v.title}</h3>
+              <p class:list={['mt-2 text-sm leading-relaxed', v.tone === 'dark' ? 'text-white/75' : 'text-ink-900/70']}>{v.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ Safety and privacy ============ -->
+  <section class="section pt-0 sm:pt-0 lg:pt-0">
+    <div class="container-x">
+      <div class="panel grid gap-8 bg-gradient-to-br from-brand-50 via-brand-100 to-brand-200/60 lg:grid-cols-[1fr_1.6fr] lg:items-center lg:gap-12">
+        <SectionHeader
+          eyebrow="Safety and privacy"
+          eyebrowClass="bg-white/70"
+          title="Your safety and privacy "
+          highlight="come first."
+          lead="Anorectal conditions can feel personal. Every step of your care is designed to be respectful and confidential."
+        />
+        <ul class="grid gap-3 sm:grid-cols-2">
+          {
+            safety.map((s) => (
+              <li class="flex gap-4 rounded-2xl bg-white p-5 shadow-sm">
+                <span class="grid size-10 shrink-0 place-items-center rounded-xl bg-ink-900 text-amber-400">
+                  <Icon name={s.icon} class="size-5" />
+                </span>
+                <div>
+                  <h3 class="heading-5">{s.title}</h3>
+                  <p class="text-body mt-1">{s.text}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <Doctors />
+
+  <!-- ============ Take a tour ============ -->
+  <section class="section" data-tour>
+    <div class="container-x">
+      <SectionHeader eyebrow="Inside Chirag" title="Take a tour " highlight="before you visit">
+        <p slot="action" class="text-body max-w-xs">Know what to expect when you arrive for your consultation.</p>
+      </SectionHeader>
+      <div role="tablist" aria-label="Hospital tour" class="no-scrollbar -mx-4 mt-8 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:px-0">
+        {
+          tour.map((t, i) => (
+            <button
+              type="button"
+              role="tab"
+              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-controls="tour-panel"
+              data-tour-tab={i}
+              class="shrink-0 rounded-full border border-brand-200 bg-white px-5 py-2.5 text-sm font-semibold transition hover:border-brand-400 aria-selected:border-brand-600 aria-selected:bg-brand-600 aria-selected:text-white"
+            >
+              {t.label}
+            </button>
+          ))
+        }
+      </div>
+      <figure id="tour-panel" role="tabpanel" class="relative mt-6 aspect-[4/3] overflow-hidden rounded-3xl bg-brand-100 sm:aspect-[16/7] lg:rounded-[2.5rem]">
+        <img src={tour[0].image} alt={tour[0].label} loading="lazy" class="size-full object-cover transition-opacity duration-300" data-tour-img />
+        <div class="absolute inset-0 bg-gradient-to-t from-ink-900/80 via-transparent to-transparent"></div>
+        <figcaption class="absolute inset-x-6 bottom-6 flex items-end justify-between gap-4 text-white sm:inset-x-8 sm:bottom-8">
+          <div>
+            <p class="heading-3" data-tour-title>{tour[0].label}</p>
+            <p class="mt-1 text-sm text-white/80" data-tour-caption>{tour[0].caption}</p>
+          </div>
+          <a href={SITE.mapsUrl} target="_blank" rel="noopener" aria-label="Get directions" class="btn-amber grid size-12 shrink-0 place-items-center rounded-full">
+            <Icon name="pin" class="size-5" />
+          </a>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ Equipment ============ -->
+  <section class="section pt-0 sm:pt-0 lg:pt-0">
+    <div class="container-x">
+      <div class="panel bg-gradient-to-br from-ink-950 via-ink-800 to-brand-700 text-white">
+        <SectionHeader tone="dark" eyebrow="Technology" title="The equipment behind " highlight="our procedures">
+          <a slot="action" href="/about/advanced-technologies" class="btn btn-primary">
+            Advanced technologies <Icon name="arrowRight" class="size-4" />
+          </a>
+        </SectionHeader>
+        <ul class="section-body grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {
+            equipment.map((p) => (
+              <li class="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur">
+                <span class="inline-block rounded-md bg-amber-400 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-ink-900">{p.short}</span>
+                <h3 class="heading-4 mt-4 text-white">{p.name}</h3>
+                <p class="mt-2 text-sm leading-relaxed text-white/70">{p.text}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ News, community, medicine ============ -->
+  <section class="section">
+    <div class="container-x">
+      <SectionHeader eyebrow="Updates" title="In the news, in the community, " highlight="in medicine" />
+      <div class="section-body grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+        <ul class="divide-y divide-brand-100 rounded-3xl border border-brand-100 bg-white">
+          {
+            news.map((n) => (
+              <li>
+                <a href={n.href} class="group flex items-center gap-4 p-5 transition hover:bg-brand-50 sm:p-6">
+                  <span class="grid size-12 shrink-0 place-items-center rounded-2xl bg-brand-50 text-brand-600 group-hover:bg-white">
+                    <Icon name={n.icon} class="size-5" />
+                  </span>
+                  <div class="min-w-0 flex-1">
+                    <p class="text-kicker text-brand-400">{n.kind}</p>
+                    <h3 class="heading-5 mt-1">{n.title}</h3>
+                    <p class="text-meta mt-0.5">{n.meta}</p>
+                  </div>
+                  <Icon name="arrowRight" class="size-4 shrink-0 text-brand-600 transition group-hover:translate-x-1" />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <div class="card flex flex-col bg-cream-50 ring-1 ring-cream-100">
+          <p class="text-kicker text-amber-500">In the community</p>
+          <h3 class="heading-3 mt-2">Recent events</h3>
+          <ul class="mt-4 divide-y divide-cream-100">
+            {
+              recentEvents.map((e) => {
+                const d = eventDay(e.date);
+                return (
+                  <li>
+                    <a href={`/about/events/${e.slug}`} class="group flex gap-4 py-3">
+                      <span class="w-12 shrink-0 text-sm font-bold text-amber-500">{d.day} {d.month}</span>
+                      <span class="text-sm font-medium leading-snug group-hover:text-brand-700">{e.title}</span>
+                    </a>
+                  </li>
+                );
+              })
+            }
+          </ul>
+          <div class="mt-auto flex flex-wrap gap-3 pt-6">
+            <a href="/about/events" class="btn btn-dark">See events</a>
+            <a href="/contact" class="btn btn-outline">Contact us</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Explore the hospital ============ -->
+  <section class="section pt-0 sm:pt-0 lg:pt-0">
+    <div class="container-x">
+      <SectionHeader eyebrow="Explore" title="Explore " highlight="the hospital" />
+      <ul class="section-body grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        {
+          ABOUT_LINKS.map((l, i) => (
+            <li>
+              <a
+                href={l.href}
+                class:list={[
+                  'card group flex h-full flex-col transition hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-200/40',
+                  i === 0 ? 'bg-ink-900 text-white' : i % 2 ? 'bg-brand-50' : 'bg-cream-50 ring-1 ring-cream-100',
+                ]}
+              >
+                <span class:list={['grid size-11 place-items-center rounded-xl', i === 0 ? 'bg-amber-400 text-ink-900' : 'bg-white text-brand-600 shadow-sm']}>
+                  <Icon name={l.icon} class="size-5" />
+                </span>
+                <h3 class="heading-4 mt-5">{l.label}</h3>
+                <p class:list={['mt-1 text-sm leading-relaxed', i === 0 ? 'text-white/70' : 'text-ink-900/70']}>{l.text}</p>
+                <span class:list={['mt-auto inline-flex items-center gap-2 pt-5 text-sm font-semibold', i === 0 ? 'text-amber-400' : 'text-brand-600']}>
+                  Explore <Icon name="arrowRight" class="size-4 transition group-hover:translate-x-1" />
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <!-- Amber CTA strip -->
+      <div class="btn-amber mt-12 flex flex-col gap-5 rounded-3xl p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+        <div>
+          <h2 class="heading-3">Not sure which treatment you need?</h2>
+          <p class="mt-1 text-sm text-ink-900/75 sm:text-base">Talk to our care team. It's private, and there's no obligation.</p>
+        </div>
+        <a href={whatsappLink()} target="_blank" rel="noopener" class="btn btn-dark shrink-0">
+          <WhatsAppIcon class="size-5" /> WhatsApp a health expert
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script define:vars={{ tour }}>
+  const root = document.querySelector('[data-tour]');
+  const tabs = root.querySelectorAll('[data-tour-tab]');
+  const img = root.querySelector('[data-tour-img]');
+  const title = root.querySelector('[data-tour-title]');
+  const caption = root.querySelector('[data-tour-caption]');
+  tabs.forEach((tab) =>
+    tab.addEventListener('click', () => {
+      const t = tour[Number(tab.dataset.tourTab)];
+      tabs.forEach((b) => b.setAttribute('aria-selected', String(b === tab)));
+      img.style.opacity = '0';
+      setTimeout(() => {
+        img.src = t.image;
+        img.alt = t.label;
+        title.textContent = t.label;
+        caption.textContent = t.caption;
+        img.style.opacity = '1';
+      }, 150);
+    }),
+  );
+</script>

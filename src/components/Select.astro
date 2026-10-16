@@ -1,0 +1,184 @@
+---
+// Styled, accessible replacement for <select> (listbox pattern).
+// Submits through a hidden input, so FormData sees it like a normal field.
+import Icon from './Icon.astro';
+
+interface Props {
+  name: string;
+  label: string;
+  options: string[];
+  value?: string;
+  /** 'field' = label inside the box (hero bar) · 'input' = label above (stacked forms) */
+  variant?: 'field' | 'input';
+  class?: string;
+}
+
+const { name, label, options, value = options[0], variant = 'input', class: className } = Astro.props;
+const uid = `select-${name}-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<div class:list={['relative', className]} data-select>
+  <input type="hidden" name={name} value={value} />
+
+  {variant === 'input' && <span id={`${uid}-label`} class="block text-sm font-medium">{label}</span>}
+
+  <button
+    type="button"
+    aria-haspopup="listbox"
+    aria-expanded="false"
+    aria-controls={`${uid}-list`}
+    aria-labelledby={`${uid}-label ${uid}-value`}
+    data-select-trigger
+    class:list={[
+      'group/trigger relative block w-full cursor-pointer text-left outline-none ring-brand-400 transition focus-visible:ring-2 aria-expanded:ring-2',
+      variant === 'field'
+        ? 'h-full rounded-2xl bg-brand-50 py-3.5 pl-5 pr-12'
+        : 'mt-2 rounded-xl bg-brand-50 py-3.5 pl-4 pr-11',
+    ]}
+  >
+    {
+      variant === 'field' && (
+        <span id={`${uid}-label`} class="block text-[11px] font-semibold uppercase tracking-wider text-brand-700">
+          {label}
+        </span>
+      )
+    }
+    <span id={`${uid}-value`} data-select-value class:list={['block truncate text-ink-900', variant === 'field' ? 'mt-1 text-[15px]' : '']}>
+      {value}
+    </span>
+    <span
+      class:list={[
+        'pointer-events-none absolute grid size-7 place-items-center rounded-full bg-white text-brand-700 shadow-sm transition group-aria-expanded/trigger:rotate-180',
+        variant === 'field' ? 'bottom-3 right-4' : 'right-3 top-1/2 -translate-y-1/2',
+      ]}
+    >
+      <Icon name="chevronDown" class="size-4" />
+    </span>
+  </button>
+
+  <ul
+    id={`${uid}-list`}
+    role="listbox"
+    tabindex="-1"
+    aria-labelledby={`${uid}-label`}
+    hidden
+    data-select-list
+    class="absolute inset-x-0 top-full z-40 mt-2 max-h-72 overflow-y-auto overscroll-contain rounded-2xl bg-white p-1.5 text-ink-900 shadow-2xl shadow-ink-900/20 ring-1 ring-brand-100 outline-none data-[flip]:bottom-full data-[flip]:top-auto data-[flip]:mb-2 data-[flip]:mt-0"
+  >
+    {
+      options.map((o) => (
+        <li
+          role="option"
+          id={`${uid}-${o.replace(/\W+/g, '-').toLowerCase()}`}
+          data-value={o}
+          aria-selected={o === value ? 'true' : 'false'}
+          class="group flex cursor-pointer items-center justify-between gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition data-[active]:bg-brand-50 aria-selected:text-brand-700"
+        >
+          {o}
+          <Icon name="check" class="size-4 text-brand-600 opacity-0 group-aria-selected:opacity-100" />
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-select]').forEach((root) => {
+    const input = root.querySelector<HTMLInputElement>('input[type=hidden]')!;
+    const trigger = root.querySelector<HTMLButtonElement>('[data-select-trigger]')!;
+    const valueEl = root.querySelector<HTMLElement>('[data-select-value]')!;
+    const list = root.querySelector<HTMLElement>('[data-select-list]')!;
+    const items = [...list.querySelectorAll<HTMLElement>('[role=option]')];
+    let active = 0;
+
+    const setActive = (i: number) => {
+      active = (i + items.length) % items.length;
+      items.forEach((el, n) => el.toggleAttribute('data-active', n === active));
+      items[active].scrollIntoView({ block: 'nearest' });
+      trigger.setAttribute('aria-activedescendant', items[active].id);
+    };
+
+    const open = () => {
+      if (!list.hidden) return;
+      list.hidden = false;
+      trigger.setAttribute('aria-expanded', 'true');
+      // Open upwards when there isn't room below in the viewport
+      list.removeAttribute('data-flip');
+      // Leave room for the sticky mobile contact bar when it's showing
+      const bar = document.querySelector<HTMLElement>('[data-contact-bar]');
+      const reserved = bar && bar.offsetParent !== null ? bar.offsetHeight : 0;
+      const below = window.innerHeight - reserved - trigger.getBoundingClientRect().bottom;
+      const above = trigger.getBoundingClientRect().top - 96; // keep clear of the sticky header
+      list.style.maxHeight = '';
+      const flip = below < list.offsetHeight + 24 && above > below;
+      list.toggleAttribute('data-flip', flip);
+      list.style.maxHeight = `${Math.max(160, Math.min(list.offsetHeight, (flip ? above : below) - 24))}px`;
+      setActive(Math.max(0, items.findIndex((el) => el.getAttribute('aria-selected') === 'true')));
+    };
+
+    const close = (focus = true) => {
+      if (list.hidden) return;
+      list.hidden = true;
+      trigger.setAttribute('aria-expanded', 'false');
+      trigger.removeAttribute('aria-activedescendant');
+      if (focus) trigger.focus();
+    };
+
+    const choose = (i: number) => {
+      items.forEach((el, n) => el.setAttribute('aria-selected', String(n === i)));
+      input.value = valueEl.textContent = items[i].dataset.value!;
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+      close();
+    };
+
+    trigger.addEventListener('click', () => (list.hidden ? open() : close()));
+    items.forEach((el, i) => {
+      el.addEventListener('mousemove', () => active !== i && setActive(i));
+      el.addEventListener('click', () => choose(i));
+    });
+
+    trigger.addEventListener('keydown', (e) => {
+      const isOpen = !list.hidden;
+      switch (e.key) {
+        case 'ArrowDown':
+        case 'ArrowUp':
+          e.preventDefault();
+          if (!isOpen) open();
+          else setActive(active + (e.key === 'ArrowDown' ? 1 : -1));
+          break;
+        case 'Home':
+        case 'End':
+          if (isOpen) {
+            e.preventDefault();
+            setActive(e.key === 'Home' ? 0 : items.length - 1);
+          }
+          break;
+        case 'Enter':
+        case ' ':
+          e.preventDefault();
+          if (isOpen) choose(active);
+          else open();
+          break;
+        case 'Escape':
+          if (isOpen) {
+            e.preventDefault();
+            close();
+          }
+          break;
+        case 'Tab':
+          close(false);
+          break;
+        default:
+          // Type-ahead: jump to the first option starting with the typed letter
+          if (isOpen && e.key.length === 1) {
+            const i = items.findIndex((el) => el.dataset.value!.toLowerCase().startsWith(e.key.toLowerCase()));
+            if (i >= 0) setActive(i);
+          }
+      }
+    });
+
+    document.addEventListener('pointerdown', (e) => {
+      if (!root.contains(e.target as Node)) close(false);
+    });
+  });
+</script>

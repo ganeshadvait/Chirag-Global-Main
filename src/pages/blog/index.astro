@@ -1,0 +1,33 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { POSTS } from '../../data/blog';
+---
+
+<Layout
+  title="Blog"
+  description="Expert articles on piles, fissure, fistula, pilonidal sinus and colorectal health from the specialists at Chirag Global Hospitals."
+>
+  <PageHero
+    crumbs={[{ label: 'Blog' }]}
+    eyebrow="Health tips and news"
+    title="Stay informed with "
+    highlight="expert articles"
+    lead="Clear, practical guidance on colorectal and anorectal conditions, written to help you understand your symptoms and options before your visit."
+  />
+
+  <section class="section">
+    <div class="container-x">
+      <ul class="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          POSTS.map((p, i) => (
+            <li>
+              <ArticleCard post={p} index={i} as="h2" />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,57 @@
+---
+import Icon from '../Icon.astro';
+import SectionHeader from '../SectionHeader.astro';
+import { REVIEWS } from '../../data/home';
+
+const stars = Array.from({ length: 5 });
+---
+
+<section id="stories" class="section">
+  <div class="container-x">
+    <SectionHeader eyebrow="Patient stories" title="Real patients. " highlight="Real recoveries." />
+
+    <div class="section-body grid gap-4 md:grid-cols-2 lg:grid-cols-[0.8fr_1fr_1fr] lg:gap-5">
+      <div class="card flex flex-col bg-gradient-to-br from-ink-900 to-brand-600 text-white md:col-span-2 lg:col-span-1">
+        <div class="flex gap-1 text-amber-400">{stars.map(() => <Icon name="star" class="size-4" />)}</div>
+        <p class="mt-4 text-6xl font-black text-amber-400 sm:text-7xl">4.7</p>
+        <p class="mt-3 text-sm text-white/80">Average rating from 1,428 Google reviews</p>
+        <a
+          href="https://www.google.com/maps/search/Chirag+Global+Hospitals+Bengaluru"
+          target="_blank"
+          rel="noopener"
+          class="btn btn-primary mt-6 self-start lg:mt-auto"
+        >
+          Read all reviews
+        </a>
+      </div>
+
+      {
+        REVIEWS.map((r) => (
+          <figure
+            class:list={[
+              'card flex flex-col',
+              r.tone === 'cream' ? 'bg-cream-50 ring-1 ring-cream-100' : 'bg-brand-50 ring-1 ring-brand-100',
+            ]}
+          >
+            <div class="flex items-center justify-between gap-3">
+              <div class="flex gap-1 text-amber-500">{stars.map(() => <Icon name="star" class="size-3.5" />)}</div>
+              <span class="rounded-full bg-white px-3 py-1 text-xs font-medium">{r.tag}</span>
+            </div>
+            <blockquote class="mt-5 text-base leading-relaxed sm:text-lg">"{r.quote}"</blockquote>
+            <figcaption class="mt-auto flex items-center gap-3 pt-8 font-semibold">
+              <span
+                class:list={[
+                  'grid size-10 place-items-center rounded-full text-sm',
+                  r.tone === 'cream' ? 'btn-amber' : 'bg-brand-600 text-white',
+                ]}
+              >
+                {r.name[0]}
+              </span>
+              {r.name}
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>

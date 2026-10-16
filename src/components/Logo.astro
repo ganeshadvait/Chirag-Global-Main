@@ -1,0 +1,36 @@
+---
+import { IMAGES } from '../data/home';
+
+// Falls back to a text mark if the logo file is missing.
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<a
+  href="/"
+  class:list={[
+    'inline-flex shrink-0 items-center justify-center rounded-2xl bg-white px-2 py-1',
+    className,
+  ]}
+  aria-label="Chirag Global Hospitals home"
+>
+  <img
+    src={IMAGES.logo}
+    alt="Chirag Global Hospitals"
+    width="328"
+    height="187"
+    class="h-11 w-auto sm:h-14"
+    onerror="this.nextElementSibling.hidden=false;this.remove()"
+  />
+  <span hidden class="flex items-center gap-1.5 leading-none">
+    <span class="grid size-7 place-items-center rounded-full border-2 border-red-500 text-[10px] font-black text-brand-700">
+      C
+    </span>
+    <span class="flex flex-col">
+      <span class="text-sm font-extrabold tracking-tight text-brand-700">CHIRAG</span>
+      <span class="text-[6px] font-semibold tracking-widest text-ink-900">GLOBAL HOSPITALS</span>
+    </span>
+  </span>
+</a>

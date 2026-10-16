@@ -1,0 +1,76 @@
+---
+import Icon from '../Icon.astro';
+import SectionHeader from '../SectionHeader.astro';
+import DoctorCard from '../DoctorCard.astro';
+import { DOCTORS } from '../../data/doctors';
+---
+
+<section id="doctors" class="section">
+  <div class="container-x">
+    <div
+      class="panel grid gap-10 overflow-hidden bg-gradient-to-br from-brand-50 via-brand-100 to-brand-200/70 lg:grid-cols-[19rem_minmax(0,1fr)] lg:items-center lg:gap-12"
+      data-carousel
+    >
+      <div>
+        <SectionHeader
+          eyebrow="Our specialists"
+          eyebrowClass="bg-white/70"
+          title="Meet our "
+          highlight="expert doctors"
+          lead="Nine doctors under one roof: colorectal surgeons, proctologists, anaesthesiologists and a gynaecologist, so your care stays with one team."
+        />
+        <div class="mt-8 flex items-center gap-3">
+          <button
+            type="button"
+            data-prev
+            aria-label="Previous doctors"
+            class="grid size-12 place-items-center rounded-full border border-brand-200 bg-white transition hover:bg-brand-50 disabled:opacity-40"
+          >
+            <Icon name="chevronLeft" class="size-5" />
+          </button>
+          <button
+            type="button"
+            data-next
+            aria-label="Next doctors"
+            class="grid size-12 place-items-center rounded-full bg-brand-600 text-white shadow-lg shadow-brand-600/30 transition hover:bg-brand-700 disabled:opacity-40"
+          >
+            <Icon name="chevronRight" class="size-5" />
+          </button>
+        </div>
+      </div>
+
+      <ul
+        data-track
+        class="no-scrollbar -mx-6 flex snap-x snap-mandatory scroll-px-6 gap-4 overflow-x-auto scroll-smooth px-6 pb-2 sm:-mx-10 sm:scroll-px-10 sm:px-10 lg:mx-0 lg:scroll-px-0 lg:px-0"
+      >
+        {
+          DOCTORS.map((d) => (
+            <li class="w-[15rem] shrink-0 snap-start sm:w-[13.5rem]">
+              <DoctorCard doctor={d} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((root) => {
+    const track = root.querySelector<HTMLElement>('[data-track]')!;
+    const prev = root.querySelector<HTMLButtonElement>('[data-prev]')!;
+    const next = root.querySelector<HTMLButtonElement>('[data-next]')!;
+
+    const step = () => (track.firstElementChild as HTMLElement)?.offsetWidth + 16 || 240;
+    const update = () => {
+      prev.disabled = track.scrollLeft <= 4;
+      next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+    };
+
+    prev.addEventListener('click', () => track.scrollBy({ left: -step() }));
+    next.addEventListener('click', () => track.scrollBy({ left: step() }));
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  });
+</script>

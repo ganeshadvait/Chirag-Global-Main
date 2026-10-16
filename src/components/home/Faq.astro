@@ -1,0 +1,62 @@
+---
+import Icon from '../Icon.astro';
+import SectionHeader from '../SectionHeader.astro';
+import { SITE, digits } from '../../config';
+import { FAQS } from '../../data/home';
+import type { FaqItem } from '../../lib/utils';
+
+interface Props {
+  items?: FaqItem[];
+  eyebrow?: string;
+  title?: string;
+  highlight?: string;
+  lead?: string;
+  id?: string;
+}
+
+const {
+  items = FAQS,
+  eyebrow = 'Before your first visit',
+  title = 'Questions patients ',
+  highlight = 'often ask',
+  lead = 'Still unsure? Our care team is happy to help during working hours.',
+  id = 'faq',
+} = Astro.props;
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+
+<section id={id} class="section">
+  <div class="container-x grid gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
+    <div>
+      <SectionHeader eyebrow={eyebrow} title={title} highlight={highlight} lead={lead} />
+      <a href={`tel:${digits(SITE.phone)}`} class="btn btn-outline mt-8">
+        <Icon name="phone" class="size-4" />
+        Call {SITE.phone}
+      </a>
+    </div>
+
+    <div class="border-t border-brand-100">
+      {
+        items.map((f, i) => (
+          <details name={id} open={i === 0} class="group border-b border-brand-100">
+            <summary class="heading-4 flex cursor-pointer list-none items-center justify-between gap-6 py-5">
+              {f.q}
+              <span class="grid size-8 shrink-0 place-items-center rounded-full bg-brand-100 text-brand-700 transition group-open:bg-brand-600 group-open:text-white">
+                <Icon name="plus" class="size-4 group-open:hidden" />
+                <Icon name="minus" class="hidden size-4 group-open:block" />
+              </span>
+            </summary>
+            <p class="text-body max-w-xl pb-6 pr-12 sm:text-base">{f.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(faqLd)} />

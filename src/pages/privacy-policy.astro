@@ -1,0 +1,56 @@
+---
+// Describes what this website actually does today. Update it if analytics, a form backend
+// or other tracking is added.
+// TODO: have this reviewed by the hospital's legal/compliance advisor before launch.
+import LegalPage from '../layouts/LegalPage.astro';
+import { SITE } from '../config';
+---
+
+<LegalPage title="Privacy policy" description={`How the ${SITE.name} website handles your personal information.`} updated="October 2026">
+  <p>
+    {SITE.name} ("we", "us") respects your privacy. This policy explains what information this website handles and how
+    it is used. Medical records created during your care at the hospital are covered separately by the hospital's
+    patient privacy practices.
+  </p>
+
+  <h2>Information you share with us</h2>
+  <p>
+    The appointment and call-back forms on this website do not store your details on our web server. When you submit a
+    form, it opens WhatsApp with your name, phone number and concern already typed in, and nothing is sent until you
+    press send in WhatsApp. Messages you send us on WhatsApp, by phone or by email are seen only by our care team and are
+    used to arrange your appointment and respond to your enquiry.
+  </p>
+
+  <h2>Third-party services on this website</h2>
+  <ul>
+    <li><strong>WhatsApp</strong> (Meta) handles messages you choose to send us. Its own privacy policy applies.</li>
+    <li><strong>Google Fonts</strong> supplies the typefaces used on this site, which means your browser connects to Google's servers.</li>
+    <li><strong>Google Maps</strong> is embedded on our contact page to show our location.</li>
+    <li><strong>YouTube</strong> videos, when played, load from YouTube's privacy-enhanced mode.</li>
+  </ul>
+  <p>These providers may receive technical information such as your IP address and browser type.</p>
+
+  <h2>Analytics and advertising</h2>
+  <p>This website does not currently use analytics or advertising trackers.</p>
+
+  <h2>How we protect your information</h2>
+  <p>
+    Information you share with our care team is used only to provide and arrange your care, is not sold, and is shared
+    only where needed for your treatment or where required by law.
+  </p>
+
+  <h2>Your choices</h2>
+  <p>
+    You can ask us what information we hold about you, or ask us to correct or delete it, by writing to
+    <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+  </p>
+
+  <h2>Changes to this policy</h2>
+  <p>We may update this policy from time to time. The date at the top of this page shows when it was last changed.</p>
+
+  <h2>Contact</h2>
+  <p>
+    {SITE.name}, {SITE.address}. Email <a href={`mailto:${SITE.email}`}>{SITE.email}</a> or call
+    <a href={`tel:${SITE.phone.replace(/[^\d+]/g, '')}`}>{SITE.phone}</a>.
+  </p>
+</LegalPage>

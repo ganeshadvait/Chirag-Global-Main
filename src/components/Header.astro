@@ -1,0 +1,304 @@
+---
+import { SITE, NAV_LINKS, digits } from '../config';
+import { IMAGES } from '../data/home';
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+
+interface Props {
+  /** Float transparently over the page hero until the user scrolls */
+  overlay?: boolean;
+  /** Where "Book Appointment" points — the page's own booking section, or the contact page's */
+  bookHref?: string;
+}
+
+const { overlay = false, bookHref = '#book' } = Astro.props;
+
+const current = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isCurrent = (href: string) => href === current;
+---
+
+<header
+  id="site-header"
+  data-overlay={overlay ? '' : undefined}
+  data-scrolled={overlay ? undefined : ''}
+  class:list={['group/header inset-x-0 top-0 z-40 w-full text-white', overlay ? 'fixed' : 'sticky']}
+>
+  <!-- Solid background fades in once scrolled. Kept on its own layer so the
+       blur doesn't trap the fixed mobile drawer below. -->
+  <div
+    aria-hidden="true"
+    class="absolute inset-0 -z-10 bg-ink-900/90 opacity-0 shadow-lg shadow-ink-950/20 backdrop-blur-md transition-opacity duration-300 group-data-scrolled/header:opacity-100"
+  >
+  </div>
+
+  <!-- Top info bar (collapses when scrolled) -->
+  <div
+    class="hidden overflow-hidden bg-ink-950/90 text-xs transition-all duration-300 md:block md:max-h-12 group-data-scrolled/header:md:max-h-0"
+  >
+    <div class="container-x flex items-center justify-between gap-4 py-2">
+      <ul class="flex items-center gap-6 text-white/80">
+        <li class="flex items-center gap-2">
+          <Icon name="clock" class="size-3.5 text-amber-400" />
+          Mon to Sat {SITE.hours.weekdays} · Sun {SITE.hours.sunday}
+        </li>
+        <li class="hidden lg:block">
+          <a href={`mailto:${SITE.email}`} class="flex items-center gap-2 hover:text-white">
+            <Icon name="mail" class="size-3.5 text-amber-400" />
+            {SITE.email}
+          </a>
+        </li>
+        <li class="hidden xl:block">{SITE.shortAddress}</li>
+      </ul>
+      <a href={`tel:${digits(SITE.emergency)}`} class="font-semibold text-amber-400 hover:text-amber-300">
+        24×7 Emergency: {SITE.emergency}
+      </a>
+    </div>
+  </div>
+
+  <!-- Main nav -->
+  <div
+    class="container-x flex items-center justify-between gap-4 py-3 transition-all duration-300 lg:py-5 group-data-scrolled/header:lg:py-3"
+  >
+    <!-- Logo with accreditation badges -->
+    <div class="flex shrink-0 items-center gap-3">
+      <Logo class="shadow-sm" />
+      <img
+        src={IMAGES.experience}
+        alt="38+ years of experience"
+        width="125"
+        height="125"
+        class="hidden size-14 drop-shadow-lg xl:block"
+      />
+      <img
+        src={IMAGES.nabh}
+        alt="NABH Entry Level certified"
+        width="1024"
+        height="717"
+        class="hidden h-12 w-auto drop-shadow-lg xl:block"
+      />
+    </div>
+
+    <nav aria-label="Primary" class="hidden lg:block">
+      <ul class="flex items-center gap-0.5 rounded-full border border-white/20 bg-white/5 px-2 py-1.5 backdrop-blur-md xl:gap-1 xl:px-3 xl:py-2">
+        {
+          NAV_LINKS.map(({ href, label, children }, i) => (
+            <li class="group/nav relative" data-nav-item>
+              <div class="flex items-center rounded-full transition group-hover/nav:bg-white/10 group-data-open/nav:bg-white/10">
+                <a
+                  href={href}
+                  aria-current={isCurrent(href) ? 'page' : undefined}
+                  class:list={[
+                    'block whitespace-nowrap rounded-full py-2 pl-3 text-sm font-medium text-white/90 transition hover:text-white aria-[current=page]:text-amber-400 xl:pl-3.5 xl:text-[15px]',
+                    children ? 'pr-0.5' : 'pr-3 xl:pr-3.5',
+                  ]}
+                >
+                  {label}
+                </a>
+                {children && (
+                  <button
+                    type="button"
+                    data-nav-toggle
+                    aria-expanded="false"
+                    aria-controls={`nav-menu-${i}`}
+                    aria-label={`${label} menu`}
+                    class="mr-1 grid size-7 place-items-center rounded-full text-white/80 transition hover:text-white focus-visible:outline-2 focus-visible:outline-amber-400"
+                  >
+                    <Icon
+                      name="chevronDown"
+                      class="size-4 transition duration-200 group-hover/nav:rotate-180 group-data-open/nav:rotate-180"
+                    />
+                  </button>
+                )}
+              </div>
+
+              {children && (
+                <div
+                  id={`nav-menu-${i}`}
+                  class="invisible absolute left-0 top-full z-50 translate-y-1 pt-3 opacity-0 transition duration-200 group-hover/nav:visible group-hover/nav:translate-y-0 group-hover/nav:opacity-100 group-data-open/nav:visible group-data-open/nav:translate-y-0 group-data-open/nav:opacity-100"
+                >
+                  <ul class="min-w-64 rounded-2xl bg-white p-2 text-ink-900 shadow-2xl shadow-ink-950/30 ring-1 ring-brand-100">
+                    {children.map((c) => (
+                      <li>
+                        <a
+                          href={c.href}
+                          aria-current={isCurrent(c.href) ? 'page' : undefined}
+                          class="group/item flex items-center justify-between gap-6 whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-medium text-ink-900/80 outline-none transition hover:bg-brand-50 hover:text-brand-700 focus-visible:bg-brand-50 focus-visible:text-brand-700 aria-[current=page]:text-brand-700"
+                        >
+                          {c.label}
+                          <Icon
+                            name="arrowRight"
+                            class="size-3.5 -translate-x-1 text-brand-600 opacity-0 transition group-hover/item:translate-x-0 group-hover/item:opacity-100 group-focus-visible/item:translate-x-0 group-focus-visible/item:opacity-100"
+                          />
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2 sm:gap-3">
+      <a
+        href={`tel:${digits(SITE.phone)}`}
+        class="grid size-11 place-items-center rounded-full border border-white/25 transition hover:bg-white/10"
+        aria-label={`Call ${SITE.phone}`}
+      >
+        <Icon name="phone" class="size-4" />
+      </a>
+      <a
+        href={bookHref}
+        class="btn-amber hidden rounded-full px-5 py-3 text-sm font-semibold shadow-lg shadow-amber-500/20 transition hover:brightness-105 sm:inline-block lg:hidden xl:inline-block xl:px-7 xl:text-base"
+      >
+        Book Appointment
+      </a>
+      <button
+        type="button"
+        id="nav-toggle"
+        class="grid size-11 place-items-center rounded-full border border-white/25 transition hover:bg-white/10 lg:hidden"
+        aria-controls="mobile-nav"
+        aria-expanded="false"
+        aria-label="Open menu"
+      >
+        <Icon name="menu" class="size-5" />
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div id="mobile-nav" hidden class="fixed inset-0 z-50 bg-ink-950/60 backdrop-blur-sm lg:hidden">
+    <div class="ml-auto flex h-full w-full max-w-sm flex-col overflow-y-auto bg-ink-900 p-6 shadow-2xl">
+      <div class="flex items-center justify-between">
+        <Logo />
+        <button
+          type="button"
+          id="nav-close"
+          class="grid size-11 place-items-center rounded-full border border-white/25"
+          aria-label="Close menu"
+        >
+          <Icon name="close" class="size-5" />
+        </button>
+      </div>
+      <ul class="mt-8 flex flex-col gap-1">
+        {
+          NAV_LINKS.map(({ href, label, children }) => (
+            <li>
+              {children ? (
+                <details class="group/acc">
+                  <summary class="flex cursor-pointer list-none items-center justify-between rounded-xl px-4 py-3 text-lg font-medium transition hover:bg-white/10 group-open/acc:bg-white/5">
+                    {label}
+                    <Icon name="chevronDown" class="size-5 text-white/70 transition group-open/acc:rotate-180" />
+                  </summary>
+                  <ul class="mb-2 ml-5 mt-1 space-y-0.5 border-l border-white/15 pl-3">
+                    <li>
+                      <a href={href} class="block rounded-lg px-3 py-2 text-[15px] font-semibold text-amber-400 hover:bg-white/10" data-close-nav>
+                        {label} overview
+                      </a>
+                    </li>
+                    {children.map((c) => (
+                      <li>
+                        <a href={c.href} class="block rounded-lg px-3 py-2 text-[15px] text-white/80 hover:bg-white/10 hover:text-white" data-close-nav>
+                          {c.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              ) : (
+                <a
+                  href={href}
+                  aria-current={isCurrent(href) ? 'page' : undefined}
+                  class="block rounded-xl px-4 py-3 text-lg font-medium hover:bg-white/10 aria-[current=page]:text-amber-400"
+                  data-close-nav
+                >
+                  {label}
+                </a>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mt-6 flex items-center gap-3 rounded-2xl bg-white p-3">
+        <img src={IMAGES.experience} alt="38+ years of experience" width="125" height="125" class="size-12" />
+        <img src={IMAGES.nabh} alt="NABH Entry Level certified" width="1024" height="717" class="h-11 w-auto" />
+        <p class="text-xs font-medium text-ink-900/70">{SITE.accreditation}</p>
+      </div>
+      <div class="mt-auto space-y-3 pt-8">
+        <a href={bookHref} class="btn-amber block rounded-full py-3.5 text-center font-semibold" data-close-nav>
+          Book Appointment
+        </a>
+        <a
+          href={`tel:${digits(SITE.emergency)}`}
+          class="block rounded-full border border-white/25 py-3.5 text-center font-semibold"
+        >
+          24×7 Emergency {SITE.emergency}
+        </a>
+        <p class="pt-2 text-center text-xs text-white/60">
+          Mon to Sat {SITE.hours.weekdays} · Sun {SITE.hours.sunday}
+        </p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById('site-header')!;
+  const drawer = document.getElementById('mobile-nav')!;
+  const toggle = document.getElementById('nav-toggle')!;
+
+  // Overlay headers turn solid once the page scrolls
+  if (header.hasAttribute('data-overlay')) {
+    const onScroll = () => header.toggleAttribute('data-scrolled', window.scrollY > 24);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  // Desktop dropdowns: hover opens them via CSS; the chevron button toggles them for
+  // keyboard and touch users. Escape or moving focus away closes them.
+  const navItems = [...document.querySelectorAll<HTMLElement>('[data-nav-item]')];
+  const setMenu = (item: HTMLElement, open: boolean) => {
+    item.toggleAttribute('data-open', open);
+    item.querySelector('[data-nav-toggle]')?.setAttribute('aria-expanded', String(open));
+  };
+  navItems.forEach((item) => {
+    const toggle = item.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+    if (!toggle) return;
+    toggle.addEventListener('click', () => {
+      const open = !item.hasAttribute('data-open');
+      navItems.forEach((other) => other !== item && setMenu(other, false));
+      setMenu(item, open);
+      if (open) item.querySelector<HTMLElement>(':scope > [id^="nav-menu-"] a')?.focus();
+    });
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && item.hasAttribute('data-open')) {
+        setMenu(item, false);
+        toggle.focus();
+      }
+    });
+    item.addEventListener('focusout', (e) => {
+      if (!item.contains(e.relatedTarget as Node)) setMenu(item, false);
+    });
+  });
+  document.addEventListener('pointerdown', (e) => {
+    navItems.forEach((item) => !item.contains(e.target as Node) && setMenu(item, false));
+  });
+
+  const setOpen = (open: boolean) => {
+    drawer.hidden = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+
+  toggle.addEventListener('click', () => setOpen(true));
+  document.getElementById('nav-close')!.addEventListener('click', () => setOpen(false));
+  drawer.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    if (target === drawer || target.closest('[data-close-nav]')) setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !drawer.hidden) setOpen(false);
+  });
+</script>

@@ -1,0 +1,79 @@
+---
+import Icon from '../Icon.astro';
+import SectionHeader from '../SectionHeader.astro';
+import { JOURNEY } from '../../data/home';
+---
+
+<section id="journey" class="section bg-gradient-to-b from-white to-brand-50/60">
+  <div class="container-x" data-stepper>
+    <SectionHeader
+      align="center"
+      eyebrow="Your journey"
+      title="From first appointment to "
+      highlight="full recovery"
+      lead="A clear, guided pathway, so you always know what to expect next. Select a step to see what happens."
+    />
+
+    <div class="section-body relative">
+      <div aria-hidden="true" class="absolute inset-x-[10%] top-7 hidden border-t-2 border-dashed border-brand-200 sm:block"></div>
+      <ol role="tablist" aria-label="Treatment journey" class="no-scrollbar relative -mx-4 flex snap-x scroll-px-4 gap-2 overflow-x-auto px-4 sm:mx-0 sm:grid sm:grid-cols-5 sm:overflow-visible sm:px-0">
+        {
+          JOURNEY.map((s, i) => (
+            <li class="w-28 shrink-0 snap-start sm:w-auto">
+              <button
+                type="button"
+                role="tab"
+                id={`journey-tab-${i}`}
+                aria-controls="journey-panel"
+                aria-selected={i === 0 ? 'true' : 'false'}
+                data-step={i}
+                class="group flex w-full flex-col items-center text-center"
+              >
+                <span class="grid size-14 place-items-center rounded-full bg-ink-900 text-white ring-8 ring-brand-100 transition group-hover:scale-105 group-aria-selected:bg-amber-400 group-aria-selected:text-ink-900 group-aria-selected:ring-amber-400/25">
+                  <Icon name={s.icon} class="size-5" />
+                </span>
+                <span class="text-kicker mt-4 text-brand-400">
+                  STEP {String(i + 1).padStart(2, '0')}
+                </span>
+                <span class="heading-5 mt-1">{s.title}</span>
+              </button>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    <div
+      id="journey-panel"
+      role="tabpanel"
+      aria-live="polite"
+      class="card mt-10 flex flex-col gap-5 bg-brand-100/70 sm:flex-row sm:items-center sm:justify-between sm:p-8"
+    >
+      <div>
+        <h3 class="heading-4" data-step-title>{JOURNEY[0].title}</h3>
+        <p class="text-body mt-1 max-w-2xl sm:text-base" data-step-text>{JOURNEY[0].text}</p>
+      </div>
+      <a href="#book" class="btn btn-primary shrink-0 self-start sm:self-auto" data-step-cta>
+        {JOURNEY[0].cta}
+      </a>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ steps: JOURNEY }}>
+  const root = document.querySelector('#journey [data-stepper]');
+  const tabs = root.querySelectorAll('[data-step]');
+  const title = root.querySelector('[data-step-title]');
+  const text = root.querySelector('[data-step-text]');
+  const cta = root.querySelector('[data-step-cta]');
+
+  tabs.forEach((tab) =>
+    tab.addEventListener('click', () => {
+      const s = steps[Number(tab.dataset.step)];
+      tabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
+      title.textContent = s.title;
+      text.textContent = s.text;
+      cta.textContent = s.cta;
+    }),
+  );
+</script>

@@ -1,0 +1,97 @@
+---
+import { SITE, digits, whatsappLink } from '../config';
+import Icon from './Icon.astro';
+import WhatsAppIcon from './WhatsAppIcon.astro';
+
+const whatsapp = whatsappLink();
+
+// Desktop pill: collapsed to its icon, expands into the dark "Get a call back" style on hover/focus.
+const pill =
+  'group flex items-center rounded-full p-1.5 font-semibold text-white outline-none transition-all duration-300 hover:bg-ink-800 hover:shadow-xl hover:shadow-ink-900/30 focus-visible:bg-ink-800 focus-visible:ring-2 focus-visible:ring-amber-400';
+const pillLabel =
+  'max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 group-hover:max-w-52 group-hover:pl-3 group-hover:pr-4 group-hover:opacity-100 group-focus-visible:max-w-52 group-focus-visible:pl-3 group-focus-visible:pr-4 group-focus-visible:opacity-100';
+const pillIcon = 'grid size-12 shrink-0 place-items-center rounded-full shadow-lg shadow-ink-900/20';
+
+// Mobile bar button: visible pressed/hover colour on tap.
+const barBtn =
+  'flex h-12 items-center justify-center gap-2 rounded-xl text-sm font-semibold transition duration-150 [-webkit-tap-highlight-color:transparent] active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500';
+---
+
+<!-- Desktop: always-visible stack in the bottom-right corner -->
+<nav aria-label="Quick contact" class="fixed bottom-6 right-6 z-30 hidden lg:block">
+  <ul class="flex flex-col items-end gap-2">
+    <li>
+      <a href="/#callback" data-callback-link class={pill}>
+        <span class:list={[pillIcon, 'btn-amber']}><Icon name="phone" class="size-5" /></span>
+        <span class={pillLabel}>Get a call back</span>
+      </a>
+    </li>
+    <li>
+      <a href={whatsapp} target="_blank" rel="noopener" class={pill}>
+        <span class:list={[pillIcon, 'bg-white ring-1 ring-brand-100']}><WhatsAppIcon class="size-7" /></span>
+        <span class={pillLabel}>Chat on WhatsApp</span>
+      </a>
+    </li>
+    <li>
+      <a href={SITE.mapsUrl} target="_blank" rel="noopener" class={pill}>
+        <span class:list={[pillIcon, 'bg-brand-600 text-white']}><Icon name="pin" class="size-5" /></span>
+        <span class={pillLabel}>Get directions</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<!-- Mobile/tablet: sticky bar along the bottom of the screen -->
+<nav
+  aria-label="Quick contact"
+  data-contact-bar
+  class="fixed inset-x-0 bottom-0 z-30 border-t border-brand-100 bg-white/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_24px_-12px_rgb(35_27_63/0.25)] backdrop-blur lg:hidden"
+>
+  <ul class="grid grid-cols-3 gap-2 p-2">
+    <li>
+      <a
+        href={whatsapp}
+        target="_blank"
+        rel="noopener"
+        aria-label="Chat on WhatsApp"
+        class:list={[barBtn, 'bg-[#e9f9ec] text-ink-900 hover:bg-[#d3f3d9] active:bg-[#bdecc6]']}
+      >
+        <WhatsAppIcon class="size-5" /> WhatsApp
+      </a>
+    </li>
+    <li>
+      <a
+        href={SITE.mapsUrl}
+        target="_blank"
+        rel="noopener"
+        aria-label="Get directions"
+        class:list={[barBtn, 'bg-brand-50 text-brand-700 hover:bg-brand-100 active:bg-brand-200']}
+      >
+        <Icon name="pin" class="size-4" /> Directions
+      </a>
+    </li>
+    <li>
+      <a
+        href={`tel:${digits(SITE.phone)}`}
+        aria-label={`Call ${SITE.phone}`}
+        class:list={[barBtn, 'btn-amber hover:brightness-95 active:brightness-90']}
+      >
+        <Icon name="phone" class="size-4" /> Call now
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<script>
+  // "Get a call back" jumps to the hero form and puts the cursor in the name field
+  document.querySelector('[data-callback-link]')?.addEventListener('click', (e) => {
+    const form = document.getElementById('callback');
+    if (!form) return; // other pages: let the link navigate to the home page
+    e.preventDefault();
+    form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    form.querySelector<HTMLInputElement>('input[name=name]')?.focus({ preventScroll: true });
+  });
+
+  // iOS Safari only applies :active (the pressed colour) when a touch listener exists
+  document.addEventListener('touchstart', () => {}, { passive: true });
+</script>

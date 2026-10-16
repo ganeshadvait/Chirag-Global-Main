@@ -1,0 +1,160 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Layout from '../../../layouts/Layout.astro';
+import PageHero from '../../../components/PageHero.astro';
+import SectionHeader from '../../../components/SectionHeader.astro';
+import EventCard from '../../../components/EventCard.astro';
+import Lightbox from '../../../components/Lightbox.astro';
+import Icon from '../../../components/Icon.astro';
+import WhatsAppIcon from '../../../components/WhatsAppIcon.astro';
+import { SITE, whatsappLink } from '../../../config';
+import { EVENTS, CATEGORY_ICONS, formatEventDate, type HospitalEvent } from '../../../data/events';
+
+export const getStaticPaths = (() => EVENTS.map((event) => ({ params: { slug: event.slug }, props: { event } }))) satisfies GetStaticPaths;
+
+interface Props {
+  event: HospitalEvent;
+}
+
+const { event: e } = Astro.props;
+const i = EVENTS.findIndex((x) => x.slug === e.slug);
+const newer = EVENTS[i - 1];
+const older = EVENTS[i + 1];
+const more = EVENTS.filter((x) => x.slug !== e.slug).slice(0, 3);
+
+const site = Astro.site ?? Astro.url;
+const eventLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: e.title,
+  startDate: e.date,
+  description: e.excerpt,
+  eventStatus: 'https://schema.org/EventScheduled',
+  location: { '@type': 'Place', name: e.venue },
+  image: e.gallery.map((g) => new URL(g, site).href),
+  organizer: { '@type': 'Hospital', name: SITE.name, url: site.href },
+};
+---
+
+<Layout title={e.title} description={e.excerpt}>
+  <PageHero
+    crumbs={[{ label: 'About Us', href: '/about' }, { label: 'Events', href: '/about/events' }, { label: e.category }]}
+    eyebrow={e.category}
+    title={e.title}
+    lead={e.excerpt}
+    image={e.cover}
+    imageAlt={e.title}
+  />
+
+  <section class="section">
+    <div class="container-x grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16">
+      <article class="min-w-0">
+        <div class="text-lead space-y-4">{e.body.map((p) => <p>{p}</p>)}</div>
+
+        {
+          e.highlights && (
+            <section class="mt-10" aria-labelledby="highlights-title">
+              <h2 id="highlights-title" class="heading-3">Highlights</h2>
+              <ul class="mt-5 grid gap-3 sm:grid-cols-2">
+                {e.highlights.map((h) => (
+                  <li class="text-body flex gap-3 rounded-2xl bg-brand-50 px-5 py-4 sm:text-base">
+                    <Icon name="check" class="mt-1 size-4 shrink-0 text-brand-600" />
+                    {h}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+
+        <section class="mt-12" aria-labelledby="gallery-title">
+          <div class="flex items-end justify-between gap-4">
+            <h2 id="gallery-title" class="heading-3">Photo gallery</h2>
+            <p class="text-meta">{e.gallery.length} photos · select to enlarge</p>
+          </div>
+          <ul class="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {
+              e.gallery.map((g, n) => (
+                <li>
+                  <a href={g} data-lightbox={e.slug} class="group block h-full overflow-hidden rounded-2xl bg-brand-100">
+                    <img
+                      src={g}
+                      alt={`${e.title}, photo ${n + 1}`}
+                      loading="lazy"
+                      class="aspect-square size-full object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+
+        <!-- Previous / next -->
+        <nav aria-label="More events" class="mt-12 grid gap-4 border-t border-brand-100 pt-8 sm:grid-cols-2">
+          {
+            older ? (
+              <a href={`/about/events/${older.slug}`} class="group rounded-2xl border border-brand-100 p-5 transition hover:border-brand-300 hover:bg-brand-50">
+                <span class="text-kicker inline-flex items-center gap-1 text-brand-400"><Icon name="chevronLeft" class="size-3.5" /> Previous event</span>
+                <span class="heading-5 mt-2 block group-hover:text-brand-700">{older.title}</span>
+              </a>
+            ) : <span />
+          }
+          {
+            newer && (
+              <a href={`/about/events/${newer.slug}`} class="group rounded-2xl border border-brand-100 p-5 text-right transition hover:border-brand-300 hover:bg-brand-50">
+                <span class="text-kicker inline-flex items-center gap-1 text-brand-400">Next event <Icon name="chevronRight" class="size-3.5" /></span>
+                <span class="heading-5 mt-2 block group-hover:text-brand-700">{newer.title}</span>
+              </a>
+            )
+          }
+        </nav>
+      </article>
+
+      <aside class="space-y-5 lg:sticky lg:top-28 lg:self-start">
+        <div class="card border border-brand-100 bg-white">
+          <h2 class="heading-4">Event details</h2>
+          <dl class="mt-5 space-y-4 text-sm">
+            <div class="flex gap-3">
+              <dt class="sr-only">Date</dt>
+              <Icon name="clock" class="mt-0.5 size-4 shrink-0 text-brand-500" />
+              <dd class="font-medium">{formatEventDate(e)}</dd>
+            </div>
+            <div class="flex gap-3">
+              <dt class="sr-only">Venue</dt>
+              <Icon name="pin" class="mt-0.5 size-4 shrink-0 text-brand-500" />
+              <dd class="font-medium">{e.venue}</dd>
+            </div>
+            <div class="flex gap-3">
+              <dt class="sr-only">Type</dt>
+              <Icon name={CATEGORY_ICONS[e.category]} class="mt-0.5 size-4 shrink-0 text-brand-500" />
+              <dd class="font-medium">{e.category}</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="card bg-ink-900 text-white">
+          <h2 class="heading-4">Host a health camp or talk</h2>
+          <p class="mt-2 text-sm text-white/70">Our team visits workplaces, colleges and community groups.</p>
+          <a href={whatsappLink('Hi, I would like to invite Chirag Global Hospitals for a health camp or talk.')} target="_blank" rel="noopener" class="btn btn-primary mt-5 w-full">
+            <WhatsAppIcon class="size-5" /> Invite us
+          </a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section bg-brand-50/60">
+    <div class="container-x">
+      <SectionHeader eyebrow="Keep exploring" title="More " highlight="events">
+        <a slot="action" href="/about/events" class="btn btn-outline">All events <Icon name="arrowRight" class="size-4" /></a>
+      </SectionHeader>
+      <ul class="section-body grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {more.map((x) => <li><EventCard event={x} /></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <Lightbox />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(eventLd)} />
+</Layout>

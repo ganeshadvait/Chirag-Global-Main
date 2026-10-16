@@ -1,0 +1,44 @@
+---
+import Icon from './Icon.astro';
+import type { Doctor } from '../data/doctors';
+
+interface Props {
+  doctor: Doctor;
+  /** Heading level for the name (h3 inside sections, h2 on a listing page) */
+  as?: 'h2' | 'h3';
+}
+
+const { doctor: d, as: Heading = 'h3' } = Astro.props;
+---
+
+<article class="group/card flex h-full flex-col rounded-3xl bg-white p-2.5 text-center shadow-sm ring-1 ring-brand-100/60">
+  <a href={`/doctors/${d.slug}`} tabindex="-1" aria-hidden="true" class="relative grid aspect-[4/3.6] place-items-center overflow-hidden rounded-2xl bg-brand-50">
+    {
+      d.photo && (
+        <img
+          src={d.photo}
+          alt=""
+          width="250"
+          height="250"
+          loading="lazy"
+          class="absolute inset-0 size-full object-contain object-bottom pt-2 transition duration-500 group-hover/card:scale-105"
+          onerror="this.nextElementSibling.hidden=false;this.remove()"
+        />
+      )
+    }
+    <div hidden={!!d.photo}>
+      <span class="text-4xl font-black text-brand-600">{d.initials}</span>
+      <span class="mt-1 block text-[10px] text-ink-900/40">Portrait coming soon</span>
+    </div>
+  </a>
+  <div class="flex flex-1 flex-col px-2 pb-3 pt-4">
+    <Heading class="heading-4">{d.name}</Heading>
+    <p class="mt-1.5 text-sm font-medium text-brand-600">{d.role}</p>
+    {d.quals && <p class="text-meta mt-1">{d.quals}</p>}
+    <div class="mt-auto pt-5">
+      <a href={`/doctors/${d.slug}`} class="btn btn-outline w-full px-4 py-2.5" aria-label={`View profile of ${d.name}`}>
+        View profile <Icon name="arrowRight" class="size-4" />
+      </a>
+    </div>
+  </div>
+</article>

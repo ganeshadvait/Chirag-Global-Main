@@ -1,0 +1,106 @@
+---
+import Icon from '../Icon.astro';
+import SectionHeader from '../SectionHeader.astro';
+import { SITE } from '../../config';
+import { VIDEOS } from '../../data/home';
+
+const [first] = VIDEOS;
+---
+
+<section id="videos" class="section">
+  <div class="container-x" data-videos>
+    <SectionHeader eyebrow="Doctor talks" title="Hear it from our " highlight="specialists">
+      <a slot="action" href={SITE.social.youtube} target="_blank" rel="noopener" class="btn btn-outline">
+        Our YouTube channel <Icon name="arrowRight" class="size-4" />
+      </a>
+    </SectionHeader>
+
+    <div class="section-body grid gap-5 lg:grid-cols-[1.75fr_1fr]">
+      <!-- Player -->
+      <div class="relative grid min-h-[20rem] overflow-hidden rounded-3xl bg-ink-900 text-white sm:min-h-[24rem] md:grid-cols-[1.15fr_1fr]">
+        <div class="relative z-10 flex flex-col justify-end p-6 sm:p-8">
+          <span class="btn-amber text-kicker self-start rounded-full px-3 py-1" data-video-tag>
+            {first.tag}
+          </span>
+          <h3 class="heading-3 mt-4 text-balance" data-video-title>{first.title}</h3>
+          <p class="mt-3 text-sm text-white/70" data-video-meta>{first.speaker} · {first.duration}</p>
+        </div>
+        <button
+          type="button"
+          class="group absolute inset-0 grid place-items-center bg-gradient-to-br from-brand-700/60 to-brand-500 md:static"
+          aria-label="Play video"
+          data-video-play
+        >
+          <span class="grid size-28 place-items-center rounded-full bg-white/15 transition group-hover:scale-105 max-md:hidden">
+            <span class="grid size-20 place-items-center rounded-full bg-white text-ink-900 shadow-xl">
+              <Icon name="play" class="ml-1 size-7" />
+            </span>
+          </span>
+          <span class="absolute right-6 top-6 grid size-14 place-items-center rounded-full bg-white text-ink-900 md:hidden">
+            <Icon name="play" class="ml-0.5 size-5" />
+          </span>
+        </button>
+        <div class="absolute inset-0 z-20 hidden bg-black" data-video-frame></div>
+      </div>
+
+      <!-- Playlist -->
+      <ul class="flex flex-col gap-3">
+        {
+          VIDEOS.map((v, i) => (
+            <li>
+              <button
+                type="button"
+                data-video={i}
+                aria-pressed={i === 0 ? 'true' : 'false'}
+                class="flex w-full items-center gap-4 rounded-2xl border border-brand-100 bg-white p-2.5 text-left transition hover:border-brand-300 aria-pressed:border-brand-400 aria-pressed:bg-brand-50"
+              >
+                <span class:list={['relative grid h-16 w-20 shrink-0 place-items-center rounded-xl bg-gradient-to-br', v.thumb]}>
+                  <span class="grid size-8 place-items-center rounded-full bg-white/90 text-ink-900">
+                    <Icon name="play" class="ml-0.5 size-3" />
+                  </span>
+                  <span class="absolute bottom-1 right-1 rounded bg-ink-900/85 px-1 text-[10px] font-semibold text-white">
+                    {v.duration}
+                  </span>
+                </span>
+                <span>
+                  <span class="block text-sm font-semibold leading-snug">{v.title}</span>
+                  <span class="text-meta mt-1 block">{v.speaker}</span>
+                </span>
+              </button>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ videos: VIDEOS }}>
+  const root = document.querySelector('[data-videos]');
+  const items = root.querySelectorAll('[data-video]');
+  const frame = root.querySelector('[data-video-frame]');
+  let current = 0;
+
+  const set = (sel, text) => (root.querySelector(sel).textContent = text);
+
+  items.forEach((btn) =>
+    btn.addEventListener('click', () => {
+      current = Number(btn.dataset.video);
+      const v = videos[current];
+      items.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      set('[data-video-tag]', v.tag);
+      set('[data-video-title]', v.title);
+      set('[data-video-meta]', `${v.speaker} · ${v.duration}`);
+      frame.classList.add('hidden');
+      frame.innerHTML = '';
+    }),
+  );
+
+  // Embeds the YouTube video when an id is set in src/data/home.ts
+  root.querySelector('[data-video-play]').addEventListener('click', () => {
+    const id = videos[current].youtubeId;
+    if (!id) return;
+    frame.innerHTML = `<iframe class="size-full" src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1" title="${videos[current].title}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+    frame.classList.remove('hidden');
+  });
+</script>

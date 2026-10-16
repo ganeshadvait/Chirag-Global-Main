@@ -1,0 +1,71 @@
+---
+import Icon from '../Icon.astro';
+import SectionHeader from '../SectionHeader.astro';
+import { IMAGES, ABOUT_FEATURES } from '../../data/home';
+---
+
+<section id="about" class="section">
+  <div class="container-x grid items-center gap-14 lg:grid-cols-2 lg:gap-16">
+    <!-- Photo with floating badges -->
+    <div class="relative mx-auto w-full max-w-xl lg:max-w-none">
+      <div class="aspect-[4/3.4] overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-200 via-brand-100 to-cream-100 lg:rounded-[2.5rem]">
+        <img
+          src={IMAGES.building}
+          alt="Chirag Global Hospitals building in BTM 2nd Stage, Bengaluru"
+          loading="lazy"
+          class="size-full object-cover object-[60%_center]"
+          onerror="this.remove()"
+        />
+      </div>
+      <img
+        src={IMAGES.experience}
+        alt="38+ years of experience"
+        width="125"
+        height="125"
+        loading="lazy"
+        class="absolute -right-2 -top-6 size-24 drop-shadow-xl sm:-right-6 sm:size-28"
+        onerror="this.remove()"
+      />
+      <div class="absolute -left-2 top-8 rounded-2xl bg-ink-900 px-5 py-4 text-white shadow-xl sm:-left-6 sm:px-6">
+        <p class="text-3xl font-black text-amber-400 sm:text-4xl">1986</p>
+        <p class="text-xs text-white/80">Patient-first care since</p>
+      </div>
+      <div class="absolute -bottom-6 right-4 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-xl sm:right-12">
+        <img src={IMAGES.nabh} alt="" width="1024" height="717" class="h-10 w-auto object-contain" onerror="this.remove()" />
+        <div>
+          <p class="text-sm font-semibold">NABH certified</p>
+          <p class="text-meta">Entry Level</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <SectionHeader
+        eyebrow="About Chirag"
+        title="The right proctology and "
+        highlight="colon care."
+        lead="Chirag Global Hospitals offers advanced colo-proctology treatment in Bengaluru, including DG-HAL with RAR for piles, specialised care for fissures, and fistulotomy and fistulectomy for simple and complex fistulas. A structured, protocol-based approach guides every case."
+      />
+
+      <ul class="mt-8 grid gap-6 sm:grid-cols-2">
+        {
+          ABOUT_FEATURES.map((f) => (
+            <li class="flex gap-4">
+              <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-brand-100 text-brand-600">
+                <Icon name={f.icon} class="size-5" />
+              </span>
+              <div>
+                <h3 class="heading-4">{f.title}</h3>
+                <p class="text-body mt-1">{f.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+
+      <a href="#book" class="btn btn-lg btn-brand mt-10">
+        Book appointment <Icon name="arrowRight" class="size-4" />
+      </a>
+    </div>
+  </div>
+</section>

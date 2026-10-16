@@ -1,0 +1,166 @@
+---
+import Icon from '../Icon.astro';
+import Select from '../Select.astro';
+import { IMAGES, STATS, CONCERNS } from '../../data/home';
+
+const avatars = ['RM', 'SK', 'JV', 'PB'];
+const DOCTORS_ON_TEAM = 9;
+
+const field = 'block rounded-2xl bg-brand-50 px-5 py-3.5 ring-brand-400 transition focus-within:ring-2';
+const fieldLabel = 'block text-[11px] font-semibold uppercase tracking-wider text-brand-700';
+const fieldInput = 'mt-1 w-full bg-transparent text-[15px] text-ink-900 outline-none placeholder:text-ink-900/45';
+---
+
+<section id="hero" aria-labelledby="hero-title" class="relative isolate overflow-hidden bg-ink-900 text-white">
+  <!--
+    Team photo. Mobile/tablet: full-width band at the top (header floats over it).
+    Desktop: right-aligned at its natural ratio so every doctor stays in frame.
+  -->
+  <div
+    class="hero-photo absolute inset-x-0 top-0 -z-10 aspect-[4/3] sm:aspect-[16/9] lg:inset-x-auto lg:bottom-20 lg:right-0 lg:top-auto lg:aspect-[1024/522] lg:w-[84%] xl:bottom-16 xl:w-[80%]"
+  >
+    <img
+      src={IMAGES.hero}
+      alt="The Chirag Global Hospitals team of doctors"
+      width="1024"
+      height="522"
+      fetchpriority="high"
+      class="size-full object-cover object-[50%_40%] lg:object-center"
+    />
+    <!-- Brand tint; on desktop the edges are faded out with a mask (see .hero-photo) -->
+    <div class="absolute inset-0 bg-gradient-to-b from-ink-900/70 via-ink-900/10 to-ink-900 lg:hidden"></div>
+    <div class="absolute inset-0 hidden bg-ink-900/25 lg:block"></div>
+    <div class="absolute inset-0 bg-brand-700/20 mix-blend-multiply"></div>
+  </div>
+  <div aria-hidden="true" class="absolute -left-40 top-1/3 -z-10 size-[32rem] rounded-full bg-brand-500/25 blur-3xl"></div>
+
+  <div
+    class="container-x relative pb-28 pt-[calc(75vw-3.5rem)] sm:pb-32 sm:pt-[calc(56vw-5rem)] lg:pb-32 lg:pt-44 xl:pt-48"
+  >
+    <ul class="flex flex-wrap gap-2 text-xs font-semibold sm:text-sm">
+      <li class="btn-amber rounded-full px-3.5 py-1.5">Since 1986</li>
+      <li class="rounded-full border border-white/30 bg-ink-900/30 px-3.5 py-1.5 backdrop-blur-sm">Private consultation</li>
+      <li class="hidden rounded-full border border-white/30 bg-ink-900/30 px-3.5 py-1.5 backdrop-blur-sm sm:block">
+        Women surgeons
+      </li>
+    </ul>
+
+    <h1
+      id="hero-title"
+      class="heading-1 mt-5 max-w-2xl lg:mt-6"
+    >
+      Healing that<br /> respects <span class="text-amber-400">your privacy.</span>
+    </h1>
+
+    <p class="mt-5 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg lg:mt-6">
+      <span class="sm:hidden">Specialist care for piles, fissure, fistula and colorectal conditions in Bengaluru.</span>
+      <span class="hidden sm:inline">
+        Bengaluru's specialist hospital for piles, fissure, fistula and colorectal conditions. One dedicated team, and
+        a clear diagnosis before any decision.
+      </span>
+    </p>
+
+    <div class="mt-8 hidden gap-4 sm:flex">
+      <a
+        href="#book"
+        class="btn btn-lg btn-primary"
+      >
+        Book Appointment <Icon name="arrowRight" class="size-4" />
+      </a>
+      <a
+        href="#treatments"
+        class="btn btn-lg btn-outline-light bg-ink-900/30 backdrop-blur-sm"
+      >
+        Check your symptoms
+      </a>
+    </div>
+
+    <!-- Team card -->
+    <div
+      class="mt-8 flex max-w-xl items-center gap-4 rounded-3xl border border-white/15 bg-ink-900/55 p-4 backdrop-blur-md sm:gap-5 sm:px-6 xl:absolute xl:bottom-32 xl:right-10 xl:mt-0 xl:max-w-none"
+    >
+      <div class="flex shrink-0 -space-x-2.5">
+        {
+          avatars.map((a, i) => (
+            <span
+              class:list={[
+                'grid size-10 place-items-center rounded-full border-2 border-ink-900 text-xs font-semibold text-ink-900 sm:size-12 sm:text-sm',
+                i % 2 ? 'bg-brand-100' : 'bg-cream-100',
+              ]}
+            >
+              {a}
+            </span>
+          ))
+        }
+        <span class="btn-amber grid size-10 place-items-center rounded-full border-2 border-ink-900 text-xs font-semibold sm:size-12 sm:text-sm">
+          +{DOCTORS_ON_TEAM - avatars.length}
+        </span>
+      </div>
+      <div>
+        <p class="font-semibold sm:text-lg">{DOCTORS_ON_TEAM} specialists. One team.</p>
+        <p class="text-xs text-white/75 sm:text-sm">Colorectal surgeons, proctologists and anaesthesiologists</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Quick call-back form overlapping the hero's flat bottom edge -->
+<section id="callback" aria-labelledby="callback-title" class="relative z-10 -mt-20 sm:-mt-24 lg:-mt-16">
+  <div class="container-x">
+    <h2 id="callback-title" class="sr-only">Request a call back</h2>
+    <form
+      aria-labelledby="callback-title"
+      data-whatsapp-form
+      class="grid grid-cols-1 gap-2.5 rounded-3xl bg-white p-2.5 text-ink-900 shadow-2xl shadow-ink-900/15 ring-1 ring-brand-100 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1.25fr_auto]"
+    >
+      <label class={field}>
+        <span class={fieldLabel}>Your name</span>
+        <input name="name" required autocomplete="name" placeholder="Full name" class={fieldInput} />
+      </label>
+      <label class={field}>
+        <span class={fieldLabel}>Phone</span>
+        <input
+          name="phone"
+          type="tel"
+          required
+          inputmode="tel"
+          autocomplete="tel"
+          pattern="(\+?91)?[\s-]?[6-9]\d{4}[\s-]?\d{5}"
+          placeholder="+91 10-digit number"
+          class={fieldInput}
+        />
+      </label>
+      <Select name="concern" label="Concern" options={CONCERNS} variant="field" class="sm:col-span-2 lg:col-span-1" />
+      <button
+        type="submit"
+        class="inline-flex items-center justify-center gap-3 rounded-2xl bg-ink-900 px-7 py-4 font-semibold xl:px-10 text-white transition hover:bg-ink-700 sm:col-span-2 lg:col-span-1"
+      >
+        Get a call back <Icon name="arrowRight" class="size-4" />
+      </button>
+    </form>
+    <p class="text-meta mt-3 px-1">Confidential. Your details are only seen by our care team.</p>
+
+    <!-- Stats -->
+    <dl class="mt-10 grid grid-cols-2 gap-y-8 lg:grid-cols-4">
+      {
+        STATS.map((s, i) => (
+          <div
+            class:list={[
+              'px-1 sm:px-4',
+              i % 2 === 1 && 'border-l border-brand-200 pl-5 sm:pl-6',
+              i > 0 && 'lg:border-l lg:border-brand-200 lg:pl-8',
+              i === 0 && 'lg:pl-0',
+            ]}
+          >
+            <dt class="sr-only">{s.label}</dt>
+            <dd>
+              <span class="text-3xl font-black tracking-tight text-brand-600 sm:text-4xl">{s.value}</span>
+              {s.suffix && <span class="ml-1 text-xl text-amber-500">{s.suffix}</span>}
+              <span class="mt-1 block text-xs text-ink-900/70 sm:text-sm">{s.label}</span>
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>

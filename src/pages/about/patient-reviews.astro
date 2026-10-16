@@ -1,0 +1,124 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import Icon from '../../components/Icon.astro';
+import WhatsAppIcon from '../../components/WhatsAppIcon.astro';
+import { SITE, whatsappLink } from '../../config';
+import { REVIEWS } from '../../data/home';
+
+const GOOGLE_REVIEWS = 'https://www.google.com/maps/search/Chirag+Global+Hospitals+Bengaluru';
+const RATING = { value: '4.7', count: '1,428' };
+const stars = Array.from({ length: 5 });
+
+const highlights = [
+  { icon: 'users', title: 'Doctors who take time', text: 'Patients often mention clear explanations and unhurried consultations.' },
+  { icon: 'shield', title: 'Caring nursing staff', text: 'Support from the nursing team through treatment and recovery.' },
+  { icon: 'lock', title: 'Privacy and respect', text: 'Private, one-to-one care for conditions that can feel embarrassing.' },
+] as const;
+---
+
+<Layout
+  title="Patient Reviews"
+  description={`Read what patients say about ${SITE.name}. Rated ${RATING.value} from ${RATING.count} Google reviews.`}
+>
+  <PageHero
+    crumbs={[{ label: 'About Us', href: '/about' }, { label: 'Patient Reviews' }]}
+    eyebrow="Patient reviews"
+    title="Real patients. "
+    highlight="Real recoveries."
+    lead={`Rated ${RATING.value} out of 5 from ${RATING.count} Google reviews. Here is what patients say about their care at Chirag.`}
+  >
+    <a href={GOOGLE_REVIEWS} target="_blank" rel="noopener" class="btn btn-lg btn-primary">
+      Read all reviews on Google <Icon name="arrowRight" class="size-4" />
+    </a>
+  </PageHero>
+
+  <section class="section">
+    <div class="container-x">
+      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-[0.8fr_1fr_1fr] lg:gap-5">
+        <div class="card flex flex-col bg-gradient-to-br from-ink-900 to-brand-600 text-white md:col-span-2 lg:col-span-1">
+          <div class="flex gap-1 text-amber-400">{stars.map(() => <Icon name="star" class="size-4" />)}</div>
+          <p class="mt-4 text-6xl font-black text-amber-400 sm:text-7xl">{RATING.value}</p>
+          <p class="mt-3 text-sm text-white/80">Average rating from {RATING.count} Google reviews</p>
+          <a href={GOOGLE_REVIEWS} target="_blank" rel="noopener" class="btn btn-primary mt-6 self-start lg:mt-auto">
+            Read all reviews
+          </a>
+        </div>
+
+        {
+          REVIEWS.map((r) => (
+            <figure
+              class:list={[
+                'card flex flex-col',
+                r.tone === 'cream' ? 'bg-cream-50 ring-1 ring-cream-100' : 'bg-brand-50 ring-1 ring-brand-100',
+              ]}
+            >
+              <div class="flex items-center justify-between gap-3">
+                <div class="flex gap-1 text-amber-500">{stars.map(() => <Icon name="star" class="size-3.5" />)}</div>
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-medium">{r.tag}</span>
+              </div>
+              <blockquote class="mt-5 text-base leading-relaxed sm:text-lg">"{r.quote}"</blockquote>
+              <figcaption class="mt-auto flex items-center gap-3 pt-8 font-semibold">
+                <span
+                  class:list={[
+                    'grid size-10 place-items-center rounded-full text-sm',
+                    r.tone === 'cream' ? 'btn-amber' : 'bg-brand-600 text-white',
+                  ]}
+                >
+                  {r.name[0]}
+                </span>
+                {r.name}
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-brand-50/60">
+    <div class="container-x">
+      <SectionHeader align="center" eyebrow="What patients value" title="Why patients " highlight="recommend us" />
+      <ul class="section-body grid gap-4 md:grid-cols-3">
+        {
+          highlights.map((h) => (
+            <li class="card bg-white">
+              <span class="grid size-11 place-items-center rounded-xl bg-brand-100 text-brand-600">
+                <Icon name={h.icon} class="size-5" />
+              </span>
+              <h3 class="heading-4 mt-5">{h.title}</h3>
+              <p class="text-body mt-2">{h.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-x">
+      <div class="panel flex flex-col gap-6 bg-cream-50 ring-1 ring-cream-100 md:flex-row md:items-center md:justify-between">
+        <div class="max-w-2xl">
+          <h2 class="heading-3">Were you treated at Chirag?</h2>
+          <p class="text-body mt-2 sm:text-base">
+            Your review helps other patients feel confident about seeking care. It only takes a minute.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={GOOGLE_REVIEWS} target="_blank" rel="noopener" class="btn btn-dark">
+            <Icon name="star" class="size-4 text-amber-400" /> Write a Google review
+          </a>
+          <a
+            href={whatsappLink('Hi, I would like to share feedback about my treatment.')}
+            target="_blank"
+            rel="noopener"
+            class="btn btn-outline"
+          >
+            <WhatsAppIcon class="size-5" /> Share feedback
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

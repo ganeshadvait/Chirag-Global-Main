@@ -1,0 +1,38 @@
+---
+import Icon from './Icon.astro';
+import type { Treatment } from '../data/treatments';
+
+interface Props {
+  treatment: Treatment;
+  as?: 'h2' | 'h3';
+}
+
+const { treatment: t, as: Heading = 'h3' } = Astro.props;
+---
+
+<a
+  href={`/treatments/${t.slug}`}
+  class="group relative flex h-full min-h-72 flex-col justify-end overflow-hidden rounded-3xl bg-gradient-to-br from-brand-500 via-brand-700 to-ink-900 p-5 text-white sm:p-6"
+>
+  {
+    t.image && (
+      <img
+        src={t.image}
+        alt=""
+        width="662"
+        height="507"
+        loading="lazy"
+        class="absolute inset-0 size-full object-cover transition duration-500 group-hover:scale-105"
+        onerror="this.remove()"
+      />
+    )
+  }
+  <div class="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-900/35 to-transparent"></div>
+  <span class="absolute right-5 top-5 grid size-9 place-items-center rounded-full bg-white text-ink-900 transition group-hover:bg-amber-400 sm:right-6">
+    <Icon name="arrowRight" class="size-4" />
+  </span>
+  <div class="relative">
+    <Heading class="heading-4 text-white">{t.name}</Heading>
+    <p class="mt-1.5 text-sm leading-relaxed text-white/80">{t.short}</p>
+  </div>
+</a>

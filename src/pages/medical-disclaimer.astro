@@ -1,0 +1,50 @@
+---
+// TODO: have this reviewed by the hospital's legal/compliance advisor before launch.
+import LegalPage from '../layouts/LegalPage.astro';
+import { SITE } from '../config';
+---
+
+<LegalPage title="Medical disclaimer" description={`Medical disclaimer for the ${SITE.name} website.`} updated="October 2026">
+  <p>
+    The information on this website is provided by {SITE.name} for general educational purposes only. It is not a
+    substitute for professional medical advice, diagnosis or treatment.
+  </p>
+
+  <h2>No doctor–patient relationship</h2>
+  <p>
+    Reading this website, contacting us through a form or WhatsApp, or receiving a reply does not create a
+    doctor–patient relationship. A diagnosis can only be made after a consultation and examination by a qualified
+    doctor.
+  </p>
+
+  <h2>Always seek medical advice</h2>
+  <p>
+    Please consult a doctor about any symptoms or questions you have about a medical condition. Do not ignore
+    professional advice or delay seeking it because of something you have read on this website.
+  </p>
+
+  <h2>Emergencies</h2>
+  <p>
+    If you think you may have a medical emergency, call our 24×7 emergency line on
+    <a href={`tel:${SITE.emergency.replace(/[^\d+]/g, '')}`}>{SITE.emergency}</a> or go to the nearest emergency
+    department straight away.
+  </p>
+
+  <h2>Treatments and outcomes</h2>
+  <p>
+    Descriptions of conditions and treatments are general. Every patient is different, and the suitability, recovery
+    time and outcome of any treatment depend on individual circumstances. Your specialist will explain the options,
+    benefits and risks that apply to you.
+  </p>
+
+  <h2>Accuracy of information</h2>
+  <p>
+    We aim to keep the information on this website accurate and up to date, but medical knowledge changes and we cannot
+    guarantee that every page is complete or current.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    Questions about this disclaimer can be sent to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+  </p>
+</LegalPage>

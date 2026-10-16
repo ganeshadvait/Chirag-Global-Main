@@ -1,0 +1,42 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import TreatmentCard from '../../components/TreatmentCard.astro';
+import Icon from '../../components/Icon.astro';
+import Journey from '../../components/home/Journey.astro';
+import Faq from '../../components/home/Faq.astro';
+import { TREATMENTS_LIST } from '../../data/treatments';
+---
+
+<Layout
+  title="Treatments"
+  description="Specialist treatment for piles, fissure, fistula, pilonidal sinus, constipation, rectal prolapse, ulcerative colitis and colon cancer in Bengaluru."
+>
+  <PageHero
+    crumbs={[{ label: 'Treatments' }]}
+    eyebrow="Our treatments"
+    title="Specialist care for every "
+    highlight="anorectal condition."
+    lead="Eight conditions, one dedicated colorectal team. Every treatment starts with a private consultation and a clear diagnosis, so you understand your options before any decision."
+  >
+    <a href="#book" class="btn btn-lg btn-primary">Book a consultation <Icon name="arrowRight" class="size-4" /></a>
+    <a href="#conditions" class="btn btn-lg btn-outline-light">Browse conditions</a>
+  </PageHero>
+
+  <section id="conditions" class="section">
+    <div class="container-x">
+      <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          TREATMENTS_LIST.map((t) => (
+            <li>
+              <TreatmentCard treatment={t} as="h2" />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <Journey />
+  <Faq />
+</Layout>

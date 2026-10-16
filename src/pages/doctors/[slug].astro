@@ -1,0 +1,144 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import DoctorCard from '../../components/DoctorCard.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import Icon from '../../components/Icon.astro';
+import WhatsAppIcon from '../../components/WhatsAppIcon.astro';
+import { SITE, digits, whatsappLink } from '../../config';
+import { DOCTORS, type Doctor } from '../../data/doctors';
+
+export const getStaticPaths = (() => DOCTORS.map((doctor) => ({ params: { slug: doctor.slug }, props: { doctor } }))) satisfies GetStaticPaths;
+
+interface Props {
+  doctor: Doctor;
+}
+
+const { doctor: d } = Astro.props;
+const others = DOCTORS.filter((o) => o.slug !== d.slug).slice(0, 4);
+
+const intro = d.bio?.length
+  ? d.bio
+  : [
+      `${d.name} is part of the specialist team at ${SITE.name}, which has focused on colorectal and anorectal care in Bengaluru since 1986.`,
+      'Every consultation is private and one-to-one. You will get a clear explanation of your diagnosis and options, including recovery time and cost, before any treatment decision is made.',
+    ];
+
+const physicianLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Physician',
+  name: d.name,
+  jobTitle: d.role,
+  ...(d.photo ? { image: new URL(d.photo, Astro.site ?? Astro.url).href } : {}),
+  worksFor: { '@type': 'Hospital', name: SITE.name, telephone: SITE.phone, address: SITE.address },
+};
+---
+
+<Layout
+  title={`${d.name}, ${d.role}`}
+  description={`${d.name} (${d.role}${d.quals ? `, ${d.quals}` : ''}) at ${SITE.name}, BTM 2nd Stage, Bengaluru. Book a private consultation.`}
+>
+  <PageHero
+    crumbs={[{ label: 'Our Doctors', href: '/doctors' }, { label: d.name }]}
+    eyebrow={d.role}
+    title={d.name}
+    lead={d.quals ? `${d.quals} · ${SITE.name}, ${SITE.shortAddress}` : `${SITE.name}, ${SITE.shortAddress}`}
+    image={d.photo}
+    imageAlt={d.name}
+    imageFit="portrait"
+  >
+    <a href="#book" class="btn btn-lg btn-primary">Book with {d.name.split(' ').slice(0, 2).join(' ')} <Icon name="arrowRight" class="size-4" /></a>
+    <a
+      href={whatsappLink(`Hi, I'd like to book an appointment with ${d.name}.`)}
+      target="_blank"
+      rel="noopener"
+      class="btn btn-lg btn-outline-light"
+    >
+      <WhatsAppIcon class="size-5" /> WhatsApp us
+    </a>
+  </PageHero>
+
+  <section class="section">
+    <div class="container-x grid gap-10 lg:grid-cols-[1.5fr_1fr] lg:gap-16">
+      <div>
+        <SectionHeader eyebrow="Profile" title={`About ${d.name}`} />
+        <div class="text-lead mt-6 space-y-4">
+          {intro.map((p) => <p>{p}</p>)}
+        </div>
+
+        {
+          d.focus.length > 0 && (
+            <>
+              <h3 class="heading-4 mt-10">Areas of focus</h3>
+              <ul class="mt-4 flex flex-wrap gap-2">
+                {d.focus.map((f) => (
+                  <li class="rounded-full bg-brand-50 px-4 py-2 text-sm font-medium text-brand-700 ring-1 ring-brand-100">{f}</li>
+                ))}
+              </ul>
+            </>
+          )
+        }
+
+        <dl class="mt-10 grid gap-4 sm:grid-cols-2">
+          <div class="card bg-brand-50">
+            <dt class="text-kicker text-brand-400">Role</dt>
+            <dd class="heading-4 mt-2">{d.role}</dd>
+          </div>
+          {
+            d.quals && (
+              <div class="card bg-brand-50">
+                <dt class="text-kicker text-brand-400">Qualifications</dt>
+                <dd class="heading-4 mt-2">{d.quals}</dd>
+              </div>
+            )
+          }
+        </dl>
+      </div>
+
+      <aside class="lg:sticky lg:top-28 lg:self-start">
+        <div class="card bg-ink-900 text-white sm:p-8">
+          <h2 class="heading-3">Consultation hours</h2>
+          <dl class="mt-6 space-y-4 text-sm">
+            <div class="flex justify-between gap-4 border-b border-white/10 pb-4">
+              <dt class="text-white/70">Mon to Sat</dt>
+              <dd class="font-semibold">{SITE.hours.weekdays}</dd>
+            </div>
+            <div class="flex justify-between gap-4 border-b border-white/10 pb-4">
+              <dt class="text-white/70">Sunday</dt>
+              <dd class="font-semibold">{SITE.hours.sunday}</dd>
+            </div>
+            <div class="flex gap-3">
+              <Icon name="pin" class="mt-0.5 size-4 shrink-0 text-amber-400" />
+              <dd class="text-white/80">{SITE.address}</dd>
+            </div>
+          </dl>
+          <p class="mt-6 text-xs text-white/60">Timings for individual doctors may vary. Call us to confirm availability.</p>
+          <div class="mt-6 grid gap-3">
+            <a href="#book" class="btn btn-primary w-full">Book an appointment</a>
+            <a href={`tel:${digits(SITE.phone)}`} class="btn btn-outline-light w-full"><Icon name="phone" class="size-4" /> Call {SITE.phone}</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section bg-brand-50/60">
+    <div class="container-x">
+      <SectionHeader eyebrow="The team" title="Other " highlight="specialists">
+        <a slot="action" href="/doctors" class="btn btn-outline">All doctors <Icon name="arrowRight" class="size-4" /></a>
+      </SectionHeader>
+      <ul class="section-body grid grid-cols-1 gap-5 min-[480px]:grid-cols-2 lg:grid-cols-4">
+        {
+          others.map((o) => (
+            <li>
+              <DoctorCard doctor={o} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(physicianLd)} />
+</Layout>
