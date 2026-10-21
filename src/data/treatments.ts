@@ -230,6 +230,7 @@ export const TREATMENTS_LIST: Treatment[] = [
     navLabel: 'Constipation',
     name: 'Constipation',
     short: 'Infrequent or difficult bowel movements, assessed carefully and managed with diet, medicines and specialist care.',
+    image: '/treatments/constipation.webp',
     overview: [
       "Constipation means passing stools less often than usual, or having stools that are hard, dry and difficult to pass. It is very common and affects people of all ages. Occasional constipation is usually not serious, but long-term constipation can affect your comfort and quality of life.",
       "Constipation can also lead to other problems such as piles and fissures. Most cases improve with changes to diet and routine, and sometimes medicines. If constipation is long-standing or comes with other symptoms, your specialist may recommend tests to find the cause.",
@@ -296,6 +297,7 @@ export const TREATMENTS_LIST: Treatment[] = [
     navLabel: 'Colon Cancer',
     name: 'Colon cancer',
     short: 'Early assessment and colonoscopy for bowel symptoms, with treatment planned alongside the specialist team.',
+    image: '/treatments/colon-cancer.webp',
     overview: [
       "Colon cancer, also called bowel or colorectal cancer, starts in the large bowel (colon) or rectum. It often develops slowly from small growths called polyps. Finding and removing polyps, or detecting cancer early, gives the best chance of successful treatment.",
       "Many bowel symptoms are caused by common conditions such as piles, but some symptoms should always be checked. Our colorectal specialists can assess your symptoms, arrange a colonoscopy where needed and, if cancer is found, plan your treatment with the wider specialist team.",
@@ -425,6 +427,7 @@ export const TREATMENTS_LIST: Treatment[] = [
     navLabel: 'Ulcerative Colitis',
     name: 'Ulcerative colitis',
     short: 'A long-term inflammatory condition of the bowel, diagnosed carefully and managed with ongoing specialist care.',
+    image: '/treatments/ulcerative-colitis.webp',
     overview: [
       "Ulcerative colitis is a long-term condition in which the lining of the large bowel (colon) and rectum becomes inflamed and develops small ulcers. It is a type of inflammatory bowel disease (IBD). Symptoms often come and go, with periods of flare-ups and periods of few or no symptoms (remission).",
       "There is currently no simple cure, but with the right diagnosis and treatment, many people control their symptoms well and lead full lives. Diagnosis usually involves a colonoscopy with biopsies, and treatment is planned with your specialist team and adjusted over time.",
@@ -491,6 +494,7 @@ export const TREATMENTS_LIST: Treatment[] = [
     navLabel: 'Rectal Prolapse',
     name: 'Rectal prolapse',
     short: 'When the rectum slips out through the anus, assessed privately and treated with suitable surgical options.',
+    image: '/treatments/rectal-prolapse.webp',
     overview: [
       "Rectal prolapse happens when part or all of the rectum (the last part of the bowel) slips down and comes out through the anus. At first it may only happen when passing stools and go back on its own, but over time it may need to be pushed back or may stay outside.",
       "Rectal prolapse is more common in older women, but it can affect anyone. It can feel distressing and embarrassing, but it is a recognised condition that specialists treat regularly. Treatment usually involves surgery, and your surgeon will explain the options in a private consultation.",

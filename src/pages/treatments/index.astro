@@ -1,35 +1,151 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import PageHero from '../../components/PageHero.astro';
-import TreatmentCard from '../../components/TreatmentCard.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
 import Icon from '../../components/Icon.astro';
+import WhatsAppIcon from '../../components/WhatsAppIcon.astro';
 import Journey from '../../components/home/Journey.astro';
+import Doctors from '../../components/home/Doctors.astro';
 import Faq from '../../components/home/Faq.astro';
+import { whatsappLink, SITE, WHATSAPP_MESSAGE } from '../../config';
 import { TREATMENTS_LIST } from '../../data/treatments';
+import { DOCTORS } from '../../data/doctors';
+import { IMAGES } from '../../data/home';
+import { PROCEDURES } from '../../data/technologies';
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Treatments' }];
+
+const quick = ['piles-hemorrhoids', 'fissure', 'fistula', 'pilonidal-sinus', 'constipation'].map((slug) => TREATMENTS_LIST.find((t) => t.slug === slug)!);
+const quickLinks = Object.fromEntries(quick.map((t) => [t.name, `/treatments/${t.slug}`]));
+
+
+const approaches = [
+  { icon: 'leaf', title: 'Diet and medicines', text: 'Many early conditions settle with fibre, fluids, medicines and lifestyle changes. Surgery is never the first answer by default.' },
+  { icon: 'zap', title: 'Minimally invasive day-care', text: 'Laser, DGHAL, infrared coagulation, RF and harmonic surgery, chosen to suit your condition.' },
+  { icon: 'scan', title: 'Image-guided surgery', text: '360° fistula scan and CEREG echo-guided surgery map disease fully, so treatment is complete.' },
+  { icon: 'users', title: 'Long-term follow-up', text: 'Structured follow-up visits, diet guidance and integrated Ayurvedic support where helpful.' },
+] as const;
 ---
 
 <Layout
+  overlayHeader
   title="Treatments"
-  description="Specialist treatment for piles, fissure, fistula, pilonidal sinus, constipation, rectal prolapse, ulcerative colitis and colon cancer in Bengaluru."
+  description="Specialist treatment for piles, fissure, fistula, pilonidal sinus, constipation, rectal prolapse, ulcerative colitis and colon cancer at Chirag Global Hospitals, Bengaluru."
 >
-  <PageHero
-    crumbs={[{ label: 'Treatments' }]}
-    eyebrow="Our treatments"
-    title="Specialist care for every "
-    highlight="anorectal condition."
-    lead="Eight conditions, one dedicated colorectal team. Every treatment starts with a private consultation and a clear diagnosis, so you understand your options before any decision."
-  >
-    <a href="#book" class="btn btn-lg btn-primary">Book a consultation <Icon name="arrowRight" class="size-4" /></a>
-    <a href="#conditions" class="btn btn-lg btn-outline-light">Browse conditions</a>
-  </PageHero>
+  <!-- ============ HERO (matches home hero: dark, photo fading into the background) ============ -->
+  <section class="relative isolate overflow-hidden bg-ink-900 text-white">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10">
+      <div class="absolute -left-40 top-1/3 size-[32rem] rounded-full bg-brand-500/25 blur-3xl"></div>
+      <div class="absolute -right-24 top-24 size-[30rem] rounded-full bg-brand-400/25 blur-3xl"></div>
+    </div>
 
+    <div class="container-x grid items-center gap-12 pb-20 pt-32 sm:pt-36 lg:grid-cols-[1.1fr_1fr] lg:gap-14 lg:pb-28 lg:pt-44 xl:pt-48">
+      <div>
+        <nav aria-label="Breadcrumb">
+          <ol class="flex flex-wrap items-center gap-1.5 text-sm text-white/60">
+            {
+              crumbs.map((c, i) => (
+                <li class="flex items-center gap-1.5">
+                  {i > 0 && <Icon name="chevronRight" class="size-3.5 text-white/40" />}
+                  {c.href ? <a href={c.href} class="transition hover:text-white">{c.label}</a> : <span aria-current="page" class="text-white/90">{c.label}</span>}
+                </li>
+              ))
+            }
+          </ol>
+        </nav>
+        <ul class="mt-6 flex flex-wrap gap-2 text-xs font-semibold sm:text-sm">
+          <li class="btn-amber rounded-full px-3.5 py-1.5">Since 1986</li>
+          <li class="rounded-full border border-white/30 bg-ink-900/30 px-3.5 py-1.5 backdrop-blur-sm">Day-care procedures</li>
+          <li class="hidden rounded-full border border-white/30 bg-ink-900/30 px-3.5 py-1.5 backdrop-blur-sm sm:block">Women surgeons</li>
+        </ul>
+        <h1 class="heading-1 mt-5 max-w-2xl lg:mt-6">
+          The right treatment, <span class="text-amber-400">not just surgery.</span>
+        </h1>
+        <p class="mt-5 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg lg:mt-6">
+          Specialist care for piles, fissure, fistula and every anorectal condition. Every treatment starts with a private
+          consultation and a clear diagnosis, so you understand your options first.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a href="#book" class="btn btn-lg btn-primary">Book Appointment <Icon name="arrowRight" class="size-4" /></a>
+          <a href={whatsappLink('Hi, I am not sure which treatment I need. Can you help?')} target="_blank" rel="noopener" class="btn btn-lg btn-outline-light bg-ink-900/30 backdrop-blur-sm">
+            <WhatsAppIcon class="size-5" /> Ask a specialist
+          </a>
+        </div>
+      </div>
+
+      <!-- Visual: team photo + quick booking card -->
+      <div class="relative mx-auto w-full max-w-xl sm:pb-24">
+        <div class="relative aspect-[4/3] overflow-hidden rounded-[2rem] ring-8 ring-white/10 lg:rounded-[2.5rem]">
+          <img src={IMAGES.hero} alt="The Chirag Global Hospitals team of doctors" width="1024" height="522" fetchpriority="high" class="size-full object-cover" />
+          <div class="absolute inset-0 bg-gradient-to-t from-ink-900/70 via-transparent to-transparent"></div>
+        </div>
+        <div class="absolute -top-4 right-4 flex items-center gap-2 rounded-full bg-white px-4 py-2 text-ink-900 shadow-xl shadow-ink-950/40">
+          <Icon name="star" class="size-4 text-amber-400" />
+          <span class="text-sm font-bold">4.7</span>
+          <span class="text-meta">1,428 Google reviews</span>
+        </div>
+
+        <!-- Quick booking -->
+        <form data-quick-book class="relative mx-3 -mt-12 rounded-3xl sm:absolute sm:inset-x-6 sm:bottom-0 sm:mx-0 sm:mt-0 bg-white p-5 text-ink-900 shadow-2xl shadow-ink-950/50 sm:inset-x-6 sm:p-6">
+          <fieldset>
+            <legend class="heading-5">What would you like help with?</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {
+                quick.map((t, i) => (
+                  <label>
+                    <input type="radio" name="concern" value={t.name} checked={i === 0} class="peer sr-only" />
+                    <span class="block cursor-pointer rounded-full bg-brand-50 px-3.5 py-2 text-sm font-medium text-ink-900 ring-brand-400 transition hover:bg-brand-100 peer-checked:bg-ink-900 peer-checked:text-white peer-focus-visible:ring-2">
+                      {t.navLabel.split('/')[0]}
+                    </span>
+                  </label>
+                ))
+              }
+              <label>
+                <input type="radio" name="concern" value="Not sure" class="peer sr-only" />
+                <span class="block cursor-pointer rounded-full bg-brand-50 px-3.5 py-2 text-sm font-medium text-ink-900 ring-brand-400 transition hover:bg-brand-100 peer-checked:bg-ink-900 peer-checked:text-white peer-focus-visible:ring-2">Not sure</span>
+              </label>
+            </div>
+          </fieldset>
+          <div class="mt-4 flex flex-col gap-2 sm:flex-row">
+            <button type="submit" class="btn btn-primary flex-1"><WhatsAppIcon class="size-5" /> Book on WhatsApp</button>
+            <a href="#conditions" data-learn class="btn btn-outline flex-1">Learn about it <Icon name="arrowRight" class="size-4" /></a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ All conditions ============ -->
   <section id="conditions" class="section">
     <div class="container-x">
-      <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <SectionHeader eyebrow="Our treatments" title="Specialist care for every " highlight="anorectal condition.">
+        <a slot="action" href={whatsappLink('Hi, I am not sure which treatment I need. Can you help?')} target="_blank" rel="noopener" class="btn btn-outline">
+          <WhatsAppIcon class="size-5" /> Not sure? Ask us
+        </a>
+      </SectionHeader>
+
+      <ul class="section-body grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {
-          TREATMENTS_LIST.map((t) => (
+          TREATMENTS_LIST.map((t, i) => (
             <li>
-              <TreatmentCard treatment={t} as="h2" />
+              <a
+                href={`/treatments/${t.slug}`}
+                class="group flex h-full flex-col overflow-hidden rounded-3xl bg-white ring-1 ring-brand-100 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-200/50"
+              >
+                <div class="relative aspect-[4/3] overflow-hidden bg-brand-100">
+                  {t.image && <img src={t.image} alt="" loading="lazy" class="size-full object-cover transition duration-500 group-hover:scale-105" />}
+                  <span class="text-kicker absolute left-4 top-4 rounded-full bg-white/90 px-2.5 py-1 text-ink-900">{String(i + 1).padStart(2, '0')}</span>
+                </div>
+                <div class="flex flex-1 flex-col p-5 sm:p-6">
+                  <h3 class="heading-4 group-hover:text-brand-700">{t.name}</h3>
+                  <p class="text-body mt-2">{t.short}</p>
+                  <p class="text-meta mt-4">
+                    <span class="font-semibold text-ink-900/70">Common signs:</span> {t.symptoms.slice(0, 2).join('; ').toLowerCase()}
+                  </p>
+                  <span class="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-semibold text-brand-600">
+                    View treatment <Icon name="arrowRight" class="size-4 transition group-hover:translate-x-1" />
+                  </span>
+                </div>
+              </a>
             </li>
           ))
         }
@@ -37,6 +153,61 @@ import { TREATMENTS_LIST } from '../../data/treatments';
     </div>
   </section>
 
+  <!-- ============ Our approach ============ -->
+  <section class="section pt-0 sm:pt-0 lg:pt-0">
+    <div class="container-x">
+      <div class="panel bg-gradient-to-br from-ink-950 via-ink-800 to-brand-700 text-white">
+        <SectionHeader
+          tone="dark"
+          eyebrow="Our approach"
+          title="From medicines to "
+          highlight="minimally invasive surgery"
+          lead="Your specialist recommends the gentlest option that will treat the condition completely."
+        >
+          <a slot="action" href="/about/advanced-technologies" class="btn btn-primary">
+            Our technologies <Icon name="arrowRight" class="size-4" />
+          </a>
+        </SectionHeader>
+        <ol class="section-body grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {
+            approaches.map((a, i) => (
+              <li class="relative rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur">
+                <span aria-hidden="true" class="absolute right-5 top-4 text-4xl font-extrabold text-white/10">{String(i + 1).padStart(2, '0')}</span>
+                <span class="grid size-11 place-items-center rounded-xl bg-amber-400 text-ink-900">
+                  <Icon name={a.icon} class="size-5" />
+                </span>
+                <h3 class="heading-4 mt-5 text-white">{a.title}</h3>
+                <p class="mt-2 text-sm leading-relaxed text-white/70">{a.text}</p>
+              </li>
+            ))
+          }
+        </ol>
+        <ul class="mt-8 flex flex-wrap gap-2 border-t border-white/10 pt-6">
+          {PROCEDURES.map((p) => <li class="rounded-full border border-white/20 px-3.5 py-1.5 text-xs font-semibold text-white/85">{p.name}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <Journey />
+  <Doctors />
   <Faq />
 </Layout>
+
+<script define:vars={{ links: quickLinks, phone: SITE.whatsapp.replace(/\D/g, ''), greeting: WHATSAPP_MESSAGE }}>
+  const form = document.querySelector('[data-quick-book]');
+  const learn = form.querySelector('[data-learn]');
+  const update = () => {
+    const v = new FormData(form).get('concern');
+    learn.href = links[v] || '#conditions';
+  };
+  form.addEventListener('change', update);
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const v = new FormData(form).get('concern');
+    const msg = `${greeting}
+Concern: ${v}`;
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+  });
+  update();
+</script>
