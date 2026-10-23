@@ -1,38 +1,59 @@
 ---
+// White card for the treatments grid: numbered photo → name → summary → common signs → link.
 import Icon from './Icon.astro';
 import type { Treatment } from '../data/treatments';
 
 interface Props {
   treatment: Treatment;
+  /** 1-based position, shown as a badge on the photo */
+  index?: number;
   as?: 'h2' | 'h3';
 }
 
-const { treatment: t, as: Heading = 'h3' } = Astro.props;
+const { treatment: t, index, as: Heading = 'h3' } = Astro.props;
+
+// First two symptoms, written as one lower-case phrase
+const signs = t.symptoms
+  .slice(0, 2)
+  .map((s: string, i: number) => (i === 0 ? s.charAt(0).toLowerCase() + s.slice(1) : s.toLowerCase()))
+  .join(', ');
 ---
 
 <a
   href={`/treatments/${t.slug}`}
-  class="group relative flex h-full min-h-72 flex-col justify-end overflow-hidden rounded-3xl bg-gradient-to-br from-brand-500 via-brand-700 to-ink-900 p-5 text-white sm:p-6"
+  class="group flex h-full flex-col overflow-hidden rounded-3xl bg-white ring-1 ring-brand-100 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-600/10"
 >
-  {
-    t.image && (
-      <img
-        src={t.image}
-        alt=""
-        width="662"
-        height="507"
-        loading="lazy"
-        class="absolute inset-0 size-full object-cover transition duration-500 group-hover:scale-105"
-        onerror="this.remove()"
-      />
-    )
-  }
-  <div class="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-900/35 to-transparent"></div>
-  <span class="absolute right-5 top-5 grid size-9 place-items-center rounded-full bg-white text-ink-900 transition group-hover:bg-amber-400 sm:right-6">
-    <Icon name="arrowRight" class="size-4" />
-  </span>
-  <div class="relative">
-    <Heading class="heading-4 text-white">{t.name}</Heading>
-    <p class="mt-1.5 text-sm leading-relaxed text-white/80">{t.short}</p>
+  <div class="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-brand-400 via-brand-600 to-ink-800">
+    {
+      t.image && (
+        <img
+          src={t.image}
+          alt=""
+          width="662"
+          height="507"
+          loading="lazy"
+          class="absolute inset-0 size-full object-cover transition duration-500 group-hover:scale-105"
+          onerror="this.remove()"
+        />
+      )
+    }
+    {
+      index && (
+        <span class="text-kicker absolute left-4 top-4 rounded-full bg-white/90 px-2.5 py-1 text-ink-900">
+          {String(index).padStart(2, '0')}
+        </span>
+      )
+    }
+  </div>
+
+  <div class="flex flex-1 flex-col p-5 sm:p-6">
+    <Heading class="heading-4">{t.name}</Heading>
+    <p class="text-body mt-2">{t.short}</p>
+    <p class="text-meta mt-3 leading-relaxed">
+      <span class="font-semibold text-ink-900">Common signs:</span>{' '}{signs}.
+    </p>
+    <span class="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-ink-900 transition group-hover:text-brand-600">
+      View treatment <Icon name="arrowRight" class="size-4 transition group-hover:translate-x-0.5" />
+    </span>
   </div>
 </a>

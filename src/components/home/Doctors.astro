@@ -3,15 +3,21 @@ import Icon from '../Icon.astro';
 import SectionHeader from '../SectionHeader.astro';
 import DoctorCard from '../DoctorCard.astro';
 import { DOCTORS } from '../../data/doctors';
+
+const arrow =
+  'grid size-12 place-items-center rounded-full bg-brand-600 text-white shadow-lg shadow-brand-600/30 transition hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 disabled:cursor-not-allowed disabled:bg-white disabled:text-brand-300 disabled:shadow-none disabled:ring-1 disabled:ring-brand-200';
 ---
 
 <section id="doctors" class="section">
   <div class="container-x">
     <div
-      class="panel grid gap-10 overflow-hidden bg-gradient-to-br from-brand-50 via-brand-100 to-brand-200/70 lg:grid-cols-[19rem_minmax(0,1fr)] lg:items-center lg:gap-12"
+      class="panel grid gap-8 overflow-hidden bg-gradient-to-br from-brand-50 via-brand-100 to-brand-200/70 lg:grid-cols-[19rem_minmax(0,1fr)] lg:grid-rows-[1fr_auto] lg:gap-x-12 lg:gap-y-8"
       data-carousel
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Our doctors"
     >
-      <div>
+      <div class="lg:col-start-1 lg:row-start-1 lg:self-end">
         <SectionHeader
           eyebrow="Our specialists"
           eyebrowClass="bg-white/70"
@@ -19,29 +25,14 @@ import { DOCTORS } from '../../data/doctors';
           highlight="expert doctors"
           lead="Nine doctors under one roof: colorectal surgeons, proctologists, anaesthesiologists and a gynaecologist, so your care stays with one team."
         />
-        <div class="mt-8 flex items-center gap-3">
-          <button
-            type="button"
-            data-prev
-            aria-label="Previous doctors"
-            class="grid size-12 place-items-center rounded-full border border-brand-200 bg-white transition hover:bg-brand-50 disabled:opacity-40"
-          >
-            <Icon name="chevronLeft" class="size-5" />
-          </button>
-          <button
-            type="button"
-            data-next
-            aria-label="Next doctors"
-            class="grid size-12 place-items-center rounded-full bg-brand-600 text-white shadow-lg shadow-brand-600/30 transition hover:bg-brand-700 disabled:opacity-40"
-          >
-            <Icon name="chevronRight" class="size-5" />
-          </button>
-        </div>
       </div>
 
       <ul
+        id="doctors-track"
         data-track
-        class="no-scrollbar -mx-6 flex snap-x snap-mandatory scroll-px-6 gap-4 overflow-x-auto scroll-smooth px-6 pb-2 sm:-mx-10 sm:scroll-px-10 sm:px-10 lg:mx-0 lg:scroll-px-0 lg:px-0"
+        tabindex="0"
+        aria-label="Doctors, scroll horizontally"
+        class="no-scrollbar -mx-6 flex snap-x snap-mandatory scroll-px-6 gap-4 overflow-x-auto px-6 pb-2 outline-none sm:-mx-10 sm:scroll-px-10 sm:px-10 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mx-0 lg:scroll-px-0 lg:self-center lg:px-0"
       >
         {
           DOCTORS.map((d) => (
@@ -51,26 +42,62 @@ import { DOCTORS } from '../../data/doctors';
           ))
         }
       </ul>
+
+      <!-- Controls: under the cards on mobile, under the heading on desktop -->
+      <div data-controls class="flex items-center gap-3 lg:col-start-1 lg:row-start-2 lg:self-start">
+        <button type="button" data-prev aria-controls="doctors-track" aria-label="Previous doctors" class={arrow}>
+          <Icon name="chevronLeft" class="size-5" />
+        </button>
+        <button type="button" data-next aria-controls="doctors-track" aria-label="Next doctors" class={arrow}>
+          <Icon name="chevronRight" class="size-5" />
+        </button>
+      </div>
     </div>
   </div>
 </section>
 
 <script>
-  document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((root) => {
-    const track = root.querySelector<HTMLElement>('[data-track]')!;
-    const prev = root.querySelector<HTMLButtonElement>('[data-prev]')!;
-    const next = root.querySelector<HTMLButtonElement>('[data-next]')!;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    const step = () => (track.firstElementChild as HTMLElement)?.offsetWidth + 16 || 240;
-    const update = () => {
-      prev.disabled = track.scrollLeft <= 4;
-      next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+  document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((root) => {
+    const track = root.querySelector<HTMLElement>('[data-track]');
+    const prev = root.querySelector<HTMLButtonElement>('[data-prev]');
+    const next = root.querySelector<HTMLButtonElement>('[data-next]');
+    const controls = root.querySelector<HTMLElement>('[data-controls]');
+    if (!track || !prev || !next) return;
+
+    const cards = () => [...track.children] as HTMLElement[];
+    const maxScroll = () => track.scrollWidth - track.clientWidth;
+    // Card positions relative to the track's scroll origin (they match the snap points)
+    const offsets = () => cards().map((c) => c.offsetLeft - cards()[0].offsetLeft);
+
+    // Move by however many cards are fully visible, so one click = one "page"
+    const go = (dir: 1 | -1) => {
+      const list = offsets();
+      const unit = (list[1] ?? track.clientWidth) || track.clientWidth;
+      const perPage = Math.max(1, Math.floor((track.clientWidth + 1) / unit));
+      const current = list.findIndex((o) => o >= track.scrollLeft - 2);
+      const target = Math.min(Math.max((current < 0 ? list.length - 1 : current) + dir * perPage, 0), list.length - 1);
+      track.scrollTo({ left: Math.min(list[target], maxScroll()), behavior: reduceMotion.matches ? 'auto' : 'smooth' });
     };
 
-    prev.addEventListener('click', () => track.scrollBy({ left: -step() }));
-    next.addEventListener('click', () => track.scrollBy({ left: step() }));
+    const update = () => {
+      const max = maxScroll();
+      const atStart = track.scrollLeft <= 2;
+      const atEnd = track.scrollLeft >= max - 2;
+      prev.disabled = atStart;
+      next.disabled = atEnd;
+      if (controls) controls.hidden = max <= 2;
+      // Fade whichever edge has more cards behind it
+      const left = atStart ? '#000' : 'transparent';
+      const right = atEnd ? '#000' : 'transparent';
+      track.style.maskImage = `linear-gradient(to right, ${left}, #000 3rem, #000 calc(100% - 3rem), ${right})`;
+    };
+
+    prev.addEventListener('click', () => go(-1));
+    next.addEventListener('click', () => go(1));
     track.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
+    new ResizeObserver(update).observe(track);
     update();
   });
 </script>

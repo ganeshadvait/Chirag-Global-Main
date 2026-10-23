@@ -1,35 +1,176 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import PageHero from '../../components/PageHero.astro';
 import TreatmentCard from '../../components/TreatmentCard.astro';
-import Icon from '../../components/Icon.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import Icon, { type IconName } from '../../components/Icon.astro';
+import WhatsAppIcon from '../../components/WhatsAppIcon.astro';
 import Journey from '../../components/home/Journey.astro';
+import Doctors from '../../components/home/Doctors.astro';
 import Faq from '../../components/home/Faq.astro';
-import { TREATMENTS_LIST } from '../../data/treatments';
+import { TREATMENTS_LIST, getTreatment, type Treatment } from '../../data/treatments';
+import { PROCEDURES } from '../../data/technologies';
+import { IMAGES, STATS } from '../../data/home';
+import { whatsappLink } from '../../config';
+
+const TECH_HREF = '/about/advanced-technologies';
+const rating = STATS.find((s) => s.suffix === '★');
+
+// Hero picker: the most common reasons people visit, plus "Not sure"
+const pickerSlugs = ['piles-hemorrhoids', 'fissure', 'fistula', 'pilonidal-sinus', 'constipation'];
+const picker = [
+  ...(pickerSlugs.map((s) => getTreatment(s)) as Treatment[]).map((t) => ({
+    label: t.navLabel.split('/')[0],
+    href: `/treatments/${t.slug}`,
+    whatsapp: whatsappLink(`Hi, I'd like to book a consultation for ${t.name.toLowerCase()}.`),
+  })),
+  { label: 'Not sure', href: '#conditions', whatsapp: whatsappLink("Hi, I'm not sure what my condition is and would like to speak to a specialist.") },
+];
+
+const approach: { icon: IconName; title: string; text: string }[] = [
+  {
+    icon: 'leaf',
+    title: 'Diet and medicines',
+    text: 'Many early conditions settle with fibre, fluids, medicines and lifestyle changes. Surgery is never the first answer by default.',
+  },
+  {
+    icon: 'zap',
+    title: 'Minimally invasive day-care',
+    text: 'Laser, DGHAL, infrared coagulation, RF and harmonic surgery, chosen to suit your condition.',
+  },
+  {
+    icon: 'scan',
+    title: 'Image-guided surgery',
+    text: '360° fistula scan and CEREG echo-guided surgery map the disease fully, so treatment is complete.',
+  },
+  {
+    icon: 'shield',
+    title: 'Long-term follow-up',
+    text: 'Structured follow-up visits, diet guidance and integrated Ayurvedic support where helpful.',
+  },
+];
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site ?? Astro.url).href },
+    { '@type': 'ListItem', position: 2, name: 'Treatments' },
+  ],
+};
 ---
 
 <Layout
   title="Treatments"
   description="Specialist treatment for piles, fissure, fistula, pilonidal sinus, constipation, rectal prolapse, ulcerative colitis and colon cancer in Bengaluru."
 >
-  <PageHero
-    crumbs={[{ label: 'Treatments' }]}
-    eyebrow="Our treatments"
-    title="Specialist care for every "
-    highlight="anorectal condition."
-    lead="Eight conditions, one dedicated colorectal team. Every treatment starts with a private consultation and a clear diagnosis, so you understand your options before any decision."
-  >
-    <a href="#book" class="btn btn-lg btn-primary">Book a consultation <Icon name="arrowRight" class="size-4" /></a>
-    <a href="#conditions" class="btn btn-lg btn-outline-light">Browse conditions</a>
-  </PageHero>
+  <!-- Hero -->
+  <section class="relative isolate overflow-hidden bg-ink-900 text-white">
+    <div aria-hidden="true" class="absolute -left-40 -top-20 -z-10 size-[30rem] rounded-full bg-brand-500/30 blur-3xl"></div>
+    <div aria-hidden="true" class="absolute -bottom-40 right-0 -z-10 size-[26rem] rounded-full bg-amber-400/10 blur-3xl"></div>
 
+    <div class="container-x grid gap-10 py-12 sm:py-14 lg:py-16 xl:grid-cols-[1.25fr_1fr] xl:items-center xl:gap-12">
+      <div>
+        <nav aria-label="Breadcrumb">
+          <ol class="flex flex-wrap items-center gap-1.5 text-sm text-white/60">
+            <li><a href="/" class="transition hover:text-white">Home</a></li>
+            <li class="flex items-center gap-1.5">
+              <Icon name="chevronRight" class="size-3.5 text-white/40" />
+              <span aria-current="page" class="text-white/90">Treatments</span>
+            </li>
+          </ol>
+        </nav>
+
+        <ul class="mt-6 flex flex-wrap gap-2 text-xs font-semibold sm:text-sm">
+          <li class="btn-amber rounded-full px-3.5 py-1.5">Since 1986</li>
+          <li class="rounded-full border border-white/30 px-3.5 py-1.5">Day-care procedures</li>
+          <li class="rounded-full border border-white/30 px-3.5 py-1.5">Women surgeons</li>
+        </ul>
+
+        <h1 class="heading-1 mt-5 max-w-3xl">
+          The right treatment, <span class="text-amber-400">not just surgery.</span>
+        </h1>
+        <p class="mt-5 max-w-2xl text-base leading-relaxed text-white/75 sm:text-lg">
+          Specialist care for piles, fissure, fistula and every anorectal condition. Every treatment starts with a private
+          consultation and a clear diagnosis, so you understand your options first.
+        </p>
+        <div class="mt-8 grid gap-3 sm:flex sm:flex-wrap">
+          <a href="#book" class="btn btn-lg btn-primary">Book Appointment <Icon name="arrowRight" class="size-4" /></a>
+          <a href={whatsappLink()} target="_blank" rel="noopener" class="btn btn-lg btn-outline-light">
+            <WhatsAppIcon class="size-6 shrink-0" /> Ask a specialist
+          </a>
+        </div>
+      </div>
+
+      <!-- Team photo with condition picker -->
+      <div class="relative w-full max-w-2xl pb-44 sm:pb-32 xl:max-w-none">
+        <div class="relative aspect-[4/3] overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-400/40 to-ink-800 lg:rounded-[2.5rem]">
+          <img
+            src={IMAGES.hero}
+            alt="The Chirag Global Hospitals team of doctors"
+            width="1024"
+            height="522"
+            fetchpriority="high"
+            class="absolute inset-0 size-full object-cover"
+            onerror="this.remove()"
+          />
+          {
+            rating && (
+              <p class="absolute right-4 top-4 flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs text-ink-900 shadow-lg">
+                <Icon name="star" class="size-3.5 text-amber-500" />
+                <span class="font-bold">{rating.value}</span>
+                <span class="text-ink-900/60">{rating.label.replace(/^from /, '')}</span>
+              </p>
+            )
+          }
+        </div>
+
+        <div
+          data-picker
+          class="absolute inset-x-3 bottom-0 rounded-3xl bg-white p-5 text-ink-900 shadow-2xl shadow-ink-950/30 sm:inset-x-auto sm:right-4 sm:w-[29rem] sm:p-6"
+        >
+          <p id="picker-label" class="heading-5">What would you like help with?</p>
+          <div role="group" aria-labelledby="picker-label" class="mt-3 flex flex-wrap gap-2">
+            {
+              picker.map((p, i) => (
+                <button
+                  type="button"
+                  aria-pressed={i === 0 ? 'true' : 'false'}
+                  data-href={p.href}
+                  data-whatsapp={p.whatsapp}
+                  class="rounded-full border border-brand-200 px-3 py-1.5 text-xs font-semibold transition hover:border-brand-400 aria-pressed:border-ink-900 aria-pressed:bg-ink-900 aria-pressed:text-white"
+                >
+                  {p.label}
+                </button>
+              ))
+            }
+          </div>
+          <div class="mt-5 flex flex-col gap-2.5 sm:flex-row">
+            <a data-picker-whatsapp href={picker[0].whatsapp} target="_blank" rel="noopener" class="btn btn-primary gap-2.5 py-3 pl-5 pr-6 sm:shrink-0">
+              <WhatsAppIcon class="size-6 shrink-0" /> Book on WhatsApp
+            </a>
+            <a data-picker-learn href={picker[0].href} class="btn btn-outline gap-2.5 py-3 sm:flex-1">
+              Learn about it <Icon name="arrowRight" class="size-4" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Conditions -->
   <section id="conditions" class="section">
     <div class="container-x">
-      <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <SectionHeader eyebrow="Our treatments" title="Specialist care for every " highlight="anorectal condition.">
+        <a slot="action" href={whatsappLink()} target="_blank" rel="noopener" class="btn btn-outline">
+          <WhatsAppIcon class="size-6 shrink-0" /> Not sure? Ask us
+        </a>
+      </SectionHeader>
+
+      <ul class="section-body grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {
-          TREATMENTS_LIST.map((t) => (
+          TREATMENTS_LIST.map((t, i) => (
             <li>
-              <TreatmentCard treatment={t} as="h2" />
+              <TreatmentCard treatment={t} index={i + 1} as="h3" />
             </li>
           ))
         }
@@ -37,6 +178,80 @@ import { TREATMENTS_LIST } from '../../data/treatments';
     </div>
   </section>
 
+  <!-- Our approach -->
+  <section id="approach" class="section pt-0 sm:pt-0 lg:pt-0">
+    <div class="container-x">
+      <div class="panel relative overflow-hidden bg-gradient-to-br from-ink-950 via-ink-800 to-brand-700 text-white">
+        <div aria-hidden="true" class="absolute -right-24 -top-24 size-80 rounded-full bg-brand-400/20 blur-3xl"></div>
+
+        <div class="relative">
+          <SectionHeader
+            tone="dark"
+            eyebrow="Our approach"
+            title="From medicines to "
+            highlight="minimally invasive surgery"
+            lead="Your specialist recommends the gentlest option that will treat the condition completely."
+          >
+            <a slot="action" href={TECH_HREF} class="btn btn-primary">
+              Our technologies <Icon name="arrowRight" class="size-4" />
+            </a>
+          </SectionHeader>
+
+          <ol class="section-body grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            {
+              approach.map((a, i) => (
+                <li class="relative flex flex-col rounded-3xl border border-white/15 bg-white/5 p-6">
+                  <span aria-hidden="true" class="absolute right-5 top-4 text-4xl font-black text-white/10">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span class="btn-amber grid size-10 place-items-center rounded-xl">
+                    <Icon name={a.icon} class="size-5" />
+                  </span>
+                  <h3 class="heading-4 mt-5">{a.title}</h3>
+                  <p class="mt-2 text-sm leading-relaxed text-white/70">{a.text}</p>
+                </li>
+              ))
+            }
+          </ol>
+
+          <ul class="mt-8 flex flex-wrap gap-2 border-t border-white/15 pt-6">
+            {
+              PROCEDURES.map((p) => (
+                <li>
+                  <a
+                    href={TECH_HREF}
+                    class="block rounded-full border border-white/25 px-3.5 py-1.5 text-xs font-medium transition hover:bg-white/10"
+                  >
+                    {p.name}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <Journey />
+  <Doctors />
   <Faq />
 </Layout>
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-picker]').forEach((root) => {
+    const chips = root.querySelectorAll<HTMLButtonElement>('[aria-pressed]');
+    const whatsapp = root.querySelector<HTMLAnchorElement>('[data-picker-whatsapp]')!;
+    const learn = root.querySelector<HTMLAnchorElement>('[data-picker-learn]')!;
+
+    chips.forEach((chip) =>
+      chip.addEventListener('click', () => {
+        chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+        whatsapp.href = chip.dataset.whatsapp!;
+        learn.href = chip.dataset.href!;
+      }),
+    );
+  });
+</script>

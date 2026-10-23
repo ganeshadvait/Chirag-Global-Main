@@ -1,7 +1,6 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import Layout from '../../layouts/Layout.astro';
-import PageHero from '../../components/PageHero.astro';
 import SectionHeader from '../../components/SectionHeader.astro';
 import TreatmentCard from '../../components/TreatmentCard.astro';
 import DoctorCard from '../../components/DoctorCard.astro';
@@ -12,6 +11,7 @@ import { SITE, digits, whatsappLink } from '../../config';
 import { TREATMENTS_LIST, type Treatment } from '../../data/treatments';
 import { DOCTORS } from '../../data/doctors';
 import { POSTS } from '../../data/blog';
+import { STATS } from '../../data/home';
 
 export const getStaticPaths = (() =>
   TREATMENTS_LIST.map((treatment) => ({ params: { slug: treatment.slug }, props: { treatment } }))) satisfies GetStaticPaths;
@@ -22,19 +22,23 @@ interface Props {
 
 const { treatment: t } = Astro.props;
 
-const toc = [
-  { id: 'overview', label: 'Overview' },
-  { id: 'symptoms', label: 'Symptoms' },
-  { id: 'causes', label: 'Causes' },
-  { id: 'treatment-options', label: 'Treatment options' },
-  { id: 'recovery', label: 'Recovery' },
-  { id: 'faq', label: 'FAQs' },
-];
-
 const others = TREATMENTS_LIST.filter((o) => o.slug !== t.slug).slice(0, 4);
 const team = DOCTORS.filter((d) => d.photo).slice(0, 4);
 const related = POSTS.filter((p) => p.treatmentSlug === t.slug);
+const rating = STATS.find((s) => s.suffix === '★');
+const ask = whatsappLink(`Hi, I need help with ${t.name.toLowerCase()}. I'd like to book an appointment.`);
+const pad = (n: number) => String(n).padStart(2, '0');
 
+const site = Astro.site ?? Astro.url;
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', site).href },
+    { '@type': 'ListItem', position: 2, name: 'Treatments', item: new URL('/treatments', site).href },
+    { '@type': 'ListItem', position: 3, name: t.navLabel },
+  ],
+};
 const pageLd = {
   '@context': 'https://schema.org',
   '@type': 'MedicalWebPage',
@@ -45,139 +49,189 @@ const pageLd = {
 ---
 
 <Layout title={`${t.name} treatment in Bengaluru`} description={`${t.short} Private consultation with colorectal specialists at ${SITE.name}, BTM 2nd Stage.`}>
-  <PageHero
-    crumbs={[{ label: 'Treatments', href: '/treatments' }, { label: t.navLabel }]}
-    eyebrow="Treatment"
-    title={t.name}
-    lead={t.short}
-    image={t.image}
-  >
-    <a href="#book" class="btn btn-lg btn-primary">Book a consultation <Icon name="arrowRight" class="size-4" /></a>
-    <a href={whatsappLink(`Hi, I need help with ${t.name.toLowerCase()}. I'd like to book an appointment.`)} target="_blank" rel="noopener" class="btn btn-lg btn-outline-light">
-      <WhatsAppIcon class="size-5" /> Ask on WhatsApp
-    </a>
-  </PageHero>
+  <!-- Hero -->
+  <section class="relative isolate overflow-hidden bg-ink-900 text-white">
+    <div aria-hidden="true" class="absolute -left-40 -top-20 -z-10 size-[30rem] rounded-full bg-brand-500/30 blur-3xl"></div>
+    <div aria-hidden="true" class="absolute -bottom-40 right-0 -z-10 size-[26rem] rounded-full bg-amber-400/10 blur-3xl"></div>
 
-  <section class="section">
-    <div class="container-x grid gap-10 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-14 xl:grid-cols-[16rem_minmax(0,1fr)_20rem]">
-      <!-- On this page -->
-      <aside class="hidden lg:block">
-        <nav aria-label="On this page" class="sticky top-28">
-          <p class="text-kicker text-brand-400">On this page</p>
-          <ul class="mt-4 space-y-1 border-l border-brand-100">
-            {
-              toc.map((s) => (
-                <li>
-                  <a href={`#${s.id}`} class="-ml-px block border-l-2 border-transparent py-1.5 pl-4 text-sm font-medium text-ink-900/70 transition hover:border-brand-500 hover:text-brand-700">
-                    {s.label}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </nav>
-      </aside>
-
-      <article class="min-w-0">
-        <section id="overview">
-          <SectionHeader eyebrow="Overview" title={`About ${t.name.toLowerCase()}`} />
-          <div class="text-lead mt-6 space-y-4">{t.overview.map((p) => <p>{p}</p>)}</div>
-        </section>
-
-        <div class="mt-14 grid gap-5 md:grid-cols-2">
-          <section id="symptoms" class="card bg-brand-50">
-            <h2 class="heading-3">Common symptoms</h2>
-            <ul class="mt-5 space-y-3">
-              {
-                t.symptoms.map((s) => (
-                  <li class="text-body flex gap-3 sm:text-base">
-                    <Icon name="check" class="mt-1 size-4 shrink-0 text-brand-600" />
-                    {s}
-                  </li>
-                ))
-              }
-            </ul>
-          </section>
-          <section id="causes" class="card bg-cream-50 ring-1 ring-cream-100">
-            <h2 class="heading-3">Common causes</h2>
-            <ul class="mt-5 space-y-3">
-              {
-                t.causes.map((c) => (
-                  <li class="text-body flex gap-3 sm:text-base">
-                    <span class="mt-2 size-1.5 shrink-0 rounded-full bg-amber-500" />
-                    {c}
-                  </li>
-                ))
-              }
-            </ul>
-          </section>
-        </div>
-
-        <section id="treatment-options" class="mt-14">
-          <SectionHeader
-            eyebrow="Treatment options"
-            title="How we can "
-            highlight="help"
-            lead="Your specialist will explain which option suits you after a private examination."
-          />
-          <ol class="mt-8 grid gap-4 sm:grid-cols-2">
-            {
-              t.options.map((o, i) => (
-                <li class="card flex flex-col border border-brand-100 bg-white">
-                  <span class="text-kicker text-brand-400">Option {String(i + 1).padStart(2, '0')}</span>
-                  <h3 class="heading-4 mt-2">{o.name}</h3>
-                  <p class="text-body mt-2">{o.text}</p>
-                </li>
-              ))
-            }
+    <div class="container-x grid gap-10 py-12 sm:py-14 lg:py-16 xl:grid-cols-[1.25fr_1fr] xl:items-center xl:gap-12">
+      <div>
+        <nav aria-label="Breadcrumb">
+          <ol class="flex flex-wrap items-center gap-1.5 text-sm text-white/60">
+            <li><a href="/" class="transition hover:text-white">Home</a></li>
+            <li class="flex items-center gap-1.5">
+              <Icon name="chevronRight" class="size-3.5 text-white/40" />
+              <a href="/treatments" class="transition hover:text-white">Treatments</a>
+            </li>
+            <li class="flex items-center gap-1.5">
+              <Icon name="chevronRight" class="size-3.5 text-white/40" />
+              <span aria-current="page" class="text-white/90">{t.navLabel}</span>
+            </li>
           </ol>
-        </section>
+        </nav>
 
-        <section id="recovery" class="mt-14">
-          <SectionHeader eyebrow="Recovery" title="What to expect " highlight="afterwards" />
-          <ul class="mt-6 grid gap-3">
-            {
-              t.recovery.map((r) => (
-                <li class="text-body flex gap-3 rounded-2xl bg-brand-50 px-5 py-4 sm:text-base">
-                  <Icon name="smile" class="mt-0.5 size-5 shrink-0 text-brand-600" />
-                  {r}
-                </li>
-              ))
-            }
-          </ul>
-        </section>
+        <ul class="mt-6 flex flex-wrap gap-2 text-xs font-semibold sm:text-sm">
+          <li class="btn-amber rounded-full px-3.5 py-1.5">Since 1986</li>
+          <li class="rounded-full border border-white/30 px-3.5 py-1.5">Private consultation</li>
+          <li class="rounded-full border border-white/30 px-3.5 py-1.5">Women surgeons</li>
+        </ul>
 
-        <aside class="mt-10 flex gap-4 rounded-3xl border border-amber-300 bg-cream-50 p-6" role="note">
-          <span class="grid size-11 shrink-0 place-items-center rounded-full bg-amber-400 text-ink-900">
-            <Icon name="shield" class="size-5" />
-          </span>
-          <div>
-            <h2 class="heading-4">When to see a doctor</h2>
-            <p class="text-body mt-1 sm:text-base">{t.whenToSee}</p>
-            <a href={`tel:${digits(SITE.emergency)}`} class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-brand-700 hover:underline">
-              <Icon name="phone" class="size-4" /> 24×7 Emergency: {SITE.emergency}
-            </a>
-          </div>
-        </aside>
-      </article>
-
-      <!-- Booking card -->
-      <aside class="lg:col-span-2 xl:col-span-1">
-        <div class="card bg-ink-900 text-white sm:p-8 xl:sticky xl:top-28">
-          <h2 class="heading-3">Talk to a specialist</h2>
-          <p class="mt-2 text-sm text-white/70">Private, one-to-one consultation. Your details are only seen by our care team.</p>
-          <div class="mt-6 grid gap-3">
-            <a href="#book" class="btn btn-primary w-full">Book an appointment</a>
-            <a href={`tel:${digits(SITE.phone)}`} class="btn btn-outline-light w-full"><Icon name="phone" class="size-4" /> Call {SITE.phone}</a>
-          </div>
-          <p class="mt-6 border-t border-white/10 pt-5 text-xs text-white/60">
-            Mon to Sat {SITE.hours.weekdays} · Sun {SITE.hours.sunday}
-          </p>
+        <h1 class="heading-1 mt-5 max-w-3xl">
+          {t.name} <span class="text-amber-400">treatment.</span>
+        </h1>
+        <p class="mt-5 max-w-2xl text-base leading-relaxed text-white/75 sm:text-lg">{t.short}</p>
+        <div class="mt-8 grid gap-3 sm:flex sm:flex-wrap">
+          <a href="#book" class="btn btn-lg btn-primary">Book Appointment <Icon name="arrowRight" class="size-4" /></a>
+          <a href={ask} target="_blank" rel="noopener" class="btn btn-lg btn-outline-light">
+            <WhatsAppIcon class="size-6 shrink-0" /> Ask a specialist
+          </a>
         </div>
+      </div>
+
+      <!-- Condition photo -->
+      <div class="relative w-full max-w-2xl xl:max-w-none">
+        <div class="relative aspect-[4/3] overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-400 via-brand-600 to-ink-800 lg:rounded-[2.5rem]">
+          {
+            t.image && (
+              <img
+                src={t.image}
+                alt=""
+                width="662"
+                height="507"
+                fetchpriority="high"
+                class="absolute inset-0 size-full object-cover"
+                onerror="this.remove()"
+              />
+            )
+          }
+          {
+            rating && (
+              <p class="absolute right-4 top-4 flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs text-ink-900 shadow-lg">
+                <Icon name="star" class="size-3.5 text-amber-500" />
+                <span class="font-bold">{rating.value}</span>
+                <span class="text-ink-900/60">{rating.label.replace(/^from /, '')}</span>
+              </p>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Overview + when to see a doctor -->
+  <section id="overview" class="section">
+    <div class="container-x grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:items-start lg:gap-16">
+      <div>
+        <SectionHeader eyebrow="Overview" title="Understanding " highlight={t.name.toLowerCase()} />
+        <div class="text-lead mt-6 space-y-4">{t.overview.map((p) => <p>{p}</p>)}</div>
+      </div>
+
+      <aside role="note" class="card bg-cream-50 ring-1 ring-amber-300 lg:mt-14">
+        <span class="btn-amber grid size-11 place-items-center rounded-xl">
+          <Icon name="shield" class="size-5" />
+        </span>
+        <h2 class="heading-3 mt-5">When to see a doctor</h2>
+        <p class="text-body mt-2 sm:text-base">{t.whenToSee}</p>
+        <a href={`tel:${digits(SITE.emergency)}`} class="btn btn-dark mt-6 w-full sm:w-auto">
+          <Icon name="phone" class="size-4" /> 24×7 Emergency: {SITE.emergency}
+        </a>
       </aside>
     </div>
   </section>
 
+  <!-- Symptoms and causes -->
+  <section class="section bg-brand-50/60">
+    <div class="container-x grid gap-10 md:grid-cols-2 md:gap-14">
+      <div id="symptoms" class="scroll-mt-28">
+        <h2 class="heading-3">Common symptoms</h2>
+        <ul class="mt-5 divide-y divide-brand-100 border-y border-brand-100">
+          {
+            t.symptoms.map((s) => (
+              <li class="text-body flex gap-3 py-3 sm:text-base">
+                <Icon name="check" class="mt-1 size-4 shrink-0 text-brand-600" />
+                {s}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div id="causes" class="scroll-mt-28">
+        <h2 class="heading-3">Common causes</h2>
+        <ul class="mt-5 divide-y divide-brand-100 border-y border-brand-100">
+          {
+            t.causes.map((c) => (
+              <li class="text-body flex gap-3 py-3 sm:text-base">
+                <span class="mt-2 size-1.5 shrink-0 rounded-full bg-amber-500"></span>
+                {c}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Treatment options -->
+  <section id="treatment-options" class="section">
+    <div class="container-x">
+      <div class="panel relative overflow-hidden bg-gradient-to-br from-ink-950 via-ink-800 to-brand-700 text-white">
+        <div aria-hidden="true" class="absolute -right-24 -top-24 size-80 rounded-full bg-brand-400/20 blur-3xl"></div>
+
+        <div class="relative">
+          <SectionHeader
+            tone="dark"
+            eyebrow="Treatment options"
+            title="How we can "
+            highlight="help"
+            lead="Your specialist recommends the gentlest option that will treat the condition completely, after a private examination."
+          >
+            <a slot="action" href="/about/advanced-technologies" class="btn btn-primary">
+              Our technologies <Icon name="arrowRight" class="size-4" />
+            </a>
+          </SectionHeader>
+
+          <ol class="section-body grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {
+              t.options.map((o, i) => (
+                <li class="relative flex flex-col rounded-3xl border border-white/15 bg-white/5 p-6">
+                  <span aria-hidden="true" class="absolute right-5 top-4 text-4xl font-black text-white/10">
+                    {pad(i + 1)}
+                  </span>
+                  <span class="text-kicker text-amber-400">Option {pad(i + 1)}</span>
+                  <h3 class="heading-4 mt-2 pr-12">{o.name}</h3>
+                  <p class="mt-2 text-sm leading-relaxed text-white/70">{o.text}</p>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recovery -->
+  <section id="recovery" class="section pt-0 sm:pt-0 lg:pt-0">
+    <div class="container-x">
+      <SectionHeader eyebrow="Recovery" title="What to expect " highlight="afterwards">
+        <a slot="action" href={ask} target="_blank" rel="noopener" class="btn btn-outline">
+          <WhatsAppIcon class="size-6 shrink-0" /> Ask about recovery
+        </a>
+      </SectionHeader>
+      <ol class="section-body grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          t.recovery.map((r, i) => (
+            <li class="card flex gap-4 bg-brand-50">
+              <span class="grid size-10 shrink-0 place-items-center rounded-full bg-ink-900 text-sm font-bold text-white">{pad(i + 1)}</span>
+              <p class="text-body pt-2 sm:text-base">{r}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Care team -->
   <section class="section bg-brand-50/60">
     <div class="container-x">
       <SectionHeader eyebrow="Your care team" title="Specialists who treat " highlight={t.name.toLowerCase()}>
@@ -197,11 +251,11 @@ const pageLd = {
           <ul class="section-body grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {related.map((p) => (
               <li>
-                <a href={`/blog/${p.slug}`} class="card group flex h-full flex-col border border-brand-100 bg-white transition hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-200/40">
+                <a href={`/blog/${p.slug}`} class="card group flex h-full flex-col bg-white ring-1 ring-brand-100 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-600/10">
                   <span class="text-kicker text-brand-400">{p.tag} · {p.readMinutes} min read</span>
                   <h3 class="heading-4 mt-2 group-hover:text-brand-700">{p.title}</h3>
                   <p class="text-body mt-2">{p.excerpt}</p>
-                  <span class="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-semibold text-brand-600">
+                  <span class="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-ink-900 group-hover:text-brand-600">
                     Read article <Icon name="arrowRight" class="size-4" />
                   </span>
                 </a>
@@ -226,5 +280,6 @@ const pageLd = {
     </div>
   </section>
 
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />
   <script is:inline type="application/ld+json" set:html={JSON.stringify(pageLd)} />
 </Layout>
