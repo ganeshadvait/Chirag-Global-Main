@@ -17,7 +17,7 @@ export interface Treatment {
   options: TreatmentOption[]; // 3–5 items
   recovery: string[]; // 3–5 short bullet items
   whenToSee: string; // 1–2 sentences: warning signs
-  faqs: FaqItem[]; // exactly 3
+  faqs: FaqItem[]; // exactly 5
 }
 
 export const TREATMENTS_LIST: Treatment[] = [
@@ -92,6 +92,14 @@ export const TREATMENTS_LIST: Treatment[] = [
         q: 'Will piles come back after treatment?',
         a: 'Piles can return, particularly if constipation and straining continue. Keeping stools soft with fibre and fluids and not sitting on the toilet for long periods helps reduce this chance.',
       },
+      {
+        q: 'How long does recovery take after a piles procedure?',
+        a: 'Recovery depends on the procedure. After day-care procedures such as laser treatment, many people return to light activities within a few days, while recovery after surgery can take longer. Your surgeon will give you advice based on your treatment.',
+      },
+      {
+        q: 'Can I see a woman doctor for piles?',
+        a: 'Yes. Our team includes women surgeons, and you can ask to see a woman specialist when you book your appointment.',
+      },
     ],
   },
   {
@@ -155,6 +163,14 @@ export const TREATMENTS_LIST: Treatment[] = [
       {
         q: 'Will it come back?',
         a: 'A fissure can return if hard stools or straining continue. Keeping your bowel habits regular and stools soft is the best way to lower this risk.',
+      },
+      {
+        q: 'How long does a fissure take to heal?',
+        a: 'Many short-lived fissures heal within a few weeks with diet changes, stool softeners and ointments. Long-standing fissures can take longer, and your specialist will review your progress at follow-up visits.',
+      },
+      {
+        q: 'What should I eat if I have a fissure?',
+        a: 'Eat plenty of fibre from fruit, vegetables, whole grains and pulses, and drink enough water through the day. This keeps stools soft so they pass without stretching the tear.',
       },
     ],
   },
@@ -223,6 +239,14 @@ export const TREATMENTS_LIST: Treatment[] = [
         q: 'Will it come back?',
         a: 'Fistulas can sometimes return, especially complex ones. Careful assessment, following wound care advice and attending follow-up visits help give the best chance of healing.',
       },
+      {
+        q: 'How long does recovery take after fistula treatment?',
+        a: 'Recovery depends on the type of fistula and the procedure used. Simple fistulas often heal within a few weeks, while complex fistulas may need more time and sometimes more than one stage of treatment.',
+      },
+      {
+        q: 'Do I need a scan before fistula treatment?',
+        a: 'Not always, but a scan such as an MRI or endoanal ultrasound is often recommended for complex or recurring fistulas. It shows the path of the tunnel so your surgeon can plan complete treatment.',
+      },
     ],
   },
   {
@@ -289,6 +313,14 @@ export const TREATMENTS_LIST: Treatment[] = [
       {
         q: 'Will I need a colonoscopy?',
         a: 'Not everyone with constipation needs a colonoscopy. It may be recommended if you have warning signs such as bleeding, weight loss, a recent change in bowel habit, or a family history of bowel cancer.',
+      },
+      {
+        q: 'What foods help with constipation?',
+        a: 'Fibre-rich foods such as fruit, vegetables, whole grains, pulses and seeds help keep stools soft. Increase fibre gradually and drink enough water, as fibre works best with fluids.',
+      },
+      {
+        q: 'When should I see a specialist for constipation?',
+        a: 'See a specialist if constipation lasts more than a few weeks despite diet changes, or comes with bleeding, weight loss or tummy pain. A specialist can look for an underlying cause and suggest the right treatment.',
       },
     ],
   },
@@ -357,6 +389,14 @@ export const TREATMENTS_LIST: Treatment[] = [
         q: 'Can bowel cancer be prevented?',
         a: 'Not all bowel cancer can be prevented, but finding and removing polyps can lower the risk. A healthy diet, regular activity, not smoking and getting symptoms checked early all help.',
       },
+      {
+        q: 'What happens at the first consultation?',
+        a: 'Your specialist will ask about your symptoms, medical history and family history, and may examine you. If tests such as a colonoscopy are needed, they will explain what each one involves.',
+      },
+      {
+        q: 'Who should consider a colonoscopy?',
+        a: 'A colonoscopy may be recommended if you have symptoms such as bleeding or a change in bowel habit, a family history of bowel cancer or polyps, or long-standing ulcerative colitis. Your doctor will advise whether it is right for you.',
+      },
     ],
   },
   {
@@ -419,6 +459,14 @@ export const TREATMENTS_LIST: Treatment[] = [
       {
         q: 'How soon can I go back to work or college?',
         a: 'This depends on the type of procedure and your type of work. Your surgeon will give you personalised advice about returning to sitting, work and exercise.',
+      },
+      {
+        q: 'Is treatment for pilonidal sinus painful?',
+        a: 'Procedures are done under anaesthesia, so you should not feel pain during treatment. Some soreness afterwards is normal and is managed with pain relief.',
+      },
+      {
+        q: 'How can I lower the chance of a pilonidal sinus?',
+        a: 'Keeping the area clean and dry, removing hair around the buttock cleft and avoiding long periods of sitting can help. Your doctor can advise which steps are most useful for you.',
       },
     ],
   },
@@ -487,6 +535,14 @@ export const TREATMENTS_LIST: Treatment[] = [
         q: 'Does ulcerative colitis increase the risk of bowel cancer?',
         a: 'Long-standing ulcerative colitis can slightly increase the risk of bowel cancer. This is why regular follow-up and, where advised, periodic colonoscopy are recommended.',
       },
+      {
+        q: 'What should I eat with ulcerative colitis?',
+        a: 'No single diet suits everyone. During flare-ups some people find softer, lower-fibre foods easier, and your doctor can help you plan a balanced diet for both flare-ups and remission.',
+      },
+      {
+        q: 'Do I need to keep taking medicines when I feel well?',
+        a: 'Often, yes. Many people take medicines long term to keep the condition in remission. Do not stop or change your medicines without speaking to your doctor first.',
+      },
     ],
   },
   {
@@ -553,6 +609,14 @@ export const TREATMENTS_LIST: Treatment[] = [
       {
         q: 'Will it come back after surgery?',
         a: 'Rectal prolapse can sometimes return after surgery. Avoiding straining, keeping stools soft and attending follow-up visits help reduce this chance.',
+      },
+      {
+        q: 'How long does recovery take after rectal prolapse surgery?',
+        a: 'Recovery depends on the type of surgery. Many people return to light activities within a few weeks, and your surgeon will advise when you can resume lifting and exercise.',
+      },
+      {
+        q: 'Can rectal prolapse affect bowel control?',
+        a: 'Yes, some people have leakage or difficulty controlling their bowels. Treating the prolapse and doing pelvic floor exercises often helps, and your specialist will explain what to expect.',
       },
     ],
   },
