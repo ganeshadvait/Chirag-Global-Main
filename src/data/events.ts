@@ -108,17 +108,17 @@ export const EVENTS: HospitalEvent[] = [
   },
   {
     slug: 'health-camp-maralegavi',
-    title: 'Free health camp at Shree Kshetra Maralegavi Mutt',
+    title: 'Health camp at Shree Kshetra Maralegavi Mutt',
     date: '2025-12-06',
     venue: 'Shree Kshetra Maralegavi Mutt, Kanakapura Taluk',
     category: 'Health camp',
-    excerpt: 'Free consultations and screening for piles, fissure, fistula and digestive health, with an overwhelming response.',
+    excerpt: 'Consultations and screening for piles, fissure, fistula and digestive health, with an overwhelming response.',
     body: [
-      'On 6 December 2025, Chirag Global Hospitals conducted a free medical camp at Shree Kshetra Maralegavi Mutt, as part of the Guruvandana Mahotsava honouring Dr. Mummadi Shivarudra Mahaswamigalu.',
+      'On 6 December 2025, Chirag Global Hospitals conducted a medical camp at Shree Kshetra Maralegavi Mutt, as part of the Guruvandana Mahotsava honouring Dr. Mummadi Shivarudra Mahaswamigalu.',
       'Our medical team offered consultations and screenings throughout the day, and the camp received an overwhelming response.',
     ],
     highlights: [
-      'Free health consultations for general health concerns',
+      'Health consultations for general health concerns',
       'Screening for piles, fissure, fistula and other anorectal conditions',
       'Evaluation of constipation, gastric and digestive problems',
       'Ayurvedic, diet and lifestyle counselling',

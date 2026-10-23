@@ -104,7 +104,7 @@ const articleLd = {
         {
           treatment && (
             <a href={`/treatments/${treatment.slug}`} class="card group block bg-brand-50 transition hover:bg-brand-100">
-              <p class="text-kicker text-brand-400">Related treatment</p>
+              <h2 class="text-kicker text-brand-400">Related treatment</h2>
               <p class="heading-4 mt-2">{treatment.name}</p>
               <p class="text-body mt-1">{treatment.short}</p>
               <span class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-brand-600">
@@ -115,7 +115,7 @@ const articleLd = {
         }
 
         <div class="card bg-ink-900 text-white">
-          <p class="heading-4">Worried about your symptoms?</p>
+          <h2 class="heading-4">Worried about your symptoms?</h2>
           <p class="mt-2 text-sm text-white/70">Book a private, one-to-one consultation with our specialists.</p>
           <div class="mt-5 grid gap-3">
             <a href="#book" class="btn btn-primary w-full">Book an appointment</a>

@@ -228,6 +228,7 @@ export const TREATMENTS_LIST: Treatment[] = [
   {
     slug: 'constipation',
     navLabel: 'Constipation',
+    image: '/treatments/constipation.webp',
     name: 'Constipation',
     short: 'Infrequent or difficult bowel movements, assessed carefully and managed with diet, medicines and specialist care.',
     overview: [
@@ -294,6 +295,7 @@ export const TREATMENTS_LIST: Treatment[] = [
   {
     slug: 'colon-cancer',
     navLabel: 'Colon Cancer',
+    image: '/treatments/colon-cancer.webp',
     name: 'Colon cancer',
     short: 'Early assessment and colonoscopy for bowel symptoms, with treatment planned alongside the specialist team.',
     overview: [
@@ -423,6 +425,7 @@ export const TREATMENTS_LIST: Treatment[] = [
   {
     slug: 'ulcerative-colitis',
     navLabel: 'Ulcerative Colitis',
+    image: '/treatments/ulcerative-colitis.webp',
     name: 'Ulcerative colitis',
     short: 'A long-term inflammatory condition of the bowel, diagnosed carefully and managed with ongoing specialist care.',
     overview: [
@@ -489,6 +492,7 @@ export const TREATMENTS_LIST: Treatment[] = [
   {
     slug: 'rectal-prolapse',
     navLabel: 'Rectal Prolapse',
+    image: '/treatments/rectal-prolapse.webp',
     name: 'Rectal prolapse',
     short: 'When the rectum slips out through the anus, assessed privately and treated with suitable surgical options.',
     overview: [

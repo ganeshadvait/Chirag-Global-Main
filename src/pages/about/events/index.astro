@@ -24,7 +24,7 @@ const photoCount = photos.length;
 const collage = [EVENTS[4]?.cover, EVENTS[0]?.cover, EVENTS[5]?.cover].filter(Boolean) as string[];
 
 const invite = [
-  { icon: 'activity', title: 'Free health camps', text: 'Screening and consultations for your community or organisation.' },
+  { icon: 'activity', title: 'Health camps', text: 'Screening and consultations for your community or organisation.' },
   { icon: 'users', title: 'Awareness talks', text: 'Practical sessions on piles, constipation and digestive health.' },
   { icon: 'clipboard', title: 'Medical education', text: 'CME sessions and guest lectures for students and doctors.' },
 ] as const;
@@ -65,7 +65,7 @@ const invite = [
           Care beyond <span class="text-amber-400">our hospital walls.</span>
         </h1>
         <p class="mt-5 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg lg:mt-6">
-          Free health camps, awareness talks, medical conferences and celebrations: how our team shares knowledge and
+          Health camps, awareness talks, medical conferences and celebrations: how our team shares knowledge and
           reaches people across Karnataka and beyond.
         </p>
         <div class="mt-8 flex flex-wrap gap-4">
@@ -223,7 +223,7 @@ const invite = [
             eyebrowClass="bg-white/70"
             title="Invite our team to "
             highlight="your community"
-            lead="We run free health camps, awareness talks and education sessions for workplaces, colleges, temples and community groups."
+            lead="We run health camps, awareness talks and education sessions for workplaces, colleges, temples and community groups."
           />
           <a href={whatsappLink('Hi, I would like to invite Chirag Global Hospitals for a health camp or talk.')} target="_blank" rel="noopener" class="btn btn-lg btn-dark mt-8">
             <WhatsAppIcon class="size-5" /> Invite us on WhatsApp
