@@ -14,7 +14,7 @@ const pillIcon = 'grid size-12 shrink-0 place-items-center rounded-full shadow-l
 
 // Mobile bar button: visible pressed/hover colour on tap.
 const barBtn =
-  'flex h-12 items-center justify-center gap-2 rounded-xl text-sm font-semibold transition duration-150 [-webkit-tap-highlight-color:transparent] active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500';
+  'flex h-12 items-center justify-center gap-2 rounded-xl text-sm font-semibold transition duration-150 [-webkit-tap-highlight-color:transparent] active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400';
 ---
 
 <!-- Desktop: always-visible stack in the bottom-right corner -->
@@ -45,7 +45,7 @@ const barBtn =
 <nav
   aria-label="Quick contact"
   data-contact-bar
-  class="fixed inset-x-0 bottom-0 z-30 border-t border-brand-100 bg-white/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_24px_-12px_rgb(35_27_63/0.25)] backdrop-blur lg:hidden"
+  class="fixed inset-x-0 bottom-0 z-30 border-t border-white/10 bg-ink-900 pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_24px_-12px_rgb(35_27_63/0.5)] lg:hidden"
 >
   <ul class="grid grid-cols-3 gap-2 p-2">
     <li>
@@ -54,7 +54,7 @@ const barBtn =
         target="_blank"
         rel="noopener"
         aria-label="Chat on WhatsApp"
-        class:list={[barBtn, 'bg-[#e9f9ec] text-ink-900 hover:bg-[#d3f3d9] active:bg-[#bdecc6]']}
+        class:list={[barBtn, 'bg-[#128c7e] text-white hover:bg-[#0f7a6e] active:bg-[#0c675d]']}
       >
         <WhatsAppIcon class="size-5" /> WhatsApp
       </a>
@@ -65,7 +65,7 @@ const barBtn =
         target="_blank"
         rel="noopener"
         aria-label="Get directions"
-        class:list={[barBtn, 'bg-brand-50 text-brand-700 hover:bg-brand-100 active:bg-brand-200']}
+        class:list={[barBtn, 'bg-brand-600 text-white hover:bg-brand-500 active:bg-brand-700']}
       >
         <Icon name="pin" class="size-4" /> Directions
       </a>

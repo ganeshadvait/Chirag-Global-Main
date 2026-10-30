@@ -8,6 +8,7 @@ import Icon from '../../components/Icon.astro';
 import { SITE, digits } from '../../config';
 import { POSTS, type BlogPost } from '../../data/blog';
 import { getTreatment } from '../../data/treatments';
+import { publicFileExists } from '../../lib/assets';
 
 export const getStaticPaths = (() => POSTS.map((post) => ({ params: { slug: post.slug }, props: { post } }))) satisfies GetStaticPaths;
 
@@ -17,6 +18,7 @@ interface Props {
 
 const { post: p } = Astro.props;
 const treatment = getTreatment(p.treatmentSlug);
+const hasCover = publicFileExists(p.image);
 const more = POSTS.filter((o) => o.slug !== p.slug);
 const sectionId = (heading: string) => heading.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
@@ -40,9 +42,13 @@ const articleLd = {
   <section class="section">
     <div class="container-x grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16">
       <article class="min-w-0 max-w-3xl">
-        <div class="relative mb-10 aspect-[16/8] overflow-hidden rounded-3xl bg-gradient-to-br from-brand-300 to-brand-700">
-          <img src={p.image} alt="" class="size-full object-cover" onerror="this.parentElement.remove()" />
-        </div>
+        {
+          hasCover && (
+            <div class="relative mb-10 aspect-[16/8] overflow-hidden rounded-3xl bg-gradient-to-br from-brand-300 to-brand-700">
+              <img decoding="async" src={p.image} alt="" class="size-full object-cover" onerror="this.parentElement.remove()" />
+            </div>
+          )
+        }
 
         <aside class="card bg-brand-50" aria-label="Key takeaways">
           <h2 class="heading-4">Key takeaways</h2>
@@ -62,7 +68,7 @@ const articleLd = {
           p.sections.map((s) => (
             <section id={sectionId(s.heading)} class="mt-12">
               <h2 class="heading-3">{s.heading}</h2>
-              <div class="text-lead mt-4 space-y-4 text-base sm:text-[17px]">
+              <div class="text-lead mt-4 space-y-4 text-base sm:text-[1.0625rem]">
                 {s.paragraphs.map((para) => <p>{para}</p>)}
               </div>
               {s.list && (

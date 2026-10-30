@@ -2,13 +2,14 @@
 // falls back to a brand gradient, so the page still renders cleanly.
 
 export const IMAGES = {
-  logo: '/Cirag-Logo-Header.png',
+  // WebP versions sized for display (originals: Cirag-Logo-Header.png, NABH-Cirag-Logo-1024x717.png,
+  // chitrag-38_transparent-logo.png, Chirag-Chairman.png)
+  logo: '/chirag-logo.webp',
   hero: '/chirag%20all%20doctors.webp',
   building: '/chirag%20hospital.webp',
-  nabh: '/NABH-Cirag-Logo-1024x717.png',
-  experience: '/chitrag-38_transparent-logo.png',
-  // Not supplied yet: these fall back to brand gradients / initials
-  chairman: '/Chirag-Chairman.png',
+  nabh: '/nabh-logo.webp',
+  experience: '/experience-38-years.webp',
+  chairman: '/chirag-chairman.webp',
 };
 
 export const STATS = [
@@ -70,19 +71,35 @@ export const JOURNEY = [
   },
 ] as const;
 
-// TODO: confirm permission to publish, or replace with recent reviews before launch
+// Google reviews, quoted word for word (including reviewers' own spelling).
+// TODO: confirm permission to publish before launch
 export const REVIEWS = [
   {
     quote:
-      'Dr Rajasekhar sir helped me a lot in diagnosing and curing my problem. He took extra time and counseled my way out of my problem.',
-    name: 'Kalyan',
+      "As a software employee, I had piles for 7 months. At Chirag Hospital, doctors explained everything clearly and suggested medicines, diet, and yoga. Within a week, my pain reduced, and now I'm doing well. Friendly doctors and caring staff—highly recommended.",
+    name: 'Syam',
     tag: 'Google review',
     tone: 'lavender',
   },
   {
-    quote: 'Hospital environment also very good especially nursing staff is extremely good.',
-    name: 'E S Naresh',
-    tag: 'Fistula treatment',
+    quote:
+      'Dr. Rajasekhar and his team are amazing—friendly, caring, and attentive. My piles surgery was handled smoothly by Dr. Rajasekhar and Dr. Pruthvija, and billing issues were resolved quickly. Highly recommend Chirag Hospital.',
+    name: 'Abddul',
+    tag: 'Google review',
+    tone: 'cream',
+  },
+  {
+    quote:
+      'I had a great experience with Dr. Rajasekhar and team. Very supportive and professional staff. Recovery was smooth and comfortable. Highly recommended for piles treatment.',
+    name: 'Sai',
+    tag: 'Google review',
+    tone: 'lavender',
+  },
+  {
+    quote:
+      "I had piles for 2 years. After treatment with Dr. Rajasekhar, I'm fully recovered. Treatment quality is excellent and worth it.",
+    name: 'Abddul',
+    tag: 'Google review',
     tone: 'cream',
   },
 ] as const;

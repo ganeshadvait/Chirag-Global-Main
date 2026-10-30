@@ -13,6 +13,7 @@ const arrow =
     <div
       class="panel grid gap-8 overflow-hidden bg-gradient-to-br from-brand-50 via-brand-100 to-brand-200/70 lg:grid-cols-[19rem_minmax(0,1fr)] lg:grid-rows-[1fr_auto] lg:gap-x-12 lg:gap-y-8"
       data-carousel
+      data-fade
       role="region"
       aria-roledescription="carousel"
       aria-label="Our doctors"
@@ -57,47 +58,5 @@ const arrow =
 </section>
 
 <script>
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-  document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((root) => {
-    const track = root.querySelector<HTMLElement>('[data-track]');
-    const prev = root.querySelector<HTMLButtonElement>('[data-prev]');
-    const next = root.querySelector<HTMLButtonElement>('[data-next]');
-    const controls = root.querySelector<HTMLElement>('[data-controls]');
-    if (!track || !prev || !next) return;
-
-    const cards = () => [...track.children] as HTMLElement[];
-    const maxScroll = () => track.scrollWidth - track.clientWidth;
-    // Card positions relative to the track's scroll origin (they match the snap points)
-    const offsets = () => cards().map((c) => c.offsetLeft - cards()[0].offsetLeft);
-
-    // Move by however many cards are fully visible, so one click = one "page"
-    const go = (dir: 1 | -1) => {
-      const list = offsets();
-      const unit = (list[1] ?? track.clientWidth) || track.clientWidth;
-      const perPage = Math.max(1, Math.floor((track.clientWidth + 1) / unit));
-      const current = list.findIndex((o) => o >= track.scrollLeft - 2);
-      const target = Math.min(Math.max((current < 0 ? list.length - 1 : current) + dir * perPage, 0), list.length - 1);
-      track.scrollTo({ left: Math.min(list[target], maxScroll()), behavior: reduceMotion.matches ? 'auto' : 'smooth' });
-    };
-
-    const update = () => {
-      const max = maxScroll();
-      const atStart = track.scrollLeft <= 2;
-      const atEnd = track.scrollLeft >= max - 2;
-      prev.disabled = atStart;
-      next.disabled = atEnd;
-      if (controls) controls.hidden = max <= 2;
-      // Fade whichever edge has more cards behind it
-      const left = atStart ? '#000' : 'transparent';
-      const right = atEnd ? '#000' : 'transparent';
-      track.style.maskImage = `linear-gradient(to right, ${left}, #000 3rem, #000 calc(100% - 3rem), ${right})`;
-    };
-
-    prev.addEventListener('click', () => go(-1));
-    next.addEventListener('click', () => go(1));
-    track.addEventListener('scroll', update, { passive: true });
-    new ResizeObserver(update).observe(track);
-    update();
-  });
+  import '../../lib/carousel';
 </script>

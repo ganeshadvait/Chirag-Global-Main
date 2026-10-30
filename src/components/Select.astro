@@ -32,18 +32,18 @@ const uid = `select-${name}-${Math.random().toString(36).slice(2, 8)}`;
     class:list={[
       'group/trigger relative block w-full cursor-pointer text-left outline-none ring-brand-400 transition focus-visible:ring-2 aria-expanded:ring-2',
       variant === 'field'
-        ? 'h-full rounded-2xl bg-brand-50 py-3.5 pl-5 pr-12'
-        : 'mt-2 rounded-xl bg-brand-50 py-3.5 pl-4 pr-11',
+        ? 'h-full rounded-2xl bg-brand-50 py-3.5 pl-5 pr-12 hover:bg-brand-100'
+        : 'mt-2 rounded-xl bg-brand-50 py-3.5 pl-4 pr-11 hover:bg-brand-100',
     ]}
   >
     {
       variant === 'field' && (
-        <span id={`${uid}-label`} class="block text-[11px] font-semibold uppercase tracking-wider text-brand-700">
+        <span id={`${uid}-label`} class="block text-[0.6875rem] font-semibold uppercase tracking-wider text-brand-700">
           {label}
         </span>
       )
     }
-    <span id={`${uid}-value`} data-select-value class:list={['block truncate text-ink-900', variant === 'field' ? 'mt-1 text-[15px]' : '']}>
+    <span id={`${uid}-value`} data-select-value class:list={['block truncate text-ink-900', variant === 'field' ? 'mt-1 text-[0.9375rem]' : '']}>
       {value}
     </span>
     <span
@@ -72,7 +72,7 @@ const uid = `select-${name}-${Math.random().toString(36).slice(2, 8)}`;
           id={`${uid}-${o.replace(/\W+/g, '-').toLowerCase()}`}
           data-value={o}
           aria-selected={o === value ? 'true' : 'false'}
-          class="group flex cursor-pointer items-center justify-between gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition data-[active]:bg-brand-50 aria-selected:text-brand-700"
+          class="group flex cursor-pointer items-center justify-between gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition hover:bg-brand-50 data-[active]:bg-brand-50 aria-selected:text-brand-700"
         >
           {o}
           <Icon name="check" class="size-4 text-brand-600 opacity-0 group-aria-selected:opacity-100" />

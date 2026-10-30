@@ -44,9 +44,9 @@ const faqLd = {
       {
         items.map((f, i) => (
           <details name={id} open={i === 0} class="group border-b border-brand-100">
-            <summary class="heading-4 flex cursor-pointer list-none items-center justify-between gap-6 py-5">
+            <summary class="group/q heading-4 flex cursor-pointer list-none items-center justify-between gap-6 py-5 transition-colors hover:text-brand-700">
               {f.q}
-              <span class="grid size-8 shrink-0 place-items-center rounded-full bg-brand-100 text-brand-700 transition group-open:bg-brand-600 group-open:text-white">
+              <span class="grid size-8 shrink-0 place-items-center rounded-full bg-brand-100 text-brand-700 transition duration-200 group-hover/q:scale-110 group-hover/q:bg-brand-200 group-open:bg-brand-600 group-open:text-white group-open:group-hover/q:bg-brand-700">
                 <Icon name="plus" class="size-4 group-open:hidden" />
                 <Icon name="minus" class="hidden size-4 group-open:block" />
               </span>

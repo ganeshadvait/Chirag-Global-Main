@@ -42,14 +42,14 @@ const isCurrent = (href: string) => href === current;
           Mon to Sat {SITE.hours.weekdays} · Sun {SITE.hours.sunday}
         </li>
         <li class="hidden lg:block">
-          <a href={`mailto:${SITE.email}`} class="flex items-center gap-2 hover:text-white">
+          <a href={`mailto:${SITE.email}`} class="flex items-center gap-2 transition-colors hover:text-white">
             <Icon name="mail" class="size-3.5 text-amber-400" />
             {SITE.email}
           </a>
         </li>
         <li class="hidden xl:block">{SITE.shortAddress}</li>
       </ul>
-      <a href={`tel:${digits(SITE.emergency)}`} class="font-semibold text-amber-400 hover:text-amber-300">
+      <a href={`tel:${digits(SITE.emergency)}`} class="font-semibold text-amber-400 transition-colors hover:text-amber-300">
         24×7 Emergency: {SITE.emergency}
       </a>
     </div>
@@ -62,14 +62,14 @@ const isCurrent = (href: string) => href === current;
     <!-- Logo with accreditation badges -->
     <div class="flex shrink-0 items-center gap-3">
       <Logo class="shadow-sm" />
-      <img
+      <img decoding="async"
         src={IMAGES.experience}
         alt="38+ years of experience"
         width="125"
         height="125"
         class="hidden size-14 drop-shadow-lg xl:block"
       />
-      <img
+      <img decoding="async"
         src={IMAGES.nabh}
         alt="NABH Entry Level certified"
         width="1024"
@@ -88,7 +88,7 @@ const isCurrent = (href: string) => href === current;
                   href={href}
                   aria-current={isCurrent(href) ? 'page' : undefined}
                   class:list={[
-                    'block whitespace-nowrap rounded-full py-2 pl-3 text-sm font-medium text-white/90 transition hover:text-white aria-[current=page]:text-amber-400 xl:pl-3.5 xl:text-[15px]',
+                    'block whitespace-nowrap rounded-full py-2 pl-3 text-sm font-medium text-white/90 transition hover:text-white aria-[current=page]:text-amber-400 xl:pl-3.5 xl:text-[0.9375rem]',
                     children ? 'pr-0.5' : 'pr-3 xl:pr-3.5',
                   ]}
                 >
@@ -144,21 +144,21 @@ const isCurrent = (href: string) => href === current;
     <div class="flex items-center gap-2 sm:gap-3">
       <a
         href={`tel:${digits(SITE.phone)}`}
-        class="grid size-11 place-items-center rounded-full border border-white/25 transition hover:bg-white/10"
+        class="grid size-11 place-items-center rounded-full border border-white/25 transition hover:border-white/60 hover:bg-white/10 active:scale-95"
         aria-label={`Call ${SITE.phone}`}
       >
         <Icon name="phone" class="size-4" />
       </a>
       <a
         href={bookHref}
-        class="btn-amber hidden rounded-full px-5 py-3 text-sm font-semibold shadow-lg shadow-amber-500/20 transition hover:brightness-105 sm:inline-block lg:hidden xl:inline-block xl:px-7 xl:text-base"
+        class="btn-amber hidden rounded-full px-5 py-3 text-sm font-semibold shadow-lg shadow-amber-500/20 transition duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-amber-500/35 hover:brightness-105 active:translate-y-0 active:scale-[0.97] sm:inline-block lg:hidden xl:inline-block xl:px-7 xl:text-base"
       >
         Book Appointment
       </a>
       <button
         type="button"
         id="nav-toggle"
-        class="grid size-11 place-items-center rounded-full border border-white/25 transition hover:bg-white/10 lg:hidden"
+        class="grid size-11 place-items-center rounded-full border border-white/25 transition hover:border-white/60 hover:bg-white/10 active:scale-95 lg:hidden"
         aria-controls="mobile-nav"
         aria-expanded="false"
         aria-label="Open menu"
@@ -176,7 +176,7 @@ const isCurrent = (href: string) => href === current;
         <button
           type="button"
           id="nav-close"
-          class="grid size-11 place-items-center rounded-full border border-white/25"
+          class="grid size-11 place-items-center rounded-full border border-white/25 transition hover:rotate-90 hover:border-white/60 hover:bg-white/10"
           aria-label="Close menu"
         >
           <Icon name="close" class="size-5" />
@@ -194,13 +194,13 @@ const isCurrent = (href: string) => href === current;
                   </summary>
                   <ul class="mb-2 ml-5 mt-1 space-y-0.5 border-l border-white/15 pl-3">
                     <li>
-                      <a href={href} class="block rounded-lg px-3 py-2 text-[15px] font-semibold text-amber-400 hover:bg-white/10" data-close-nav>
+                      <a href={href} class="block rounded-lg px-3 py-2 text-[0.9375rem] font-semibold text-amber-400 transition-colors hover:bg-white/10" data-close-nav>
                         {label} overview
                       </a>
                     </li>
                     {children.map((c) => (
                       <li>
-                        <a href={c.href} class="block rounded-lg px-3 py-2 text-[15px] text-white/80 hover:bg-white/10 hover:text-white" data-close-nav>
+                        <a href={c.href} class="block rounded-lg px-3 py-2 text-[0.9375rem] text-white/80 transition-colors hover:bg-white/10 hover:text-white" data-close-nav>
                           {c.label}
                         </a>
                       </li>
@@ -211,7 +211,7 @@ const isCurrent = (href: string) => href === current;
                 <a
                   href={href}
                   aria-current={isCurrent(href) ? 'page' : undefined}
-                  class="block rounded-xl px-4 py-3 text-lg font-medium hover:bg-white/10 aria-[current=page]:text-amber-400"
+                  class="block rounded-xl px-4 py-3 text-lg font-medium transition-colors hover:bg-white/10 aria-[current=page]:text-amber-400"
                   data-close-nav
                 >
                   {label}
@@ -222,17 +222,17 @@ const isCurrent = (href: string) => href === current;
         }
       </ul>
       <div class="mt-6 flex items-center gap-3 rounded-2xl bg-white p-3">
-        <img src={IMAGES.experience} alt="38+ years of experience" width="125" height="125" class="size-12" />
-        <img src={IMAGES.nabh} alt="NABH Entry Level certified" width="1024" height="717" class="h-11 w-auto" />
+        <img decoding="async" src={IMAGES.experience} alt="38+ years of experience" width="125" height="125" class="size-12" />
+        <img decoding="async" src={IMAGES.nabh} alt="NABH Entry Level certified" width="1024" height="717" class="h-11 w-auto" />
         <p class="text-xs font-medium text-ink-900/70">{SITE.accreditation}</p>
       </div>
       <div class="mt-auto space-y-3 pt-8">
-        <a href={bookHref} class="btn-amber block rounded-full py-3.5 text-center font-semibold" data-close-nav>
+        <a href={bookHref} class="btn-amber block rounded-full py-3.5 text-center font-semibold transition hover:brightness-105 active:scale-[0.98]" data-close-nav>
           Book Appointment
         </a>
         <a
           href={`tel:${digits(SITE.emergency)}`}
-          class="block rounded-full border border-white/25 py-3.5 text-center font-semibold"
+          class="block rounded-full border border-white/25 py-3.5 text-center font-semibold transition hover:border-white/60 hover:bg-white/10 active:scale-[0.98]"
         >
           24×7 Emergency {SITE.emergency}
         </a>

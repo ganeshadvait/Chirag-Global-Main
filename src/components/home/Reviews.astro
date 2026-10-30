@@ -4,14 +4,18 @@ import SectionHeader from '../SectionHeader.astro';
 import { REVIEWS } from '../../data/home';
 
 const stars = Array.from({ length: 5 });
+
+const arrow =
+  'grid size-11 place-items-center rounded-full bg-brand-600 text-white shadow-lg shadow-brand-600/30 transition hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 active:scale-95 disabled:cursor-not-allowed disabled:bg-white disabled:text-brand-300 disabled:shadow-none disabled:ring-1 disabled:ring-brand-200';
 ---
 
 <section id="stories" class="section">
   <div class="container-x">
     <SectionHeader eyebrow="Patient stories" title="Real patients. " highlight="Real recoveries." />
 
-    <div class="section-body grid gap-4 md:grid-cols-2 lg:grid-cols-[0.8fr_1fr_1fr] lg:gap-5">
-      <div class="card flex flex-col bg-gradient-to-br from-ink-900 to-brand-600 text-white md:col-span-2 lg:col-span-1">
+    <div class="section-body grid gap-4 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,2fr)] lg:gap-5">
+      <!-- Static rating card -->
+      <div class="card flex flex-col bg-gradient-to-br from-ink-900 to-brand-600 text-white">
         <div class="flex gap-1 text-amber-400">{stars.map(() => <Icon name="star" class="size-4" />)}</div>
         <p class="mt-4 text-6xl font-black text-amber-400 sm:text-7xl">4.7</p>
         <p class="mt-3 text-sm text-white/80">Average rating from 1,428 Google reviews</p>
@@ -25,33 +29,61 @@ const stars = Array.from({ length: 5 });
         </a>
       </div>
 
-      {
-        REVIEWS.map((r) => (
-          <figure
-            class:list={[
-              'card flex flex-col',
-              r.tone === 'cream' ? 'bg-cream-50 ring-1 ring-cream-100' : 'bg-brand-50 ring-1 ring-brand-100',
-            ]}
-          >
-            <div class="flex items-center justify-between gap-3">
-              <div class="flex gap-1 text-amber-500">{stars.map(() => <Icon name="star" class="size-3.5" />)}</div>
-              <span class="rounded-full bg-white px-3 py-1 text-xs font-medium">{r.tag}</span>
-            </div>
-            <blockquote class="mt-5 text-base leading-relaxed sm:text-lg">"{r.quote}"</blockquote>
-            <figcaption class="mt-auto flex items-center gap-3 pt-8 font-semibold">
-              <span
-                class:list={[
-                  'grid size-10 place-items-center rounded-full text-sm',
-                  r.tone === 'cream' ? 'btn-amber' : 'bg-brand-600 text-white',
-                ]}
-              >
-                {r.name[0]}
-              </span>
-              {r.name}
-            </figcaption>
-          </figure>
-        ))
-      }
+      <!-- Review carousel: 1 card per slide on mobile, 2 from tablet up -->
+      <div data-carousel role="region" aria-roledescription="carousel" aria-label="Patient reviews" class="flex min-w-0 flex-col">
+        <ul
+          data-track
+          tabindex="0"
+          aria-label="Reviews, scroll horizontally"
+          class="no-scrollbar flex flex-1 snap-x snap-mandatory gap-4 overflow-x-auto outline-none lg:gap-5"
+        >
+          {
+            REVIEWS.map((r) => (
+              <li class="w-full shrink-0 snap-start md:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-1.25rem)/2)]">
+                <figure
+                  class:list={[
+                    'card flex h-full flex-col',
+                    r.tone === 'cream' ? 'bg-cream-50 ring-1 ring-inset ring-cream-100' : 'bg-brand-50 ring-1 ring-inset ring-brand-100',
+                  ]}
+                >
+                  <div class="flex items-center justify-between gap-3">
+                    <div class="flex gap-1 text-amber-500">{stars.map(() => <Icon name="star" class="size-3.5" />)}</div>
+                    <span class="rounded-full bg-white px-3 py-1 text-xs font-medium">{r.tag}</span>
+                  </div>
+                  <blockquote class="mt-5 text-base leading-relaxed sm:text-lg">"{r.quote}"</blockquote>
+                  <figcaption class="mt-auto flex items-center gap-3 pt-8 font-semibold">
+                    <span
+                      class:list={[
+                        'grid size-10 place-items-center rounded-full text-sm',
+                        r.tone === 'cream' ? 'btn-amber' : 'bg-brand-600 text-white',
+                      ]}
+                    >
+                      {r.name[0]}
+                    </span>
+                    {r.name}
+                  </figcaption>
+                </figure>
+              </li>
+            ))
+          }
+        </ul>
+
+        <!-- Hidden automatically when every review fits on screen -->
+        <div data-controls class="mt-5 flex items-center justify-end gap-4">
+          <div class="flex items-center gap-3">
+            <button type="button" data-prev aria-label="Previous review" class={arrow}>
+              <Icon name="chevronLeft" class="size-5" />
+            </button>
+            <button type="button" data-next aria-label="Next review" class={arrow}>
+              <Icon name="chevronRight" class="size-5" />
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+<script>
+  import '../../lib/carousel';
+</script>

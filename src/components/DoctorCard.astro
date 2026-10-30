@@ -11,11 +11,11 @@ interface Props {
 const { doctor: d, as: Heading = 'h3' } = Astro.props;
 ---
 
-<article class="group/card flex h-full flex-col rounded-3xl bg-white p-2.5 text-center shadow-sm ring-1 ring-brand-100/60">
+<article class="group/card flex h-full flex-col rounded-3xl bg-white p-2.5 text-center shadow-sm ring-1 ring-brand-100/60 transition duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-600/15 hover:ring-brand-200">
   <a href={`/doctors/${d.slug}`} tabindex="-1" aria-hidden="true" class="relative grid aspect-[4/3.6] place-items-center overflow-hidden rounded-2xl bg-brand-200">
     {
       d.photo && (
-        <img
+        <img decoding="async"
           src={d.photo}
           alt=""
           width="250"
@@ -28,11 +28,11 @@ const { doctor: d, as: Heading = 'h3' } = Astro.props;
     }
     <div hidden={!!d.photo}>
       <span class="text-4xl font-black text-brand-600">{d.initials}</span>
-      <span class="mt-1 block text-[10px] text-ink-900/40">Portrait coming soon</span>
+      <span class="mt-1 block text-[0.625rem] text-ink-900/40">Portrait coming soon</span>
     </div>
   </a>
   <div class="flex flex-1 flex-col px-2 pb-3 pt-4">
-    <Heading class="heading-4">{d.name}</Heading>
+    <Heading class="heading-4 transition-colors group-hover/card:text-brand-700">{d.name}</Heading>
     <p class="mt-1.5 text-sm font-medium text-brand-600">{d.role}</p>
     {d.quals && <p class="text-meta mt-1">{d.quals}</p>}
     <div class="mt-auto pt-5">

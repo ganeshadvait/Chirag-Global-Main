@@ -2,6 +2,11 @@
 import Icon from '../Icon.astro';
 import SectionHeader from '../SectionHeader.astro';
 import { IMAGES } from '../../data/home';
+import { DOCTORS } from '../../data/doctors';
+
+// The founder's own profile page
+const founder = DOCTORS.find((d) => d.name === 'Dr. Rajasekhar M. R.');
+const founderHref = founder ? `/doctors/${founder.slug}` : '/doctors';
 ---
 
 <section id="chairman" class="section">
@@ -19,31 +24,14 @@ import { IMAGES } from '../../data/home';
         </blockquote>
 
         <p class="text-body mt-6 max-w-xl sm:text-base">
-          At Chirag Global Hospitals, we are not enthused merely by numbers, conversions or targets. We do not measure
-          our success only through profits, but through the benefits experienced by our patients and the blessings we
-          receive from them.
+          We measure our success not by numbers or profits, but by the benefits our patients experience and the
+          blessings we receive from them.
         </p>
 
-        <details class="group mt-5 max-w-xl">
-          <summary class="inline-flex cursor-pointer list-none items-center gap-3 text-sm font-semibold text-brand-700">
-            <span class="grid size-7 place-items-center rounded-full border border-amber-300 bg-white">
-              <Icon name="plus" class="size-3.5 group-open:hidden" />
-              <Icon name="minus" class="hidden size-3.5 group-open:block" />
-            </span>
-            <span class="group-open:hidden">Read the full message</span>
-            <span class="hidden group-open:inline">Show less</span>
-          </summary>
-          <div class="text-body mt-4 space-y-3 sm:text-base">
-            <p>
-              Since 1986, our focus has stayed on one area of medicine, so that every patient who walks in is seen by a
-              team that treats these conditions every day.
-            </p>
-            <p>
-              We believe a patient should understand their diagnosis and options fully before any decision is made, and
-              that every consultation deserves privacy and respect.
-            </p>
-          </div>
-        </details>
+        <p class="text-body mt-4 max-w-xl sm:text-base">
+          Since 1986, our focus has stayed on one area of medicine, so every patient is seen by a team that treats these
+          conditions every day.
+        </p>
 
         <div class="mt-8 flex flex-col gap-5 border-t border-cream-100 pt-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -51,7 +39,7 @@ import { IMAGES } from '../../data/home';
             <p class="text-meta mt-1">Founder and Chairman, Chirag Global Hospitals</p>
           </div>
           <a
-            href="/about"
+            href={founderHref}
             class="btn btn-dark"
           >
             Know more about our chairman <Icon name="arrowRight" class="size-4" />
@@ -60,7 +48,7 @@ import { IMAGES } from '../../data/home';
       </div>
 
       <div class="relative order-1 min-h-96 bg-cream-100 lg:order-2 lg:min-h-full">
-        <img
+        <img decoding="async"
           src={IMAGES.chairman}
           alt="Dr. Rajasekhar M. R., Founder and Chairman"
           loading="lazy"
@@ -77,3 +65,4 @@ import { IMAGES } from '../../data/home';
     </div>
   </div>
 </section>
+

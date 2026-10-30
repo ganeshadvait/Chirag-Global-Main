@@ -7,8 +7,8 @@ const avatars = ['RM', 'SK', 'JV', 'PB'];
 const DOCTORS_ON_TEAM = 9;
 
 const field = 'block rounded-2xl bg-brand-50 px-5 py-3.5 ring-brand-400 transition focus-within:ring-2';
-const fieldLabel = 'block text-[11px] font-semibold uppercase tracking-wider text-brand-700';
-const fieldInput = 'mt-1 w-full bg-transparent text-[15px] text-ink-900 outline-none placeholder:text-ink-900/45';
+const fieldLabel = 'block text-[0.6875rem] font-semibold uppercase tracking-wider text-brand-700';
+const fieldInput = 'mt-1 w-full bg-transparent text-[0.9375rem] text-ink-900 outline-none placeholder:text-ink-900/45';
 ---
 
 <section id="hero" aria-labelledby="hero-title" class="relative isolate overflow-hidden bg-ink-900 text-white">
@@ -19,7 +19,7 @@ const fieldInput = 'mt-1 w-full bg-transparent text-[15px] text-ink-900 outline-
   <div
     class="hero-photo absolute inset-x-0 top-0 -z-10 aspect-[4/3] sm:aspect-[16/9] lg:inset-x-auto lg:bottom-20 lg:right-0 lg:top-auto lg:aspect-[1024/522] lg:w-[84%] xl:bottom-16 xl:w-[80%]"
   >
-    <img
+    <img decoding="async"
       src={IMAGES.hero}
       alt="The Chirag Global Hospitals team of doctors"
       width="1024"

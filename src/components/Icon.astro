@@ -69,6 +69,7 @@ const { name, class: className = 'size-5', strokeWidth = 2 } = Astro.props;
   stroke-linecap="round"
   stroke-linejoin="round"
   class={className}
+  data-icon={name}
   aria-hidden="true"
   set:html={ICONS[name]}
 />

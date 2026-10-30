@@ -16,10 +16,12 @@ import { JOURNEY } from '../../data/home';
 
     <div class="section-body relative">
       <div aria-hidden="true" class="absolute inset-x-[10%] top-7 hidden border-t-2 border-dashed border-brand-200 sm:block"></div>
-      <ol role="tablist" aria-label="Treatment journey" class="no-scrollbar relative -mx-4 flex snap-x scroll-px-4 gap-2 overflow-x-auto px-4 sm:mx-0 sm:grid sm:grid-cols-5 sm:overflow-visible sm:px-0">
+      <!-- Solid line that fills up to the selected step -->
+      <div aria-hidden="true" data-step-progress class="absolute left-[10%] top-7 hidden h-0.5 w-0 rounded-full bg-amber-400 transition-[width] duration-500 ease-out sm:block"></div>
+      <ol role="tablist" aria-label="Treatment journey" class="no-scrollbar relative -mx-4 flex snap-x scroll-px-4 gap-1 overflow-x-auto px-4 py-3 sm:mx-0 sm:grid sm:grid-cols-5 sm:gap-2 sm:overflow-visible sm:px-0 sm:py-0">
         {
           JOURNEY.map((s, i) => (
-            <li class="w-28 shrink-0 snap-start sm:w-auto">
+            <li class="w-[6.5rem] shrink-0 snap-start sm:w-auto">
               <button
                 type="button"
                 role="tab"
@@ -27,15 +29,17 @@ import { JOURNEY } from '../../data/home';
                 aria-controls="journey-panel"
                 aria-selected={i === 0 ? 'true' : 'false'}
                 data-step={i}
-                class="group flex w-full flex-col items-center text-center"
+                class="group flex w-full cursor-pointer flex-col items-center rounded-2xl pb-2 text-center outline-none [-webkit-tap-highlight-color:transparent] focus-visible:ring-2 focus-visible:ring-amber-400"
               >
-                <span class="grid size-14 place-items-center rounded-full bg-ink-900 text-white ring-8 ring-brand-100 transition group-hover:scale-105 group-aria-selected:bg-amber-400 group-aria-selected:text-ink-900 group-aria-selected:ring-amber-400/25">
-                  <Icon name={s.icon} class="size-5" />
+                <span class="grid size-12 place-items-center rounded-full bg-ink-900 text-white ring-[6px] ring-brand-100 transition duration-300 ease-out sm:size-14 sm:ring-8 group-hover:-translate-y-1 group-hover:bg-brand-600 group-hover:ring-brand-200 group-hover:shadow-lg group-hover:shadow-brand-600/25 group-active:scale-95 group-aria-selected:scale-110 group-aria-selected:bg-amber-400 group-aria-selected:text-ink-900 group-aria-selected:ring-amber-400/30 group-aria-selected:shadow-lg group-aria-selected:shadow-amber-500/30 group-aria-selected:group-hover:translate-y-0">
+                  <Icon name={s.icon} class="size-5 transition-transform duration-300 group-hover:scale-110" />
                 </span>
-                <span class="text-kicker mt-4 text-brand-400">
+                <span class="text-kicker mt-4 text-brand-400 transition-colors group-hover:text-brand-600 group-aria-selected:text-amber-500">
                   STEP {String(i + 1).padStart(2, '0')}
                 </span>
-                <span class="heading-5 mt-1">{s.title}</span>
+                <span class="heading-5 mt-1 text-ink-900/70 transition-colors group-hover:text-ink-900 group-aria-selected:text-ink-900">{s.title}</span>
+                <!-- Underline marking the selected step -->
+                <span aria-hidden="true" class="mt-2 h-0.5 w-0 rounded-full bg-amber-400 transition-all duration-300 group-hover:w-4 group-hover:bg-brand-300 group-aria-selected:w-8 group-aria-selected:bg-amber-400"></span>
               </button>
             </li>
           ))
@@ -49,7 +53,7 @@ import { JOURNEY } from '../../data/home';
       aria-live="polite"
       class="card mt-10 flex flex-col gap-5 bg-brand-100/70 sm:flex-row sm:items-center sm:justify-between sm:p-8"
     >
-      <div>
+      <div data-step-body>
         <h3 class="heading-4" data-step-title>{JOURNEY[0].title}</h3>
         <p class="text-body mt-1 max-w-2xl sm:text-base" data-step-text>{JOURNEY[0].text}</p>
       </div>
@@ -67,13 +71,50 @@ import { JOURNEY } from '../../data/home';
   const text = root.querySelector('[data-step-text]');
   const cta = root.querySelector('[data-step-cta]');
 
-  tabs.forEach((tab) =>
-    tab.addEventListener('click', () => {
-      const s = steps[Number(tab.dataset.step)];
-      tabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
-      title.textContent = s.title;
-      text.textContent = s.text;
-      cta.textContent = s.cta;
-    }),
-  );
+  // Mobile: fade the right edge while more steps are off-screen
+  const list = root.querySelector('[role=tablist]');
+  const fade = () => {
+    const more = list.scrollLeft + list.clientWidth < list.scrollWidth - 4;
+    list.style.maskImage = more ? 'linear-gradient(to right, #000 75%, transparent)' : '';
+  };
+  list.addEventListener('scroll', fade, { passive: true });
+  new ResizeObserver(fade).observe(list);
+
+  const progress = root.querySelector('[data-step-progress]');
+  const body = root.querySelector('[data-step-body]');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const select = (tab, focus = false) => {
+    const i = Number(tab.dataset.step);
+    const s = steps[i];
+    if (tab.getAttribute('aria-selected') === 'true') return;
+    tabs.forEach((t) => {
+      t.setAttribute('aria-selected', String(t === tab));
+      t.tabIndex = t === tab ? 0 : -1;
+    });
+    title.textContent = s.title;
+    text.textContent = s.text;
+    cta.textContent = s.cta;
+    // Line between the dots fills up to the selected step (desktop)
+    progress.style.width = `${(i / (steps.length - 1)) * 80}%`;
+    if (!reduceMotion) {
+      body.animate([{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], { duration: 300, easing: 'ease-out' });
+      cta.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, easing: 'ease-out' });
+    }
+    if (focus) tab.focus();
+    // Mobile: the steps scroll sideways, so bring the tapped step to the middle
+    tab.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest', inline: 'center' });
+  };
+
+  tabs.forEach((tab, i) => {
+    tab.tabIndex = i === 0 ? 0 : -1;
+    tab.addEventListener('click', () => select(tab));
+    // Arrow keys move between steps, as in a standard tab list
+    tab.addEventListener('keydown', (e) => {
+      const n = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+      if (n === undefined) return;
+      e.preventDefault();
+      select(tabs[(n + tabs.length) % tabs.length], true);
+    });
+  });
 </script>

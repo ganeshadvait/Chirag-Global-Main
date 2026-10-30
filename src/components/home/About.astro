@@ -9,7 +9,7 @@ import { IMAGES, ABOUT_FEATURES } from '../../data/home';
     <!-- Photo with floating badges -->
     <div class="relative mx-auto w-full max-w-xl lg:max-w-none">
       <div class="aspect-[4/3.4] overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-200 via-brand-100 to-cream-100 lg:rounded-[2.5rem]">
-        <img
+        <img decoding="async"
           src={IMAGES.building}
           alt="Chirag Global Hospitals building in BTM 2nd Stage, Bengaluru"
           loading="lazy"
@@ -17,7 +17,7 @@ import { IMAGES, ABOUT_FEATURES } from '../../data/home';
           onerror="this.remove()"
         />
       </div>
-      <img
+      <img decoding="async"
         src={IMAGES.experience}
         alt="38+ years of experience"
         width="125"
@@ -31,7 +31,7 @@ import { IMAGES, ABOUT_FEATURES } from '../../data/home';
         <p class="text-xs text-white/80">Patient-first care since</p>
       </div>
       <div class="absolute -bottom-6 right-4 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-xl sm:right-12">
-        <img src={IMAGES.nabh} alt="" width="1024" height="717" class="h-10 w-auto object-contain" onerror="this.remove()" />
+        <img decoding="async" src={IMAGES.nabh} alt="" width="1024" height="717" class="h-10 w-auto object-contain" onerror="this.remove()" />
         <div>
           <p class="text-sm font-semibold">NABH certified</p>
           <p class="text-meta">Entry Level</p>

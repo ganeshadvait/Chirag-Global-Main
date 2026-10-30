@@ -33,10 +33,17 @@ const pageTitle = title ? `${title} | ${SITE.name}` : SITE.name;
     <link rel="icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Inter as one variable font, loaded without blocking the first paint
+         (text shows in the metric-matched fallback until it arrives) -->
     <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400..900&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..900&display=swap" />
+    </noscript>
     <title>{pageTitle}</title>
   </head>
   <body class="flex min-h-screen flex-col overflow-x-hidden bg-white pb-[calc(4rem+env(safe-area-inset-bottom))] text-ink-900 antialiased lg:pb-0">

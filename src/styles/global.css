@@ -1,8 +1,19 @@
 @import "tailwindcss";
 
+/* Local Arial tuned to Inter's metrics, shown while Inter loads, so text
+   doesn't jump or reflow when the web font swaps in */
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial");
+  ascent-override: 90.49%;
+  descent-override: 22.56%;
+  line-gap-override: 0%;
+  size-adjust: 107.06%;
+}
+
 @theme {
   /* Inter is the only typeface on the site */
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: "Inter", "Inter Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
   /* Deep indigo used for dark surfaces */
   --color-ink-950: #1a1430;
@@ -30,8 +41,19 @@
 }
 
 @layer base {
+  /* Base size for the whole site: everything is sized in rem, so this scales
+     text, spacing and sections together (93.75% = 15px instead of 16px). */
   html {
     scroll-behavior: smooth;
+    font-size: 93.75%;
+  }
+  /* iOS zooms into form fields under 16px on focus, so keep them at 16px on touch-sized screens */
+  @media (max-width: 63.999rem) {
+    input,
+    select,
+    textarea {
+      font-size: max(16px, 1em);
+    }
   }
   body {
     font-family: var(--font-sans);
@@ -41,6 +63,33 @@
   }
   summary::-webkit-details-marker {
     display: none;
+  }
+  a,
+  button,
+  summary {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Arrow icons nudge forward when their link or button is hovered */
+  [data-icon='arrowRight'] {
+    transition: transform 0.2s ease-out;
+  }
+  @media (hover: hover) {
+    a:hover [data-icon='arrowRight'],
+    button:hover [data-icon='arrowRight'] {
+      transform: translateX(3px);
+    }
+  }
+
+  /* Respect "reduce motion": keep colour changes, drop movement and animation */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 
@@ -99,7 +148,7 @@
     @apply text-base leading-snug font-semibold sm:text-lg;
   }
   .heading-5 {
-    @apply text-[15px] leading-snug font-semibold;
+    @apply text-[0.9375rem] leading-snug font-semibold;
   }
   .text-lead {
     @apply text-base leading-relaxed text-ink-900/70 sm:text-lg;
@@ -111,7 +160,7 @@
     @apply text-xs text-ink-900/60;
   }
   .text-kicker {
-    @apply text-[11px] font-bold tracking-widest uppercase;
+    @apply text-[0.6875rem] font-bold tracking-widest uppercase;
   }
 
   .panel {
@@ -121,32 +170,33 @@
     @apply rounded-3xl p-6 sm:p-7;
   }
 
+  /* Buttons: every variant lifts slightly on hover and presses in on click */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold whitespace-nowrap transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400;
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold whitespace-nowrap transition-all duration-200 ease-out hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 active:translate-y-0 active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50;
   }
   .btn-lg {
     @apply px-7 py-3.5 text-base;
   }
   .btn-primary {
-    @apply text-ink-900 shadow-lg shadow-amber-500/20 hover:brightness-105;
+    @apply text-ink-900 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/35 hover:brightness-105;
     background-image: linear-gradient(135deg, var(--color-amber-300), var(--color-amber-500));
   }
   .btn-dark {
-    @apply bg-ink-900 text-white hover:bg-ink-700;
+    @apply bg-ink-900 text-white hover:bg-ink-700 hover:shadow-lg hover:shadow-ink-900/25;
   }
   .btn-brand {
-    @apply bg-gradient-to-r from-brand-600 to-ink-700 text-white shadow-lg shadow-brand-600/25 hover:brightness-110;
+    @apply bg-gradient-to-r from-brand-600 to-ink-700 text-white shadow-lg shadow-brand-600/25 hover:shadow-xl hover:shadow-brand-600/35 hover:brightness-110;
   }
   .btn-outline {
-    @apply border border-brand-200 bg-white text-ink-900 hover:bg-brand-50;
+    @apply border border-brand-200 bg-white text-ink-900 hover:border-brand-400 hover:bg-brand-50 hover:text-brand-700 hover:shadow-md hover:shadow-brand-600/10;
   }
   .btn-outline-light {
-    @apply border border-white/30 text-white hover:bg-white/10;
+    @apply border border-white/30 text-white hover:border-white/60 hover:bg-white/10;
   }
 
   /* Pill filter button (pressed state via aria-pressed) */
   .filter-chip {
-    @apply inline-flex shrink-0 items-center gap-2 rounded-full border border-brand-200 bg-white px-4 py-2.5 text-sm font-semibold text-ink-900 transition hover:border-brand-400 aria-pressed:border-ink-900 aria-pressed:bg-ink-900 aria-pressed:text-white;
+    @apply inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-full border border-brand-200 bg-white px-4 py-2.5 text-sm font-semibold text-ink-900 transition hover:border-brand-400 hover:bg-brand-50 active:scale-[0.97] aria-pressed:border-ink-900 aria-pressed:bg-ink-900 aria-pressed:text-white;
   }
 
   .btn-amber {

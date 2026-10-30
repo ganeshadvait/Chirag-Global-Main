@@ -107,7 +107,7 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'About Us', href: '/about
           <div>
             <dt class="sr-only">Accreditation</dt>
             <dd class="flex items-center gap-2">
-              <span class="grid size-9 place-items-center rounded-lg bg-white p-1"><img src={IMAGES.nabh} alt="" width="1024" height="717" class="h-auto w-full" /></span>
+              <span class="grid size-9 place-items-center rounded-lg bg-white p-1"><img decoding="async" src={IMAGES.nabh} alt="" width="1024" height="717" class="h-auto w-full" /></span>
               <span class="text-sm font-semibold leading-tight">NABH<br /><span class="font-normal text-white/70">certified</span></span>
             </dd>
           </div>
@@ -123,7 +123,7 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'About Us', href: '/about
         <div aria-hidden="true" class="absolute -inset-x-[6%] inset-y-[24%] -rotate-[14deg] rounded-[50%] border border-white/15"></div>
 
         <div class="absolute inset-[15%] overflow-hidden rounded-full shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)] ring-[12px] ring-white/10">
-          <img src="/technologies/vrs-guided-surgery.webp" alt="Surgeons performing a visual-guided procedure at Chirag" fetchpriority="high" class="size-full scale-110 object-cover" />
+          <img decoding="async" src="/technologies/vrs-guided-surgery.webp" alt="Surgeons performing a visual-guided procedure at Chirag" fetchpriority="high" class="size-full scale-110 object-cover" />
           <div class="absolute inset-0 bg-gradient-to-t from-ink-900/50 via-transparent to-transparent"></div>
         </div>
 
@@ -146,7 +146,7 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'About Us', href: '/about
 
         <div class="absolute right-[2%] top-[22%] hidden rounded-2xl bg-amber-400 px-4 py-3 text-ink-900 shadow-xl sm:block">
           <p class="text-2xl font-black leading-none">{PROCEDURES.length}</p>
-          <p class="mt-1 text-[11px] font-semibold">advanced<br />procedures</p>
+          <p class="mt-1 text-[0.6875rem] font-semibold">advanced<br />procedures</p>
         </div>
 
         <ul class="absolute bottom-[26%] left-[-2%] hidden flex-col gap-2 sm:flex">
@@ -217,7 +217,7 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'About Us', href: '/about
               <span class="grid size-11 shrink-0 place-items-center rounded-full border border-brand-200 text-brand-600">
                 <Icon name={f.icon} class="size-5" strokeWidth={1.6} />
               </span>
-              <span class="text-xs font-semibold uppercase lg:whitespace-pre-line leading-snug tracking-wide text-ink-900/75 sm:text-[13px]">{f.text}</span>
+              <span class="text-xs font-semibold uppercase lg:whitespace-pre-line leading-snug tracking-wide text-ink-900/75 sm:text-[0.8125rem]">{f.text}</span>
             </li>
           ))
         }
@@ -257,7 +257,7 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'About Us', href: '/about
 
       <div class="relative mx-auto w-full max-w-md pt-16 lg:max-w-none">
         <div class="absolute inset-x-0 bottom-0 top-28 rounded-[2.5rem] bg-gradient-to-b from-brand-100 to-brand-200/70"></div>
-        <img
+        <img decoding="async"
           src={IMAGES.chairman}
           alt="Dr. Rajasekhar M. R., Founder and Chairman"
           width="462"
@@ -340,7 +340,7 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'About Us', href: '/about
                   ['left-0 top-[8%]', 'right-0 top-[20%]', 'left-[-2%] bottom-[22%]', 'right-[4%] bottom-[4%]'][i],
                 ]}
               >
-                <p class="text-[10px] font-bold uppercase tracking-widest text-brand-400">{s.label}</p>
+                <p class="text-[0.625rem] font-bold uppercase tracking-widest text-brand-400">{s.label}</p>
                 <p class="text-sm font-semibold">{s.value}</p>
               </div>
             ))
@@ -383,12 +383,12 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'About Us', href: '/about
             <li data-conditions={p.conditions.join(' ')}>
               <article class="flex h-full flex-col rounded-3xl border border-brand-100 bg-white p-5 transition hover:border-brand-200 hover:shadow-xl hover:shadow-brand-200/40">
                 <div class="flex justify-end">
-                  <span class="rounded-md border border-brand-300 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-brand-600">
+                  <span class="rounded-md border border-brand-300 px-2.5 py-1 text-[0.625rem] font-bold uppercase tracking-widest text-brand-600">
                     {p.short}
                   </span>
                 </div>
                 <div class:list={['mt-4 aspect-[4/3] overflow-hidden rounded-2xl', p.fit === 'contain' ? 'bg-ink-950' : 'bg-brand-50']}>
-                  <img src={p.image} alt={p.name} loading="lazy" class:list={['size-full', p.fit === 'contain' ? 'object-contain p-4' : 'object-cover']} />
+                  <img decoding="async" src={p.image} alt={p.name} loading="lazy" class:list={['size-full', p.fit === 'contain' ? 'object-contain p-4' : 'object-cover']} />
                 </div>
                 <h3 class="heading-4 mt-5">{p.name}</h3>
                 <p class="text-body mt-2">{p.text}</p>
@@ -447,7 +447,7 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'About Us', href: '/about
         <a href="/treatments/fistula" class="btn btn-lg btn-primary mt-8">Make an appointment</a>
       </div>
       <div class="relative mx-auto w-full max-w-sm">
-        <img
+        <img decoding="async"
           src={FISTULA_SCAN.image}
           alt="Endoanal ultrasound system used for 360° fistula scans"
           loading="lazy"
