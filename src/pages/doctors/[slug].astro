@@ -25,6 +25,11 @@ const intro = d.bio?.length
       'Every consultation is private and one-to-one. You will get a clear explanation of your diagnosis and options, including recovery time and cost, before any treatment decision is made.',
     ];
 
+// Profile heading: anything after the name's comma is highlighted ("About Dr. X, <proctologist in Bangalore>")
+const aboutTitle = d.aboutTitle ?? `About ${d.name}`;
+const aboutAt = aboutTitle.indexOf(', ');
+const [aboutMain, aboutHighlight] = aboutAt > 0 ? [aboutTitle.slice(0, aboutAt + 2), aboutTitle.slice(aboutAt + 2)] : [aboutTitle, ''];
+
 const physicianLd = {
   '@context': 'https://schema.org',
   '@type': 'Physician',
@@ -43,7 +48,7 @@ const physicianLd = {
     crumbs={[{ label: 'Our Doctors', href: '/doctors' }, { label: d.name }]}
     eyebrow={d.role}
     title={d.name}
-    lead={d.quals ? `${d.quals} · ${SITE.name}, ${SITE.shortAddress}` : `${SITE.name}, ${SITE.shortAddress}`}
+    lead={d.subtitle ?? (d.quals ? `${d.quals} · ${SITE.name}, ${SITE.shortAddress}` : `${SITE.name}, ${SITE.shortAddress}`)}
     image={d.photo}
     imageAlt={d.name}
     imageFit="portrait"
@@ -62,7 +67,7 @@ const physicianLd = {
   <section class="section">
     <div class="container-x grid gap-10 lg:grid-cols-[1.5fr_1fr] lg:gap-16">
       <div>
-        <SectionHeader eyebrow="Profile" title={`About ${d.name}`} />
+        <SectionHeader eyebrow="Profile" title={aboutMain} highlight={aboutHighlight} />
         <div class="text-lead mt-6 space-y-4">
           {intro.map((p) => <p>{p}</p>)}
         </div>
@@ -73,7 +78,22 @@ const physicianLd = {
               <h3 class="heading-4 mt-10">Areas of focus</h3>
               <ul class="mt-4 flex flex-wrap gap-2">
                 {d.focus.map((f) => (
-                  <li class="rounded-full bg-brand-50 px-4 py-2 text-sm font-medium text-brand-700 ring-1 ring-brand-100">{f}</li>
+                  <li class="rounded-full bg-brand-50 px-4 py-2 text-sm font-medium text-brand-700 ring-1 ring-brand-100">
+                    {typeof f === 'string'
+                      ? f
+                      : f.map((part) =>
+                          typeof part === 'string' ? (
+                            part
+                          ) : (
+                            <a
+                              href={part.href}
+                              class="underline decoration-brand-300 underline-offset-2 transition-colors hover:text-brand-500 hover:decoration-brand-500"
+                            >
+                              {part.text}
+                            </a>
+                          ),
+                        )}
+                  </li>
                 ))}
               </ul>
             </>

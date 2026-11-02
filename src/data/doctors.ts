@@ -1,5 +1,8 @@
 import { slugify } from '../lib/utils';
 
+/** A focus chip: plain text, or text with some words linking to treatment pages */
+export type FocusItem = string | (string | { text: string; href: string })[];
+
 export interface Doctor {
   slug: string;
   name: string;
@@ -8,9 +11,13 @@ export interface Doctor {
   initials: string;
   photo?: string;
   /** Areas the doctor sees patients for (shown as chips on the profile) */
-  focus: string[];
+  focus: FocusItem[];
   /** Optional longer biography paragraphs — add when supplied by the hospital */
   bio?: string[];
+  /** Optional hero line under the name (defaults to qualifications · hospital) */
+  subtitle?: string;
+  /** Optional profile heading (defaults to "About <name>") */
+  aboutTitle?: string;
   /** Hide from the "Our Doctors" menu (still gets a profile and appears in team lists) */
   hideFromMenu?: boolean;
 }
@@ -25,7 +32,23 @@ const doctors: DoctorInput[] = [
     quals: 'MBBS, MS',
     initials: 'RM',
     photo: '/doctorchiragcard.avif',
-    focus: ['Colo-proctology', 'Piles, fissure and fistula', 'Diagnosis and treatment planning'],
+    subtitle:
+      'MBBS, MS General Surgeon, Senior Colorectal Surgeon & Chief Proctologist at Chirag Global Hospitals, Bangalore',
+    aboutTitle: 'About Dr. Rajasekhar M. R., proctologist in Bangalore',
+    bio: [
+      'Dr. Rajasekhar M. R. is a highly respected colorectal surgeon with over 42 years of surgical experience, including 30+ years dedicated exclusively to colorectal and proctology practice. He is the visionary founder of Chirag Global Hospitals and a pioneer in advanced colorectal care.',
+    ],
+    focus: [
+      'Colo-proctology',
+      [
+        { text: 'Piles', href: '/treatments/piles-hemorrhoids' },
+        ', ',
+        { text: 'fissure', href: '/treatments/fissure' },
+        ' and ',
+        { text: 'fistula', href: '/treatments/fistula' },
+      ],
+      'Diagnosis and treatment planning',
+    ],
   },
   {
     name: 'Dr. Shreedevi K. N.',
@@ -33,6 +56,11 @@ const doctors: DoctorInput[] = [
     quals: 'MBBS, MS, FSGE',
     initials: 'SK',
     photo: '/doctorshreedevicard.avif',
+    subtitle: 'CEO, Chirag Global Hospitals · Colorectal Surgeon & Surgical Gastroenterologist, Bangalore',
+    aboutTitle: 'About Dr. Shreedevi K. N., Consultant Colorectal Surgeon',
+    bio: [
+      'Dr. Shreedevi K. N. is a skilled and dynamic colorectal surgeon known for her patient-centric approach and precision in surgical care. She has been closely mentored in advanced proctology and is actively contributing to next-generation leadership at Chirag Global Hospitals.',
+    ],
     focus: ['Colorectal surgery', 'Anorectal conditions', 'Colorectal cancer'],
   },
   {

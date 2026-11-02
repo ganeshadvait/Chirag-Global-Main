@@ -32,9 +32,9 @@ export const CONCERNS = [
 ];
 
 export const ABOUT_FEATURES = [
-  { icon: 'users', title: 'Experienced surgeon team', text: 'Colorectal specialists under one roof.' },
-  { icon: 'zap', title: 'Minimally invasive care', text: 'Laser and advanced techniques where suitable.' },
-  { icon: 'clock', title: 'Day-care procedures', text: 'Structured follow-up after treatment.' },
+  { icon: 'users', title: 'Expert surgeon team', text: 'Colorectal specialists under one roof.' },
+  { icon: 'zap', title: 'Minimally invasive treatment', text: 'Laser and advanced techniques where suitable.' },
+  { icon: 'clock', title: 'Day-care procedures', text: 'Go home the same day where suitable.' },
   { icon: 'lock', title: 'Private consultations', text: 'Respectful, one-to-one care.' },
 ] as const;
 
@@ -139,12 +139,12 @@ export const INTERNATIONAL = [
     points: [
       'Share reports online for a specialist review',
       'Treatment plan and cost estimate in advance',
-      'Medical visa invitation letter and documents',
+      'Medical visa invitation letter and document support',
     ],
   },
   {
     icon: 'plane',
-    label: 'Arrival in Bengaluru',
+    label: 'Arrival in Bangalore',
     heading: 'A smooth landing, with someone to meet you.',
     points: [
       'Airport pick-up on request',
@@ -157,8 +157,8 @@ export const INTERNATIONAL = [
     label: 'Your treatment',
     heading: 'Specialist care with clear updates for your family.',
     points: [
-      'Consultation and diagnosis on arrival',
-      'Procedure by the colorectal team',
+      'Consultation and diagnosis on arrival at our Bangalore hospital',
+      'Procedure by our colorectal and proctology team',
       'Regular updates in your preferred language where possible',
     ],
   },
@@ -169,7 +169,7 @@ export const INTERNATIONAL = [
     points: [
       'Fitness-to-travel review before you leave',
       'Discharge summary and medical records',
-      'Online follow-up consultations',
+      'Online follow-up consultations after you return home',
     ],
   },
 ] as const;
@@ -190,6 +190,30 @@ export const FAQS = [
   {
     q: 'What should I bring?',
     a: 'Bring any previous reports, prescriptions and a list of medicines you currently take, along with a photo ID.',
+  },
+  {
+    q: 'Will I know the cost before treatment?',
+    a: 'Yes. Once a treatment plan is agreed, we share a clear cost estimate before any procedure is scheduled.',
+  },
+];
+
+// Homepage FAQs
+export const HOME_FAQS = [
+  {
+    q: 'Which is the best hospital for piles treatment in Bangalore?',
+    a: 'Chirag Global Hospitals in BTM Layout has treated piles, fissure and fistula since 1986, with a dedicated team of proctologists and colorectal surgeons. The best hospital for you is one where the doctor explains your options clearly, so meet the team before you decide.',
+  },
+  {
+    q: 'When should I see a doctor for piles?',
+    a: 'See a doctor if you have bleeding during or after a motion, pain, a lump near the anus, or itching that does not settle. Do not assume bleeding is piles, because other conditions can cause it. An examination is the only way to know.',
+  },
+  {
+    q: 'Is piles surgery a day-care procedure?',
+    a: 'Many piles treatments, including laser and DG-HAL with RAR, can be done as day-care where suitable. Your doctor will confirm after examining you.',
+  },
+  {
+    q: 'Will my consultation be private?',
+    a: 'Yes. Every consultation is one-to-one with a specialist in a private room, and your details are only seen by the care team.',
   },
   {
     q: 'Will I know the cost before treatment?',

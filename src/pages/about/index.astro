@@ -61,7 +61,7 @@ const values = [
 const safety = [
   { icon: 'lock', title: 'Private consultation rooms', text: 'Your examination happens one-to-one, never in a shared space.' },
   { icon: 'users', title: 'Women surgeons available', text: 'Tell us your preference when you book and we will arrange it.' },
-  { icon: 'shield', title: 'NABH quality standards', text: 'Accredited processes for safety, hygiene and patient care.' },
+  { icon: 'shield', title: 'NABH quality standards', text: 'NABH certified processes for safety, hygiene and patient care.' },
   { icon: 'file', title: 'Confidential records', text: 'Your details are only seen by the team caring for you.' },
 ] as const;
 
@@ -79,7 +79,7 @@ const recentEvents = EVENTS.slice(0, 4);
 
 const news = [
   { icon: 'youtube', kind: 'In the news', title: VIDEOS[0].title, meta: VIDEOS[0].speaker, href: '/about/educational-videos' },
-  ...POSTS.slice(0, 2).map((p) => ({ icon: 'file', kind: 'In medicine', title: p.title, meta: `${p.tag} · ${p.readMinutes} min read`, href: `/blog/${p.slug}` })),
+  ...POSTS.slice(0, 2).map((p) => ({ icon: 'file', kind: 'In proctology', title: p.title, meta: `${p.tag} · ${p.readMinutes} min read`, href: `/blog/${p.slug}` })),
 ] as const;
 ---
 
@@ -116,11 +116,11 @@ const news = [
           <li class="hidden rounded-full border border-white/30 bg-ink-900/30 px-3.5 py-1.5 backdrop-blur-sm sm:block">Referral centre</li>
         </ul>
         <h1 class="heading-1 mt-5 max-w-2xl lg:mt-6">
-          Pioneers in <span class="text-amber-400">proctology and colon care.</span>
+          Discover the best <span class="text-amber-400">proctology and colon care.</span>
         </h1>
         <p class="mt-5 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg lg:mt-6">
-          For over three decades, Chirag Global Hospitals has cared for patients with piles, fistula, fissure and other
-          colorectal conditions, with privacy, a clear diagnosis and one dedicated team.
+          Chirag Global Hospitals brings 38+ years of specialist experience to piles, fistula, fissure and colorectal
+          care, with complete privacy and a clear diagnosis before any decision.
         </p>
         <div class="mt-8 flex flex-wrap gap-4">
           <a href="#book" class="btn btn-lg btn-primary">Book Appointment <Icon name="arrowRight" class="size-4" /></a>
@@ -180,15 +180,16 @@ const news = [
         </div>
       </div>
       <div>
-        <SectionHeader eyebrow="Who we are" title="A proctology and colorectal hospital built for " highlight="one purpose." />
+        <SectionHeader eyebrow="Who we are" title="A proctology and colorectal hospital, built for " highlight="one purpose." />
         <div class="text-lead mt-5 space-y-4">
           <p>
-            With over three decades of experience, Chirag Global Hospitals is a pioneer in proctology and colorectal care
-            in South India, and a referral centre for complex conditions of the anus, rectum and colon.
+            Since 1986, Chirag Global Hospitals has been a pioneer in proctology and colorectal care in South India. Our
+            experience has helped us bring innovative techniques and advanced technology to the treatment of rectal and
+            colon disorders, at our BTM Layout hospital in Bangalore.
           </p>
           <p>
-            Our team treats thousands of patients every year, using advanced, minimally invasive techniques and a
-            structured, protocol-based approach to every case.
+            Every year, our colorectal surgeons treat patients with piles, fistula, fissure, pilonidal sinus,
+            incontinence, constipation, rectal and colon cancer, IBD, IBS and other rectal and digestive disorders.
           </p>
         </div>
         <p class="text-kicker mt-8 text-brand-400">Conditions we treat</p>
@@ -281,7 +282,7 @@ const news = [
           eyebrowClass="bg-white/70"
           title="Your safety and privacy "
           highlight="come first."
-          lead="Anorectal conditions can feel personal. Every step of your care is designed to be respectful and confidential."
+          lead="Anorectal conditions can feel personal. Every step of your care at our Bangalore hospital is designed to be respectful and confidential."
         />
         <ul class="grid gap-3 sm:grid-cols-2">
           {
@@ -369,7 +370,7 @@ const news = [
   <!-- ============ News, community, medicine ============ -->
   <section class="section">
     <div class="container-x">
-      <SectionHeader eyebrow="Updates" title="In the news, in the community, " highlight="in medicine" />
+      <SectionHeader eyebrow="Updates" title="In the news, in the community, " highlight="in proctology." />
       <div class="section-body grid gap-6 lg:grid-cols-[1.4fr_1fr]">
         <ul class="divide-y divide-brand-100 rounded-3xl border border-brand-100 bg-white">
           {
@@ -438,8 +439,11 @@ const news = [
                 </span>
                 <h3 class="heading-4 mt-5">{l.label}</h3>
                 <p class:list={['mt-1 text-sm leading-relaxed', i === 0 ? 'text-white/70' : 'text-ink-900/70']}>{l.text}</p>
-                <span class:list={['mt-auto inline-flex items-center gap-2 pt-5 text-sm font-semibold', i === 0 ? 'text-amber-400' : 'text-brand-600']}>
-                  Explore <Icon name="arrowRight" class="size-4 transition group-hover:translate-x-1" />
+                <span class:list={['mt-auto block pt-5 text-sm font-semibold', i === 0 ? 'text-amber-400' : 'text-brand-600']}>
+                  Explore {l.label.toLowerCase().split(' ').slice(0, -1).join(' ')}{' '}
+                  <span class="whitespace-nowrap">
+                    {l.label.toLowerCase().split(' ').at(-1)}<Icon name="arrowRight" class="ml-1.5 inline size-4 align-[-0.2em] transition group-hover:translate-x-1" />
+                  </span>
                 </span>
               </a>
             </li>

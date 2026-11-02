@@ -11,13 +11,18 @@ export interface Treatment {
   navLabel: string; // menu label
   short: string; // one sentence for cards (max ~20 words)
   image?: string;
+  h1: string; // page H1, e.g. 'Piles treatment in Bangalore'
+  overviewTitle: string; // overview H2, e.g. 'What are piles (haemorrhoids)?'
+  whenToSeeTitle: string; // heading of the amber "when to see a doctor" card
+  symptomsTitle: string;
+  causesTitle: string;
   overview: string[]; // 2 paragraphs, plain language
   symptoms: string[]; // 5–7 short bullet items
   causes: string[]; // 4–6 short bullet items
   options: TreatmentOption[]; // 3–5 items
   recovery: string[]; // 3–5 short bullet items
   whenToSee: string; // 1–2 sentences: warning signs
-  faqs: FaqItem[]; // exactly 5
+  faqs: FaqItem[]; // exactly 6
 }
 
 export const TREATMENTS_LIST: Treatment[] = [
@@ -25,12 +30,16 @@ export const TREATMENTS_LIST: Treatment[] = [
     slug: 'piles-hemorrhoids',
     navLabel: 'Piles/Hemorrhoids',
     name: 'Piles (haemorrhoids)',
-    short:
-      'Swollen veins causing pain and bleeding, treated with laser and DG-HAL with RAR as a day-care procedure where suitable.',
+    short: 'Swollen veins causing pain and bleeding, treated with laser and DG-HAL with RAR as a day-care procedure where suitable.',
     image: '/piles.webp',
+    h1: 'Piles treatment in Bangalore',
+    overviewTitle: 'What are piles (haemorrhoids)?',
+    whenToSeeTitle: 'When to see a doctor for piles',
+    symptomsTitle: 'Common symptoms of piles',
+    causesTitle: 'Common causes of piles',
     overview: [
-      "Piles, or haemorrhoids, are swollen blood vessels in and around the back passage (anus and lower rectum). They are very common, affect people of all ages, and are nothing to be embarrassed about. Many people live with them for years before seeking help, but most cases can be treated effectively.",
-      "Piles can be internal (inside the back passage) or external (under the skin around the anus). Mild piles often settle with simple changes to diet and toilet habits. Larger or persistent piles may need a procedure. At Chirag Global Hospitals, your specialist will examine you privately, explain what is causing your symptoms and discuss the options that suit you.",
+      'Piles, or haemorrhoids, are swollen blood vessels in and around the back passage (anus and lower rectum). They are very common, affect people of all ages, and are nothing to be embarrassed about. Many people live with them for years before seeking help, but most cases can be treated effectively.',
+      'Piles can be internal (inside the back passage) or external (under the skin around the anus). Mild piles often settle with simple changes to diet and toilet habits. Larger or persistent piles may need a procedure. At Chirag Global Hospitals in Bangalore, your specialist will examine you privately, explain what is causing your symptoms and discuss the options that suit you.',
     ],
     symptoms: [
       'Bright red blood on toilet paper or in the pan after passing stool',
@@ -100,6 +109,10 @@ export const TREATMENTS_LIST: Treatment[] = [
         q: 'Can I see a woman doctor for piles?',
         a: 'Yes. Our team includes women surgeons, and you can ask to see a woman specialist when you book your appointment.',
       },
+      {
+        q: 'How much does piles treatment cost in Bangalore?',
+        a: 'The cost depends on the type of piles, the procedure chosen and how long you stay. After your examination, we explain your options and share a clear cost estimate before any procedure is scheduled.',
+      },
     ],
   },
   {
@@ -108,9 +121,14 @@ export const TREATMENTS_LIST: Treatment[] = [
     name: 'Anal fissure',
     short: 'A small tear causing sharp pain, treated with care for lasting comfort.',
     image: '/anal%20fissure.webp',
+    h1: 'Anal fissure treatment in Bangalore',
+    overviewTitle: 'What is an anal fissure?',
+    whenToSeeTitle: 'When to see a doctor for an anal fissure',
+    symptomsTitle: 'Common symptoms of an anal fissure',
+    causesTitle: 'Common causes of an anal fissure',
     overview: [
-      "An anal fissure is a small tear in the thin, delicate lining of the anus. It often causes a sharp, cutting pain when passing stool, which can last for some time afterwards. Fissures are common and, although they can be very uncomfortable, they are treatable.",
-      "Many fissures are short-lived (acute) and heal within a few weeks with simple measures. If a fissure does not heal, it may become long-standing (chronic), and the muscle around the anus can go into spasm, which slows healing. Our specialists offer specialised care for fissures, starting with gentle, non-surgical treatment wherever possible.",
+      'An anal fissure is a small tear in the thin, delicate lining of the anus. It often causes a sharp, cutting pain when passing stool, which can last for some time afterwards. Fissures are common and, although they can be very uncomfortable, they are treatable.',
+      'Many fissures are short-lived (acute) and heal within a few weeks with simple measures. If a fissure does not heal, it may become long-standing (chronic), and the muscle around the anus can go into spasm, which slows healing. Our specialists in Bangalore offer specialised care for fissures, starting with gentle, non-surgical treatment wherever possible.',
     ],
     symptoms: [
       'Sharp pain during and after passing stool',
@@ -172,6 +190,10 @@ export const TREATMENTS_LIST: Treatment[] = [
         q: 'What should I eat if I have a fissure?',
         a: 'Eat plenty of fibre from fruit, vegetables, whole grains and pulses, and drink enough water through the day. This keeps stools soft so they pass without stretching the tear.',
       },
+      {
+        q: 'How much does fissure treatment cost in Bangalore?',
+        a: 'The cost depends on whether you need medicines alone or a procedure. After your examination, we explain your options and share a clear cost estimate before any procedure is scheduled.',
+      },
     ],
   },
   {
@@ -180,9 +202,14 @@ export const TREATMENTS_LIST: Treatment[] = [
     name: 'Anal fistula',
     short: 'An infected tunnel, treated with fistulotomy, fistulectomy and advanced options.',
     image: '/anal%20fistula.webp',
+    h1: 'Anal fistula treatment in Bangalore',
+    overviewTitle: 'What is an anal fistula?',
+    whenToSeeTitle: 'When to see a doctor for an anal fistula',
+    symptomsTitle: 'Common symptoms of an anal fistula',
+    causesTitle: 'Common causes of an anal fistula',
     overview: [
-      "An anal fistula is a small tunnel that forms between the inside of the back passage and the skin near the anus. It usually develops after an anal abscess (a collection of pus) that has burst or been drained. Fistulas are not caused by poor hygiene, and they are a well-recognised, treatable condition.",
-      "Fistulas rarely heal on their own, so most need a procedure. Some fistulas are simple and close to the skin, while others are complex and pass through more of the sphincter muscle that controls bowel control. Your surgeon will assess the fistula carefully and plan treatment that aims to heal it while protecting continence.",
+      'An anal fistula is a small tunnel that forms between the inside of the back passage and the skin near the anus. It usually develops after an anal abscess (a collection of pus) that has burst or been drained. Fistulas are not caused by poor hygiene, and they are a well-recognised, treatable condition.',
+      'Fistulas rarely heal on their own, so most need a procedure. Some fistulas are simple and close to the skin, while others are complex and pass through more of the sphincter muscle that controls bowel control. At Chirag Global Hospitals in Bangalore, your surgeon will assess the fistula carefully and plan treatment that aims to heal it while protecting continence.',
     ],
     symptoms: [
       'An opening in the skin near the anus that may discharge pus or blood',
@@ -195,7 +222,7 @@ export const TREATMENTS_LIST: Treatment[] = [
     causes: [
       'A previous anal abscess, which is the most common cause',
       'Infection of the small glands inside the anus',
-      "Inflammatory bowel conditions such as Crohn's disease",
+      'Inflammatory bowel conditions such as Crohn\'s disease',
       'Previous surgery or injury in the area',
       'Less commonly, infections such as tuberculosis',
     ],
@@ -247,6 +274,10 @@ export const TREATMENTS_LIST: Treatment[] = [
         q: 'Do I need a scan before fistula treatment?',
         a: 'Not always, but a scan such as an MRI or endoanal ultrasound is often recommended for complex or recurring fistulas. It shows the path of the tunnel so your surgeon can plan complete treatment.',
       },
+      {
+        q: 'How much does fistula treatment cost in Bangalore?',
+        a: 'The cost depends on the type of fistula, any scan needed and the procedure chosen. After your examination, we explain your options and share a clear cost estimate before any procedure is scheduled.',
+      },
     ],
   },
   {
@@ -255,9 +286,14 @@ export const TREATMENTS_LIST: Treatment[] = [
     image: '/treatments/constipation.webp',
     name: 'Constipation',
     short: 'Infrequent or difficult bowel movements, assessed carefully and managed with diet, medicines and specialist care.',
+    h1: 'Constipation treatment in Bangalore',
+    overviewTitle: 'What is constipation?',
+    whenToSeeTitle: 'When to see a doctor for constipation',
+    symptomsTitle: 'Common symptoms of constipation',
+    causesTitle: 'Common causes of constipation',
     overview: [
-      "Constipation means passing stools less often than usual, or having stools that are hard, dry and difficult to pass. It is very common and affects people of all ages. Occasional constipation is usually not serious, but long-term constipation can affect your comfort and quality of life.",
-      "Constipation can also lead to other problems such as piles and fissures. Most cases improve with changes to diet and routine, and sometimes medicines. If constipation is long-standing or comes with other symptoms, your specialist may recommend tests to find the cause.",
+      'Constipation means passing stools less often than usual, or having stools that are hard, dry and difficult to pass. It is very common and affects people of all ages. Occasional constipation is usually not serious, but long-term constipation can affect your comfort and quality of life.',
+      'Constipation can also lead to other problems such as piles and fissures. Most cases improve with changes to diet and routine, and sometimes medicines. If constipation is long-standing or comes with other symptoms, your specialist at Chirag Global Hospitals in Bangalore may recommend tests to find the cause.',
     ],
     symptoms: [
       'Passing stools fewer than three times a week',
@@ -322,6 +358,10 @@ export const TREATMENTS_LIST: Treatment[] = [
         q: 'When should I see a specialist for constipation?',
         a: 'See a specialist if constipation lasts more than a few weeks despite diet changes, or comes with bleeding, weight loss or tummy pain. A specialist can look for an underlying cause and suggest the right treatment.',
       },
+      {
+        q: 'How much does constipation treatment cost in Bangalore?',
+        a: 'The cost depends on the tests needed and your treatment plan. After your assessment, we explain your options and share a clear cost estimate before any tests or procedures are scheduled.',
+      },
     ],
   },
   {
@@ -330,9 +370,14 @@ export const TREATMENTS_LIST: Treatment[] = [
     image: '/treatments/colon-cancer.webp',
     name: 'Colon cancer',
     short: 'Early assessment and colonoscopy for bowel symptoms, with treatment planned alongside the specialist team.',
+    h1: 'Colon cancer treatment in Bangalore',
+    overviewTitle: 'What is colon cancer?',
+    whenToSeeTitle: 'When to see a doctor about bowel symptoms',
+    symptomsTitle: 'Common symptoms of colon cancer',
+    causesTitle: 'Common risk factors for colon cancer',
     overview: [
-      "Colon cancer, also called bowel or colorectal cancer, starts in the large bowel (colon) or rectum. It often develops slowly from small growths called polyps. Finding and removing polyps, or detecting cancer early, gives the best chance of successful treatment.",
-      "Many bowel symptoms are caused by common conditions such as piles, but some symptoms should always be checked. Our colorectal specialists can assess your symptoms, arrange a colonoscopy where needed and, if cancer is found, plan your treatment with the wider specialist team.",
+      'Colon cancer, also called bowel or colorectal cancer, starts in the large bowel (colon) or rectum. It often develops slowly from small growths called polyps. Finding and removing polyps, or detecting cancer early, gives the best chance of successful treatment.',
+      'Many bowel symptoms are caused by common conditions such as piles, but some symptoms should always be checked. Our colorectal specialists in Bangalore can assess your symptoms, arrange a colonoscopy where needed and, if cancer is found, plan your treatment with the wider specialist team.',
     ],
     symptoms: [
       'Blood in the stool or bleeding from the back passage',
@@ -397,6 +442,10 @@ export const TREATMENTS_LIST: Treatment[] = [
         q: 'Who should consider a colonoscopy?',
         a: 'A colonoscopy may be recommended if you have symptoms such as bleeding or a change in bowel habit, a family history of bowel cancer or polyps, or long-standing ulcerative colitis. Your doctor will advise whether it is right for you.',
       },
+      {
+        q: 'How much does colon cancer treatment cost in Bangalore?',
+        a: 'The cost depends on the tests needed, such as a colonoscopy, and on the stage of the condition and the treatment planned. After your assessment, we explain your options and share a clear cost estimate before any procedure is scheduled.',
+      },
     ],
   },
   {
@@ -405,9 +454,14 @@ export const TREATMENTS_LIST: Treatment[] = [
     name: 'Pilonidal sinus',
     short: 'A painful cyst near the tailbone, treated minimally invasively.',
     image: '/pilonidal%20sinus.webp',
+    h1: 'Pilonidal sinus treatment in Bangalore',
+    overviewTitle: 'What is a pilonidal sinus?',
+    whenToSeeTitle: 'When to see a doctor for a pilonidal sinus',
+    symptomsTitle: 'Common symptoms of a pilonidal sinus',
+    causesTitle: 'Common causes of a pilonidal sinus',
     overview: [
-      "A pilonidal sinus is a small hole or tunnel in the skin at the top of the cleft between the buttocks, near the tailbone. It often contains hair and skin debris, and can become infected, forming a painful abscess. It is most common in young adults, especially men, and in people with thick body hair.",
-      "Some pilonidal sinuses cause no symptoms, while others lead to repeated infections. Treatment depends on whether the sinus is infected and how often it causes problems. Minimally invasive options can be used where suitable, and your surgeon will discuss the approach that best fits your situation.",
+      'A pilonidal sinus is a small hole or tunnel in the skin at the top of the cleft between the buttocks, near the tailbone. It often contains hair and skin debris, and can become infected, forming a painful abscess. It is most common in young adults, especially men, and in people with thick body hair.',
+      'Some pilonidal sinuses cause no symptoms, while others lead to repeated infections. Treatment depends on whether the sinus is infected and how often it causes problems. At Chirag Global Hospitals in Bangalore, minimally invasive options can be used where suitable, and your surgeon will discuss the approach that best fits your situation.',
     ],
     symptoms: [
       'Pain and swelling near the tailbone',
@@ -468,6 +522,10 @@ export const TREATMENTS_LIST: Treatment[] = [
         q: 'How can I lower the chance of a pilonidal sinus?',
         a: 'Keeping the area clean and dry, removing hair around the buttock cleft and avoiding long periods of sitting can help. Your doctor can advise which steps are most useful for you.',
       },
+      {
+        q: 'How much does pilonidal sinus treatment cost in Bangalore?',
+        a: 'The cost depends on whether the sinus is infected and on the procedure chosen. After your examination, we explain your options and share a clear cost estimate before any procedure is scheduled.',
+      },
     ],
   },
   {
@@ -476,9 +534,14 @@ export const TREATMENTS_LIST: Treatment[] = [
     image: '/treatments/ulcerative-colitis.webp',
     name: 'Ulcerative colitis',
     short: 'A long-term inflammatory condition of the bowel, diagnosed carefully and managed with ongoing specialist care.',
+    h1: 'Ulcerative colitis treatment in Bangalore',
+    overviewTitle: 'What is ulcerative colitis?',
+    whenToSeeTitle: 'When to see a doctor for ulcerative colitis',
+    symptomsTitle: 'Common symptoms of ulcerative colitis',
+    causesTitle: 'What causes ulcerative colitis?',
     overview: [
-      "Ulcerative colitis is a long-term condition in which the lining of the large bowel (colon) and rectum becomes inflamed and develops small ulcers. It is a type of inflammatory bowel disease (IBD). Symptoms often come and go, with periods of flare-ups and periods of few or no symptoms (remission).",
-      "There is currently no simple cure, but with the right diagnosis and treatment, many people control their symptoms well and lead full lives. Diagnosis usually involves a colonoscopy with biopsies, and treatment is planned with your specialist team and adjusted over time.",
+      'Ulcerative colitis is a long-term condition in which the lining of the large bowel (colon) and rectum becomes inflamed and develops small ulcers. It is a type of inflammatory bowel disease (IBD). Symptoms often come and go, with periods of flare-ups and periods of few or no symptoms (remission).',
+      'There is currently no simple cure, but with the right diagnosis and treatment, many people control their symptoms well and lead full lives. At Chirag Global Hospitals in Bangalore, diagnosis usually involves a colonoscopy with biopsies, and treatment is planned with your specialist team and adjusted over time.',
     ],
     symptoms: [
       'Diarrhoea, often with blood or mucus',
@@ -543,6 +606,10 @@ export const TREATMENTS_LIST: Treatment[] = [
         q: 'Do I need to keep taking medicines when I feel well?',
         a: 'Often, yes. Many people take medicines long term to keep the condition in remission. Do not stop or change your medicines without speaking to your doctor first.',
       },
+      {
+        q: 'How much does ulcerative colitis treatment cost in Bangalore?',
+        a: 'The cost depends on the tests needed and on the medicines and follow-up in your treatment plan. After your assessment, we explain your options and share a clear cost estimate before any tests or procedures are scheduled.',
+      },
     ],
   },
   {
@@ -551,9 +618,14 @@ export const TREATMENTS_LIST: Treatment[] = [
     image: '/treatments/rectal-prolapse.webp',
     name: 'Rectal prolapse',
     short: 'When the rectum slips out through the anus, assessed privately and treated with suitable surgical options.',
+    h1: 'Rectal prolapse treatment in Bangalore',
+    overviewTitle: 'What is rectal prolapse?',
+    whenToSeeTitle: 'When to see a doctor for rectal prolapse',
+    symptomsTitle: 'Common symptoms of rectal prolapse',
+    causesTitle: 'Common causes of rectal prolapse',
     overview: [
-      "Rectal prolapse happens when part or all of the rectum (the last part of the bowel) slips down and comes out through the anus. At first it may only happen when passing stools and go back on its own, but over time it may need to be pushed back or may stay outside.",
-      "Rectal prolapse is more common in older women, but it can affect anyone. It can feel distressing and embarrassing, but it is a recognised condition that specialists treat regularly. Treatment usually involves surgery, and your surgeon will explain the options in a private consultation.",
+      'Rectal prolapse happens when part or all of the rectum (the last part of the bowel) slips down and comes out through the anus. At first it may only happen when passing stools and go back on its own, but over time it may need to be pushed back or may stay outside.',
+      'Rectal prolapse is more common in older women, but it can affect anyone. It can feel distressing and embarrassing, but it is a recognised condition that specialists treat regularly. Treatment usually involves surgery, and your surgeon at Chirag Global Hospitals in Bangalore will explain the options in a private consultation.',
     ],
     symptoms: [
       'A lump or bulge coming out of the anus, especially when passing stools',
@@ -617,6 +689,10 @@ export const TREATMENTS_LIST: Treatment[] = [
       {
         q: 'Can rectal prolapse affect bowel control?',
         a: 'Yes, some people have leakage or difficulty controlling their bowels. Treating the prolapse and doing pelvic floor exercises often helps, and your specialist will explain what to expect.',
+      },
+      {
+        q: 'How much does rectal prolapse treatment cost in Bangalore?',
+        a: 'The cost depends on the type of surgery and how long you stay. After your examination, we explain your options and share a clear cost estimate before any procedure is scheduled.',
       },
     ],
   },

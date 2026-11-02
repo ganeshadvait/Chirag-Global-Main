@@ -11,6 +11,7 @@ import Videos from '../components/home/Videos.astro';
 import International from '../components/home/International.astro';
 import Articles from '../components/home/Articles.astro';
 import Faq from '../components/home/Faq.astro';
+import { HOME_FAQS } from '../data/home';
 ---
 
 <Layout title="Piles, Fissure and Fistula Specialists in Bengaluru" overlayHeader>
@@ -24,5 +25,5 @@ import Faq from '../components/home/Faq.astro';
   <Videos />
   <International />
   <Articles />
-  <Faq />
+  <Faq items={HOME_FAQS} title="Questions Patients " highlight="Often Ask" />
 </Layout>
