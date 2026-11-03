@@ -8,7 +8,11 @@ import { SITE } from '../config';
 
 interface Props {
   title?: string;
+  /** Complete <title> used exactly as given (no " | Chirag Global Hospitals" suffix), e.g. an SEO meta title */
+  metaTitle?: string;
   description?: string;
+  /** Primary SEO keyword(s) for the page */
+  keywords?: string;
   /** Let the header float over a full-bleed hero */
   overlayHeader?: boolean;
   /** Show the "Book your visit" section above the footer (default true) */
@@ -17,8 +21,8 @@ interface Props {
   bookingMap?: boolean;
 }
 
-const { title, description = SITE.description, overlayHeader = false, booking = true, bookingMap = false } = Astro.props;
-const pageTitle = title ? `${title} | ${SITE.name}` : SITE.name;
+const { title, metaTitle, description = SITE.description, keywords, overlayHeader = false, booking = true, bookingMap = false } = Astro.props;
+const pageTitle = metaTitle ?? (title ? `${title} | ${SITE.name}` : SITE.name);
 ---
 
 <!doctype html>
@@ -27,6 +31,7 @@ const pageTitle = title ? `${title} | ${SITE.name}` : SITE.name;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    {keywords && <meta name="keywords" content={keywords} />}
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#231b3f" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

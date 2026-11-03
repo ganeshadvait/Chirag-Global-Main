@@ -12,6 +12,9 @@ export interface Treatment {
   short: string; // one sentence for cards (max ~20 words)
   image?: string;
   h1: string; // page H1, e.g. 'Piles treatment in Bangalore'
+  keyword: string; // primary SEO keyword
+  metaTitle: string; // SEO <title>, used exactly as written
+  metaDescription: string;
   overviewTitle: string; // overview H2, e.g. 'What are piles (haemorrhoids)?'
   whenToSeeTitle: string; // heading of the amber "when to see a doctor" card
   symptomsTitle: string;
@@ -33,6 +36,10 @@ export const TREATMENTS_LIST: Treatment[] = [
     short: 'Swollen veins causing pain and bleeding, treated with laser and DG-HAL with RAR as a day-care procedure where suitable.',
     image: '/piles.webp',
     h1: 'Piles treatment in Bangalore',
+    keyword: 'piles treatment in Bangalore',
+    metaTitle: 'Piles Treatment in Bangalore | Chirag Global Hospitals',
+    metaDescription:
+      'Piles (haemorrhoids) treatment in Bangalore with laser and DG-HAL, day-care where suitable. Private consultation and clear cost estimate. Book now.',
     overviewTitle: 'What are piles (haemorrhoids)?',
     whenToSeeTitle: 'When to see a doctor for piles',
     symptomsTitle: 'Common symptoms of piles',
@@ -122,6 +129,10 @@ export const TREATMENTS_LIST: Treatment[] = [
     short: 'A small tear causing sharp pain, treated with care for lasting comfort.',
     image: '/anal%20fissure.webp',
     h1: 'Anal fissure treatment in Bangalore',
+    keyword: 'anal fissure treatment in Bangalore',
+    metaTitle: 'Anal Fissure Treatment in Bangalore | Chirag Global Hospitals',
+    metaDescription:
+      'Anal fissure treatment in Bangalore with gentle non-surgical care first, then a procedure if needed. Private consultation and clear cost estimate.',
     overviewTitle: 'What is an anal fissure?',
     whenToSeeTitle: 'When to see a doctor for an anal fissure',
     symptomsTitle: 'Common symptoms of an anal fissure',
@@ -203,6 +214,10 @@ export const TREATMENTS_LIST: Treatment[] = [
     short: 'An infected tunnel, treated with fistulotomy, fistulectomy and advanced options.',
     image: '/anal%20fistula.webp',
     h1: 'Anal fistula treatment in Bangalore',
+    keyword: 'anal fistula treatment in Bangalore',
+    metaTitle: 'Anal Fistula Treatment in Bangalore | Chirag Global Hospitals',
+    metaDescription:
+      'Anal fistula not healing? Our Bangalore surgeons offer fistulotomy, fistulectomy and advanced options that aim to protect continence. Book now.',
     overviewTitle: 'What is an anal fistula?',
     whenToSeeTitle: 'When to see a doctor for an anal fistula',
     symptomsTitle: 'Common symptoms of an anal fistula',
@@ -287,6 +302,10 @@ export const TREATMENTS_LIST: Treatment[] = [
     name: 'Constipation',
     short: 'Infrequent or difficult bowel movements, assessed carefully and managed with diet, medicines and specialist care.',
     h1: 'Constipation treatment in Bangalore',
+    keyword: 'constipation treatment in Bangalore',
+    metaTitle: 'Constipation Treatment in Bangalore | Chirag Global Hospitals',
+    metaDescription:
+      'Constipation lasting weeks or hard to pass? Our Bangalore specialists find the cause and manage it with diet, medicines and care. Book a visit.',
     overviewTitle: 'What is constipation?',
     whenToSeeTitle: 'When to see a doctor for constipation',
     symptomsTitle: 'Common symptoms of constipation',
@@ -371,6 +390,10 @@ export const TREATMENTS_LIST: Treatment[] = [
     name: 'Colon cancer',
     short: 'Early assessment and colonoscopy for bowel symptoms, with treatment planned alongside the specialist team.',
     h1: 'Colon cancer treatment in Bangalore',
+    keyword: 'colon cancer treatment in Bangalore',
+    metaTitle: 'Colon Cancer Treatment in Bangalore | Chirag Global Hospitals',
+    metaDescription:
+      'Blood in stool or a lasting change in bowel habit? Get assessed in Bangalore, with colonoscopy where needed and treatment planned with specialists.',
     overviewTitle: 'What is colon cancer?',
     whenToSeeTitle: 'When to see a doctor about bowel symptoms',
     symptomsTitle: 'Common symptoms of colon cancer',
@@ -455,6 +478,10 @@ export const TREATMENTS_LIST: Treatment[] = [
     short: 'A painful cyst near the tailbone, treated minimally invasively.',
     image: '/pilonidal%20sinus.webp',
     h1: 'Pilonidal sinus treatment in Bangalore',
+    keyword: 'pilonidal sinus treatment in Bangalore',
+    metaTitle: 'Pilonidal Sinus Treatment in Bangalore | Chirag Hospitals',
+    metaDescription:
+      'Painful lump or swelling near the tailbone? Our Bangalore surgeons offer minimally invasive treatment where suitable.',
     overviewTitle: 'What is a pilonidal sinus?',
     whenToSeeTitle: 'When to see a doctor for a pilonidal sinus',
     symptomsTitle: 'Common symptoms of a pilonidal sinus',
@@ -535,6 +562,10 @@ export const TREATMENTS_LIST: Treatment[] = [
     name: 'Ulcerative colitis',
     short: 'A long-term inflammatory condition of the bowel, diagnosed carefully and managed with ongoing specialist care.',
     h1: 'Ulcerative colitis treatment in Bangalore',
+    keyword: 'ulcerative colitis treatment in Bangalore',
+    metaTitle: 'Ulcerative Colitis Treatment in Bangalore | Chirag Hospitals',
+    metaDescription:
+      'Blood or mucus in your stools with ongoing diarrhoea? Get diagnosed in Bangalore with colonoscopy and biopsies, and a plan adjusted over time.',
     overviewTitle: 'What is ulcerative colitis?',
     whenToSeeTitle: 'When to see a doctor for ulcerative colitis',
     symptomsTitle: 'Common symptoms of ulcerative colitis',
@@ -619,6 +650,10 @@ export const TREATMENTS_LIST: Treatment[] = [
     name: 'Rectal prolapse',
     short: 'When the rectum slips out through the anus, assessed privately and treated with suitable surgical options.',
     h1: 'Rectal prolapse treatment in Bangalore',
+    keyword: 'rectal prolapse treatment in Bangalore',
+    metaTitle: 'Rectal Prolapse Treatment in Bangalore | Chirag Hospitals',
+    metaDescription:
+      'Lump coming out of the anus? Our Bangalore surgeons assess rectal prolapse privately and explain suitable surgical options. Book a consultation.',
     overviewTitle: 'What is rectal prolapse?',
     whenToSeeTitle: 'When to see a doctor for rectal prolapse',
     symptomsTitle: 'Common symptoms of rectal prolapse',

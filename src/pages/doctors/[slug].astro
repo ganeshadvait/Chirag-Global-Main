@@ -42,7 +42,9 @@ const physicianLd = {
 
 <Layout
   title={`${d.name}, ${d.role}`}
-  description={`${d.name} (${d.role}${d.quals ? `, ${d.quals}` : ''}) at ${SITE.name}, BTM 2nd Stage, Bengaluru. Book a private consultation.`}
+  metaTitle={d.metaTitle}
+  keywords={d.keyword}
+  description={d.metaDescription ?? `${d.name} (${d.role}${d.quals ? `, ${d.quals}` : ''}) at ${SITE.name}, BTM 2nd Stage, Bengaluru. Book a private consultation.`}
 >
   <PageHero
     crumbs={[{ label: 'Our Doctors', href: '/doctors' }, { label: d.name }]}
