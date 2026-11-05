@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import TreatmentCard from '../../components/TreatmentCard.astro';
 import SectionHeader from '../../components/SectionHeader.astro';
-import Icon, { type IconName } from '../../components/Icon.astro';
+import Icon from '../../components/Icon.astro';
 import WhatsAppIcon from '../../components/WhatsAppIcon.astro';
 import Journey from '../../components/home/Journey.astro';
 import Doctors from '../../components/home/Doctors.astro';
@@ -26,24 +26,24 @@ const picker = [
   { label: 'Not sure', href: '#conditions', whatsapp: whatsappLink("Hi, I'm not sure what my condition is and would like to speak to a specialist.") },
 ];
 
-const approach: { icon: IconName; title: string; text: string }[] = [
+const approach: { image: string; title: string; text: string }[] = [
   {
-    icon: 'leaf',
+    image: '/icons/approach/diet-medicines.webp',
     title: 'Diet and medicines',
     text: 'Many early conditions settle with fibre, fluids, medicines and lifestyle changes. Surgery is never the first answer by default.',
   },
   {
-    icon: 'zap',
+    image: '/icons/approach/minimally-invasive-day-care.webp',
     title: 'Minimally invasive day-care',
     text: 'Laser, DGHAL, infrared coagulation, RF and harmonic surgery, chosen to suit your condition.',
   },
   {
-    icon: 'scan',
+    image: '/icons/approach/image-guided-surgery.webp',
     title: 'Image-guided surgery',
     text: '360° fistula scan and CEREG echo-guided surgery map the disease fully, so treatment is complete.',
   },
   {
-    icon: 'shield',
+    image: '/icons/approach/long-term-follow-up.webp',
     title: 'Long-term follow-up',
     text: 'Structured follow-up visits, diet guidance and integrated Ayurvedic support where helpful.',
   },
@@ -206,8 +206,8 @@ const breadcrumbLd = {
                   <span aria-hidden="true" class="absolute right-5 top-4 text-4xl font-black text-white/10">
                     {String(i + 1).padStart(2, '0')}
                   </span>
-                  <span class="btn-amber grid size-10 place-items-center rounded-xl">
-                    <Icon name={a.icon} class="size-5" />
+                  <span class="btn-amber grid size-16 place-items-center rounded-2xl">
+                    <img src={a.image} alt="" width="256" height="256" loading="lazy" decoding="async" class="size-12" />
                   </span>
                   <h3 class="heading-4 mt-5">{a.title}</h3>
                   <p class="mt-2 text-sm leading-relaxed text-white/70">{a.text}</p>
