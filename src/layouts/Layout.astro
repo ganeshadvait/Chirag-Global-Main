@@ -34,8 +34,10 @@ const pageTitle = metaTitle ?? (title ? `${title} | ${SITE.name}` : SITE.name);
     {keywords && <meta name="keywords" content={keywords} />}
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#231b3f" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- Inter as one variable font, loaded without blocking the first paint

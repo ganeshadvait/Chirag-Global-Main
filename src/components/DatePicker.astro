@@ -1,0 +1,313 @@
+---
+// Styled date + time picker matching Select.astro (button + popover calendar with time slots beside it).
+// Submits through a hidden input, so FormData sees it like a normal field.
+import Icon from './Icon.astro';
+
+interface Props {
+  name: string;
+  label: string;
+  placeholder?: string;
+  class?: string;
+}
+
+const { name, label, placeholder = 'Choose date and time', class: className } = Astro.props;
+const uid = `date-${name}-${Math.random().toString(36).slice(2, 8)}`;
+const weekdays = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+
+// Bookable hours (24h, [open, close]); keep in step with SITE.hours in config.ts
+const hours = { weekdays: [9, 19], sunday: [10, 12] };
+---
+
+<div class:list={['relative', className]} data-datepicker data-hours={JSON.stringify(hours)}>
+  <input type="hidden" name={name} />
+  <span id={`${uid}-label`} class="sr-only">{label}</span>
+
+  <button
+    type="button"
+    aria-haspopup="dialog"
+    aria-expanded="false"
+    aria-controls={`${uid}-dialog`}
+    aria-labelledby={`${uid}-label ${uid}-value`}
+    data-date-trigger
+    class="group/trigger relative block w-full cursor-pointer rounded-xl bg-brand-50 py-3.5 pl-4 pr-11 text-left outline-none ring-brand-400 transition hover:bg-brand-100 focus-visible:ring-2 aria-expanded:ring-2"
+  >
+    <span id={`${uid}-value`} data-date-value data-empty class="block truncate text-ink-900 data-[empty]:text-ink-900/55">{placeholder}</span>
+    <span class="pointer-events-none absolute right-3 top-1/2 grid size-7 -translate-y-1/2 place-items-center rounded-full bg-white text-brand-700 shadow-sm">
+      <Icon name="calendar" class="size-4" />
+    </span>
+  </button>
+
+  <!-- Phones: the picker is a bottom sheet over a dimmed page; from sm up it is a popover under the field -->
+  <div data-date-backdrop hidden class="fixed inset-0 z-[60] bg-ink-950/50 sm:hidden"></div>
+  <div
+    id={`${uid}-dialog`}
+    role="dialog"
+    aria-label={label}
+    hidden
+    data-date-dialog
+    class="fixed inset-x-0 bottom-0 z-[61] max-h-[88dvh] overflow-y-auto overscroll-contain rounded-t-3xl bg-white pb-[env(safe-area-inset-bottom)] text-ink-900 shadow-2xl shadow-ink-900/30 sm:absolute sm:inset-x-auto sm:bottom-auto sm:right-0 sm:top-full sm:z-40 sm:mt-2 sm:max-h-none sm:w-[26rem] sm:overflow-hidden sm:rounded-2xl sm:pb-0 sm:ring-1 sm:ring-brand-100 sm:data-[flip]:bottom-full sm:data-[flip]:top-auto sm:data-[flip]:mb-2 sm:data-[flip]:mt-0"
+  >
+    <div class="flex items-center justify-between border-b border-brand-100 px-4 py-3 sm:hidden">
+      <p class="text-sm font-semibold">{label}</p>
+      <button
+        type="button"
+        data-date-close
+        aria-label="Close"
+        class="grid size-9 place-items-center rounded-full bg-brand-50 text-brand-700 transition hover:bg-brand-100"
+      >
+        <Icon name="close" class="size-4" />
+      </button>
+    </div>
+    <div class="mx-auto flex max-w-sm flex-col sm:max-w-none sm:flex-row">
+      <!-- Calendar -->
+      <div class="flex-1 p-4">
+        <div class="flex items-center justify-between gap-2">
+          <button
+            type="button"
+            data-date-prev
+            aria-label="Previous month"
+            class="grid size-9 place-items-center rounded-full text-brand-700 transition hover:bg-brand-50 disabled:pointer-events-none disabled:opacity-30"
+          >
+            <Icon name="chevronLeft" class="size-4" />
+          </button>
+          <p id={`${uid}-month`} data-date-month aria-live="polite" class="text-sm font-semibold"></p>
+          <button
+            type="button"
+            data-date-next
+            aria-label="Next month"
+            class="grid size-9 place-items-center rounded-full text-brand-700 transition hover:bg-brand-50 disabled:pointer-events-none disabled:opacity-30"
+          >
+            <Icon name="chevronRight" class="size-4" />
+          </button>
+        </div>
+        <div class="mt-3 grid grid-cols-7 text-center text-[0.6875rem] font-semibold uppercase tracking-wider text-brand-400" aria-hidden="true">
+          {weekdays.map((d) => <span class="py-1">{d}</span>)}
+        </div>
+        <div role="grid" aria-labelledby={`${uid}-month`} data-date-grid class="mt-1 grid grid-cols-7 gap-1"></div>
+      </div>
+
+      <!-- Time slots: a column beside the calendar on wider screens, a grid of chips below it on phones -->
+      <div class="border-t border-brand-100 p-4 sm:w-28 sm:border-l sm:border-t-0 sm:px-2.5">
+        <p class="text-center text-[0.6875rem] font-semibold uppercase tracking-wider text-brand-400">Time</p>
+        <div
+          data-time-list
+          role="group"
+          aria-label="Time"
+          class="mt-3 grid max-h-40 grid-cols-4 gap-1.5 overflow-y-auto overscroll-contain sm:max-h-[17.5rem] sm:grid-cols-1 sm:pr-0.5"
+        >
+        </div>
+      </div>
+    </div>
+    <p data-date-hint class="border-t border-brand-100 bg-brand-50/60 px-4 py-2.5 text-center text-xs text-ink-900/60">Select a date, then a time</p>
+  </div>
+</div>
+
+<script>
+  const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const MAX_MONTHS_AHEAD = 6;
+  const STEP = 30; // minutes between time slots
+  const LEAD = 60; // earliest slot today is at least this many minutes from now
+
+  const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const sameDay = (a: Date, b: Date) => a.getTime() === b.getTime();
+  const addDays = (d: Date, n: number) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+  const dateLabel = (d: Date) => `${DAYS[d.getDay()]}, ${d.getDate()} ${MONTHS[d.getMonth()].slice(0, 3)} ${d.getFullYear()}`;
+  const timeLabel = (mins: number) => {
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    return `${((h + 11) % 12) + 1}:${String(m).padStart(2, '0')} ${h < 12 ? 'AM' : 'PM'}`;
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-datepicker]').forEach((root) => {
+    const input = root.querySelector<HTMLInputElement>('input[type=hidden]')!;
+    const trigger = root.querySelector<HTMLButtonElement>('[data-date-trigger]')!;
+    const valueEl = root.querySelector<HTMLElement>('[data-date-value]')!;
+    const dialog = root.querySelector<HTMLElement>('[data-date-dialog]')!;
+    const monthEl = root.querySelector<HTMLElement>('[data-date-month]')!;
+    const grid = root.querySelector<HTMLElement>('[data-date-grid]')!;
+    const timeList = root.querySelector<HTMLElement>('[data-time-list]')!;
+    const hint = root.querySelector<HTMLElement>('[data-date-hint]')!;
+    const prev = root.querySelector<HTMLButtonElement>('[data-date-prev]')!;
+    const next = root.querySelector<HTMLButtonElement>('[data-date-next]')!;
+    const backdrop = root.querySelector<HTMLElement>('[data-date-backdrop]')!;
+    const hours: { weekdays: number[]; sunday: number[] } = JSON.parse(root.dataset.hours!);
+    const sheet = window.matchMedia('(max-width: 639.98px)'); // matches Tailwind's sm breakpoint
+
+    const today = startOfDay(new Date());
+    const last = new Date(today.getFullYear(), today.getMonth() + MAX_MONTHS_AHEAD + 1, 0);
+    let selected: Date | null = null;
+    let time: number | null = null;
+    let focused = today;
+
+    /** Bookable start times (minutes after midnight) for a day */
+    const slotsFor = (d: Date) => {
+      const [open, close] = d.getDay() === 0 ? hours.sunday : hours.weekdays;
+      const now = new Date();
+      const earliest = sameDay(d, today) ? now.getHours() * 60 + now.getMinutes() + LEAD : 0;
+      const slots: number[] = [];
+      for (let t = open * 60; t < close * 60; t += STEP) if (t >= earliest) slots.push(t);
+      return slots;
+    };
+    const bookable = (d: Date) => d >= today && d <= last && slotsFor(d).length > 0;
+
+    const update = () => {
+      const text = selected ? `${dateLabel(selected)}${time !== null ? `, ${timeLabel(time)}` : ''}` : '';
+      input.value = text;
+      valueEl.textContent = text || valueEl.dataset.placeholder!;
+      valueEl.toggleAttribute('data-empty', !text);
+      hint.textContent = !selected ? 'Select a date, then a time' : time === null ? 'Now select a time' : text;
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    };
+
+    const renderTimes = () => {
+      timeList.replaceChildren();
+      if (!selected) {
+        const p = document.createElement('p');
+        p.className = 'col-span-full py-2 text-center text-xs text-ink-900/50';
+        p.textContent = 'Pick a date first';
+        timeList.append(p);
+        return;
+      }
+      for (const t of slotsFor(selected)) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = timeLabel(t);
+        b.setAttribute('aria-pressed', String(t === time));
+        b.className =
+          'rounded-lg bg-brand-50 px-1 py-2 text-xs font-medium text-ink-900 outline-none ring-brand-400 transition hover:bg-brand-100 focus-visible:ring-2 aria-pressed:bg-brand-600 aria-pressed:text-white sm:text-sm';
+        b.addEventListener('click', () => {
+          time = t;
+          update();
+          close();
+        });
+        timeList.append(b);
+      }
+    };
+
+    const render = (focus = false) => {
+      const y = focused.getFullYear();
+      const m = focused.getMonth();
+      monthEl.textContent = `${MONTHS[m]} ${y}`;
+      prev.disabled = y === today.getFullYear() && m === today.getMonth();
+      next.disabled = y === last.getFullYear() && m === last.getMonth();
+
+      const offset = (new Date(y, m, 1).getDay() + 6) % 7; // weeks start on Monday
+      const days = new Date(y, m + 1, 0).getDate();
+      grid.replaceChildren();
+      for (let i = 0; i < offset; i++) grid.append(document.createElement('span'));
+      for (let n = 1; n <= days; n++) {
+        const d = new Date(y, m, n);
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = String(n);
+        b.setAttribute('aria-label', dateLabel(d));
+        b.disabled = !bookable(d);
+        b.tabIndex = sameDay(d, focused) ? 0 : -1;
+        if (selected && sameDay(d, selected)) b.setAttribute('aria-pressed', 'true');
+        if (sameDay(d, today)) b.dataset.today = '';
+        b.className =
+          'grid aspect-square place-items-center rounded-full text-sm font-medium outline-none ring-brand-400 transition hover:bg-brand-50 focus-visible:ring-2 disabled:pointer-events-none disabled:text-ink-900/25 data-[today]:text-brand-600 data-[today]:ring-1 aria-pressed:!bg-brand-600 aria-pressed:!text-white';
+        b.addEventListener('click', () => chooseDate(d));
+        grid.append(b);
+      }
+      if (focus) grid.querySelector<HTMLButtonElement>('[tabindex="0"]')?.focus();
+    };
+
+    const firstBookable = () => {
+      let d = today;
+      while (!bookable(d) && d < last) d = addDays(d, 1);
+      return d;
+    };
+
+    const move = (d: Date) => {
+      if (d < today) d = today;
+      if (d > last) d = last;
+      focused = d;
+      render(true);
+    };
+
+    const open = () => {
+      if (!dialog.hidden) return;
+      focused = selected ?? firstBookable();
+      render();
+      renderTimes();
+      dialog.hidden = false;
+      trigger.setAttribute('aria-expanded', 'true');
+      dialog.removeAttribute('data-flip');
+      if (sheet.matches) {
+        // Bottom sheet: dim the page behind and stop it scrolling
+        backdrop.hidden = false;
+        dialog.setAttribute('aria-modal', 'true');
+        document.documentElement.style.overflow = 'hidden';
+      } else {
+        // Popover: open upwards when there isn't room below
+        dialog.removeAttribute('aria-modal');
+        const rect = trigger.getBoundingClientRect();
+        const below = window.innerHeight - rect.bottom;
+        dialog.toggleAttribute('data-flip', below < dialog.offsetHeight + 16 && rect.top - 96 > below);
+      }
+      grid.querySelector<HTMLButtonElement>('[tabindex="0"]')?.focus({ preventScroll: true });
+    };
+
+    const close = (focus = true) => {
+      if (dialog.hidden) return;
+      dialog.hidden = true;
+      backdrop.hidden = true;
+      document.documentElement.style.overflow = '';
+      trigger.setAttribute('aria-expanded', 'false');
+      if (focus) trigger.focus({ preventScroll: true });
+    };
+
+    const chooseDate = (d: Date) => {
+      // Keep the chosen time if it is still available on the new day
+      if (time !== null && !slotsFor(d).includes(time)) time = null;
+      selected = d;
+      focused = d;
+      update();
+      render();
+      renderTimes();
+      (timeList.querySelector<HTMLButtonElement>('[aria-pressed="true"]') ?? timeList.querySelector('button'))?.focus();
+    };
+
+    valueEl.dataset.placeholder = valueEl.textContent ?? '';
+    trigger.addEventListener('click', () => (dialog.hidden ? open() : close()));
+    backdrop.addEventListener('click', () => close());
+    root.querySelector('[data-date-close]')!.addEventListener('click', () => close());
+    sheet.addEventListener('change', () => close(false));
+    prev.addEventListener('click', () => {
+      focused = new Date(focused.getFullYear(), focused.getMonth() - 1, 1);
+      if (focused < today) focused = today;
+      render();
+    });
+    next.addEventListener('click', () => {
+      focused = new Date(focused.getFullYear(), focused.getMonth() + 1, 1);
+      render();
+    });
+
+    grid.addEventListener('keydown', (e) => {
+      const steps: Record<string, number> = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 };
+      if (e.key in steps) {
+        e.preventDefault();
+        move(addDays(focused, steps[e.key]));
+      } else if (e.key === 'PageUp' || e.key === 'PageDown') {
+        e.preventDefault();
+        move(new Date(focused.getFullYear(), focused.getMonth() + (e.key === 'PageUp' ? -1 : 1), focused.getDate()));
+      }
+    });
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        close();
+      }
+    });
+    document.addEventListener('pointerdown', (e) => {
+      if (!root.contains(e.target as Node)) close(false);
+    });
+    // Close when focus moves to another control (e.g. Tab). A null target means a day was re-rendered or clicked, so ignore it.
+    root.addEventListener('focusout', (e) => {
+      const to = e.relatedTarget as Node | null;
+      if (to && !root.contains(to)) close(false);
+    });
+  });
+</script>

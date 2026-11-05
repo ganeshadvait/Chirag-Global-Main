@@ -1,6 +1,7 @@
 ---
 import Icon from '../Icon.astro';
 import Select from '../Select.astro';
+import PhoneInput from '../PhoneInput.astro';
 import { IMAGES, STATS, CONCERNS } from '../../data/home';
 
 const avatars = ['RM', 'SK', 'JV', 'PB'];
@@ -74,7 +75,7 @@ const fieldInput = 'mt-1 w-full bg-transparent text-[0.9375rem] text-ink-900 out
 
     <!-- Team card -->
     <div
-      class="mt-8 flex max-w-xl items-center gap-4 rounded-3xl border border-white/15 bg-ink-900/55 p-4 backdrop-blur-md sm:gap-5 sm:px-6 xl:absolute xl:bottom-32 xl:right-10 xl:mt-0 xl:max-w-none"
+      class="mt-8 flex max-w-xl flex-col items-start gap-3 rounded-3xl min-[360px]:flex-row min-[360px]:items-center min-[360px]:gap-4 border border-white/15 bg-ink-900/55 p-4 backdrop-blur-md sm:gap-5 sm:px-6 xl:absolute xl:bottom-32 xl:right-10 xl:mt-0 xl:max-w-none"
     >
       <div class="flex shrink-0 -space-x-2.5">
         {
@@ -114,19 +115,7 @@ const fieldInput = 'mt-1 w-full bg-transparent text-[0.9375rem] text-ink-900 out
         <span class={fieldLabel}>Your name</span>
         <input name="name" required autocomplete="name" placeholder="Full name" class={fieldInput} />
       </label>
-      <label class={field}>
-        <span class={fieldLabel}>Phone</span>
-        <input
-          name="phone"
-          type="tel"
-          required
-          inputmode="tel"
-          autocomplete="tel"
-          pattern="(\+?91)?[\s-]?[6-9]\d{4}[\s-]?\d{5}"
-          placeholder="+91 10-digit number"
-          class={fieldInput}
-        />
-      </label>
+      <PhoneInput name="phone" label="Phone" placeholder="Phone number" required variant="field" />
       <Select name="concern" label="Concern" options={CONCERNS} variant="field" class="sm:col-span-2 lg:col-span-1" />
       <button
         type="submit"
