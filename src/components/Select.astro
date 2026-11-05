@@ -8,12 +8,14 @@ interface Props {
   label: string;
   options: string[];
   value?: string;
-  /** 'field' = label inside the box (hero bar) · 'input' = label above (stacked forms) */
-  variant?: 'field' | 'input';
+  /** Text shown until an option is picked (starts with no value instead of the first option) */
+  placeholder?: string;
+  /** 'field' = label inside the box (hero bar) · 'input' = label above (stacked forms) · 'plain' = no visible label (use with placeholder) */
+  variant?: 'field' | 'input' | 'plain';
   class?: string;
 }
 
-const { name, label, options, value = options[0], variant = 'input', class: className } = Astro.props;
+const { name, label, options, placeholder, value = placeholder ? '' : options[0], variant = 'input', class: className } = Astro.props;
 const uid = `select-${name}-${Math.random().toString(36).slice(2, 8)}`;
 ---
 
@@ -21,6 +23,7 @@ const uid = `select-${name}-${Math.random().toString(36).slice(2, 8)}`;
   <input type="hidden" name={name} value={value} />
 
   {variant === 'input' && <span id={`${uid}-label`} class="block text-sm font-medium">{label}</span>}
+  {variant === 'plain' && <span id={`${uid}-label`} class="sr-only">{label}</span>}
 
   <button
     type="button"
@@ -33,7 +36,9 @@ const uid = `select-${name}-${Math.random().toString(36).slice(2, 8)}`;
       'group/trigger relative block w-full cursor-pointer text-left outline-none ring-brand-400 transition focus-visible:ring-2 aria-expanded:ring-2',
       variant === 'field'
         ? 'h-full rounded-2xl bg-brand-50 py-3.5 pl-5 pr-12 hover:bg-brand-100'
-        : 'mt-2 rounded-xl bg-brand-50 py-3.5 pl-4 pr-11 hover:bg-brand-100',
+        : variant === 'plain'
+          ? 'rounded-xl bg-brand-50 py-3.5 pl-4 pr-11 hover:bg-brand-100'
+          : 'mt-2 rounded-xl bg-brand-50 py-3.5 pl-4 pr-11 hover:bg-brand-100',
     ]}
   >
     {
@@ -43,8 +48,13 @@ const uid = `select-${name}-${Math.random().toString(36).slice(2, 8)}`;
         </span>
       )
     }
-    <span id={`${uid}-value`} data-select-value class:list={['block truncate text-ink-900', variant === 'field' ? 'mt-1 text-[0.9375rem]' : '']}>
-      {value}
+    <span
+      id={`${uid}-value`}
+      data-select-value
+      class:list={['block truncate text-ink-900 data-[empty]:text-ink-900/55', variant === 'field' ? 'mt-1 text-[0.9375rem]' : '']}
+      data-empty={value ? undefined : ''}
+    >
+      {value || placeholder}
     </span>
     <span
       class:list={[
@@ -127,6 +137,7 @@ const uid = `select-${name}-${Math.random().toString(36).slice(2, 8)}`;
     const choose = (i: number) => {
       items.forEach((el, n) => el.setAttribute('aria-selected', String(n === i)));
       input.value = valueEl.textContent = items[i].dataset.value!;
+      valueEl.removeAttribute('data-empty');
       input.dispatchEvent(new Event('change', { bubbles: true }));
       close();
     };

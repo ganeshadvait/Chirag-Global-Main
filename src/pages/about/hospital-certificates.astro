@@ -94,7 +94,8 @@ const cardId = (c: Certificate) => `cert-${c.slug}`;
             <p class="text-meta">Entry Level</p>
           </div>
         </div>
-        <div class="absolute bottom-[14%] right-[2%] z-20 rounded-2xl bg-amber-400 px-4 py-3 text-ink-900 shadow-xl">
+        <!-- On very small phones this moves to the top so it doesn't cover the NABH badge -->
+        <div class="absolute bottom-[14%] right-[2%] z-20 rounded-2xl bg-amber-400 px-4 py-3 text-ink-900 shadow-xl max-[359.98px]:bottom-auto max-[359.98px]:top-[4%]">
           <p class="text-xl font-extrabold leading-none">Level 3</p>
           <p class="mt-1 text-[0.6875rem] font-semibold">KPME registered</p>
         </div>
