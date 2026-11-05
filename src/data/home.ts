@@ -32,39 +32,39 @@ export const CONCERNS = [
 ];
 
 export const ABOUT_FEATURES = [
-  { icon: 'users', title: 'Expert surgeon team', text: 'Colorectal specialists under one roof.' },
-  { icon: 'zap', title: 'Minimally invasive treatment', text: 'Laser and advanced techniques where suitable.' },
-  { icon: 'clock', title: 'Day-care procedures', text: 'Go home the same day where suitable.' },
-  { icon: 'lock', title: 'Private consultations', text: 'Respectful, one-to-one care.' },
+  { image: '/icons/about/surgeon-team.webp', title: 'Expert surgeon team', text: 'Colorectal specialists under one roof.' },
+  { image: '/icons/about/minimally-invasive.webp', title: 'Minimally invasive treatment', text: 'Laser and advanced techniques where suitable.' },
+  { image: '/icons/about/day-care.webp', title: 'Day-care procedures', text: 'Go home the same day where suitable.' },
+  { image: '/icons/about/private-consultation.webp', title: 'Private consultations', text: 'Respectful, one-to-one care.' },
 ] as const;
 
 export const JOURNEY = [
   {
-    icon: 'message',
+    image: '/icons/journey/consultation.webp',
     title: 'Consultation',
     text: 'A private, one-to-one conversation with a senior specialist about your symptoms and history.',
     cta: 'Start with step one',
   },
   {
-    icon: 'search',
+    image: '/icons/journey/diagnosis.webp',
     title: 'Diagnosis',
     text: 'A gentle clinical examination and, where needed, tests to identify the exact condition.',
     cta: 'Book a diagnosis',
   },
   {
-    icon: 'clipboard',
+    image: '/icons/journey/treatment-plan.webp',
     title: 'Treatment plan',
     text: 'Your options explained clearly, including the procedure, recovery time and cost, before you decide.',
     cta: 'Discuss your plan',
   },
   {
-    icon: 'activity',
+    image: '/icons/journey/procedure.webp',
     title: 'Procedure',
     text: 'Minimally invasive treatment, often as a day-care procedure, by the same team that diagnosed you.',
     cta: 'Ask about procedures',
   },
   {
-    icon: 'smile',
+    image: '/icons/journey/recovery.webp',
     title: 'Recovery',
     text: 'Structured follow-up visits and diet guidance so you return to normal life with confidence.',
     cta: 'Plan your recovery',
@@ -133,7 +133,7 @@ export const VIDEOS = [
 
 export const INTERNATIONAL = [
   {
-    icon: 'file',
+    image: '/icons/international/before-you-travel.webp',
     label: 'Before you travel',
     heading: 'We review your case and prepare you for the trip.',
     points: [
@@ -143,7 +143,7 @@ export const INTERNATIONAL = [
     ],
   },
   {
-    icon: 'plane',
+    image: '/icons/international/arrival.webp',
     label: 'Arrival in Bangalore',
     heading: 'A smooth landing, with someone to meet you.',
     points: [
@@ -153,7 +153,7 @@ export const INTERNATIONAL = [
     ],
   },
   {
-    icon: 'shield',
+    image: '/icons/international/your-treatment.webp',
     label: 'Your treatment',
     heading: 'Specialist care with clear updates for your family.',
     points: [
@@ -163,7 +163,7 @@ export const INTERNATIONAL = [
     ],
   },
   {
-    icon: 'pin',
+    image: '/icons/international/recovery-return.webp',
     label: 'Recovery and return',
     heading: 'Fit to fly, with follow-up from home.',
     points: [

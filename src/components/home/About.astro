@@ -51,8 +51,8 @@ import { IMAGES, ABOUT_FEATURES } from '../../data/home';
         {
           ABOUT_FEATURES.map((f) => (
             <li class="flex gap-4">
-              <span class="grid size-11 shrink-0 place-items-center rounded-xl bg-brand-100 text-brand-600">
-                <Icon name={f.icon} class="size-5" />
+              <span class="grid size-16 shrink-0 place-items-center rounded-2xl bg-brand-100">
+                <img src={f.image} alt="" width="256" height="256" loading="lazy" decoding="async" class="size-12" />
               </span>
               <div>
                 <h3 class="heading-4">{f.title}</h3>
