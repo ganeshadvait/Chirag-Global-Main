@@ -21,7 +21,7 @@ export const SITE = {
   social: {
     facebook: '#',
     instagram: '#',
-    youtube: '#',
+    youtube: 'https://www.youtube.com/@dr.rajasekharmysore',
     linkedin: '#',
   },
 };

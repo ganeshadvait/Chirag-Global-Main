@@ -1,6 +1,8 @@
 // Home page content. Images live in /public/images; any missing image
 // falls back to a brand gradient, so the page still renders cleanly.
 
+import videos from './videos.json';
+
 export const IMAGES = {
   // WebP versions sized for display (originals: Cirag-Logo-Header.png, NABH-Cirag-Logo-1024x717.png,
   // chitrag-38_transparent-logo.png, Chirag-Chairman.png)
@@ -104,32 +106,23 @@ export const REVIEWS = [
   },
 ] as const;
 
-export const VIDEOS = [
-  {
-    title: 'Chirag Global Hospitals in the news',
-    speaker: 'Dr. Rajasekhar M. R., Founder',
-    duration: '14:03',
-    tag: 'In the news',
-    youtubeId: '',
-    thumb: 'from-brand-500 to-brand-700',
-  },
-  {
-    title: 'Understanding anal fistula and its treatment',
-    speaker: 'Dr. Suchitra N. Adiga, Proctologist',
-    duration: '9:42',
-    tag: 'Fistula',
-    youtubeId: '',
-    thumb: 'from-amber-300 to-amber-500',
-  },
-  {
-    title: 'Rectal cancer: what you should know',
-    speaker: 'Dr. Shreedevi K. N., Surgical Gastroenterologist',
-    duration: '3:21',
-    tag: 'Colorectal cancer',
-    youtubeId: '',
-    thumb: 'from-ink-700 to-brand-600',
-  },
-];
+export interface Video {
+  youtubeId: string;
+  /** Short title shown on the site */
+  title: string;
+  /** Title as published on YouTube */
+  fullTitle: string;
+  speaker: string;
+  duration: string;
+  tag: string;
+  /** Self-hosted thumbnails in /public/videos: 960px for the player, 256px for the playlist */
+  thumb: string;
+  thumbSmall: string;
+}
+
+// Doctor talks from the hospital's YouTube channel: pinned videos first, then newest.
+// Refreshed by scripts/sync-youtube.mjs (`npm run videos:sync`, and before every build).
+export const VIDEOS: Video[] = videos;
 
 export const INTERNATIONAL = [
   {
