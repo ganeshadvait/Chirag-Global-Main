@@ -24,7 +24,8 @@ const { treatment: t } = Astro.props;
 
 const others = TREATMENTS_LIST.filter((o) => o.slug !== t.slug).slice(0, 4);
 const team = DOCTORS.filter((d) => d.photo).slice(0, 4);
-const related = POSTS.filter((p) => p.treatmentSlug === t.slug);
+// Latest three articles about this condition
+const related = POSTS.filter((p) => p.treatmentSlug === t.slug).slice(0, 3);
 const rating = STATS.find((s) => s.suffix === '★');
 const ask = whatsappLink(`Hi, I need help with ${t.name.toLowerCase()}. I'd like to book an appointment.`);
 const pad = (n: number) => String(n).padStart(2, '0');

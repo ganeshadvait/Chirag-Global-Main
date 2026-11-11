@@ -1,0 +1,81 @@
+---
+// One page of the blog index: hero, a grid of article cards and page links.
+import PageHero from './PageHero.astro';
+import ArticleCard from './ArticleCard.astro';
+import Icon from './Icon.astro';
+import { POSTS, PER_PAGE, pageCount, pageHref } from '../data/blog';
+
+interface Props {
+  page: number;
+}
+
+const { page } = Astro.props;
+const posts = POSTS.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+
+// Page numbers to show: first, last, and two either side of the current page
+const numbers = [...new Set([1, page - 2, page - 1, page, page + 1, page + 2, pageCount])]
+  .filter((n) => n >= 1 && n <= pageCount)
+  .sort((a, b) => a - b);
+---
+
+<PageHero
+  crumbs={page === 1 ? [{ label: 'Blog' }] : [{ label: 'Blog', href: '/blog' }, { label: `Page ${page}` }]}
+  eyebrow="Health tips and news"
+  title="Stay informed with "
+  highlight="expert articles"
+  lead="Clear, practical guidance on colorectal and anorectal conditions, written to help you understand your symptoms and options before your visit."
+/>
+
+<section class="section">
+  <div class="container-x">
+    <p class="text-meta mb-8">
+      {POSTS.length} articles · page {page} of {pageCount}
+    </p>
+    <ul class="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        posts.map((p, i) => (
+          <li>
+            <ArticleCard post={p} index={i} as="h2" />
+          </li>
+        ))
+      }
+    </ul>
+
+    {
+      pageCount > 1 && (
+        <nav aria-label="Blog pages" class="mt-16 flex flex-wrap items-center justify-center gap-2">
+          {page > 1 && (
+            <a href={pageHref(page - 1)} rel="prev" class="btn btn-outline">
+              <Icon name="arrowRight" class="size-4 rotate-180" /> Newer
+            </a>
+          )}
+          <ol class="flex flex-wrap items-center gap-1.5">
+            {numbers.map((n, i) => (
+              <>
+                {i > 0 && n - numbers[i - 1] > 1 && (
+                  <li aria-hidden="true" class="px-1 text-ink-900/40">
+                    …
+                  </li>
+                )}
+                <li>
+                  <a
+                    href={pageHref(n)}
+                    aria-current={n === page ? 'page' : undefined}
+                    class="grid size-11 place-items-center rounded-full text-sm font-semibold text-ink-900/70 ring-1 ring-brand-100 transition hover:bg-brand-50 hover:text-brand-700 aria-[current=page]:bg-ink-900 aria-[current=page]:text-white aria-[current=page]:ring-ink-900"
+                  >
+                    {n}
+                  </a>
+                </li>
+              </>
+            ))}
+          </ol>
+          {page < pageCount && (
+            <a href={pageHref(page + 1)} rel="next" class="btn btn-outline">
+              Older <Icon name="arrowRight" class="size-4" />
+            </a>
+          )}
+        </nav>
+      )
+    }
+  </div>
+</section>
