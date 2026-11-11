@@ -104,31 +104,34 @@ const breadcrumbLd = {
       </div>
 
       <!-- Team photo with condition picker -->
-      <div class="relative w-full max-w-2xl pb-44 sm:pb-32 xl:max-w-none">
-        <div class="relative aspect-[4/3] overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-400/40 to-ink-800 lg:rounded-[2.5rem]">
+      <div class="relative w-full max-w-2xl sm:pb-40 xl:max-w-none">
+        <!-- Team photo at its natural ratio, so no doctor is cropped -->
+        <div class="relative aspect-[1600/815] overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-400/40 to-ink-800 lg:rounded-[2.5rem]">
           <img decoding="async"
             src={IMAGES.hero}
+            srcset={`${IMAGES.heroSmall} 900w, ${IMAGES.hero} 1600w`}
+            sizes="(min-width: 1024px) 45vw, 100vw"
             alt="The Chirag Global Hospitals team of doctors"
-            width="1024"
-            height="522"
+            width="1600"
+            height="815"
             fetchpriority="high"
             class="absolute inset-0 size-full object-cover"
             onerror="this.remove()"
           />
-          {
-            rating && (
-              <p class="absolute right-4 top-4 flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs text-ink-900 shadow-lg">
-                <Icon name="star" class="size-3.5 text-amber-500" />
-                <span class="font-bold">{rating.value}</span>
-                <span class="text-ink-900/60">{rating.label.replace(/^from /, '')}</span>
-              </p>
-            )
-          }
         </div>
+        {
+          rating && (
+            <p class="mt-3 flex w-fit items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs text-ink-900 shadow-lg sm:absolute sm:right-4 sm:top-4 sm:mt-0">
+              <Icon name="star" class="size-3.5 text-amber-500" />
+              <span class="font-bold">{rating.value}</span>
+              <span class="text-ink-900/60">{rating.label.replace(/^from /, '')}</span>
+            </p>
+          )
+        }
 
         <div
           data-picker
-          class="absolute inset-x-3 bottom-0 rounded-3xl bg-white p-5 text-ink-900 shadow-2xl shadow-ink-950/30 sm:inset-x-auto sm:right-4 sm:w-[29rem] sm:p-6"
+          class="relative mt-4 rounded-3xl bg-white p-5 text-ink-900 shadow-2xl shadow-ink-950/30 sm:absolute sm:bottom-0 sm:right-4 sm:mt-0 sm:w-[29rem] sm:p-6"
         >
           <p id="picker-label" class="heading-5">What would you like help with?</p>
           <div role="group" aria-labelledby="picker-label" class="mt-3 flex flex-wrap gap-2">
@@ -207,7 +210,7 @@ const breadcrumbLd = {
                     {String(i + 1).padStart(2, '0')}
                   </span>
                   <span class="btn-amber grid size-16 place-items-center rounded-2xl">
-                    <img src={a.image} alt="" width="256" height="256" loading="lazy" decoding="async" class="size-12" />
+                    <img src={a.image} alt={`${a.title} icon`} width="256" height="256" loading="lazy" decoding="async" class="size-12" />
                   </span>
                   <h3 class="heading-4 mt-5">{a.title}</h3>
                   <p class="mt-2 text-sm leading-relaxed text-white/70">{a.text}</p>

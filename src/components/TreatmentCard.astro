@@ -28,11 +28,12 @@ const signs = t.symptoms
       t.image && (
         <img decoding="async"
           src={t.image}
-          alt=""
+          alt={`${t.name} illustration`}
           width="662"
           height="507"
           loading="lazy"
           class="absolute inset-0 size-full object-cover transition duration-500 group-hover:scale-105"
+          style={t.imagePosition && `object-position: ${t.imagePosition}`}
           onerror="this.remove()"
         />
       )

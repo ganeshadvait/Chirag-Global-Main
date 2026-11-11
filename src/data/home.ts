@@ -7,7 +7,9 @@ export const IMAGES = {
   // WebP versions sized for display (originals: Cirag-Logo-Header.png, NABH-Cirag-Logo-1024x717.png,
   // chitrag-38_transparent-logo.png, Chirag-Chairman.png)
   logo: '/chirag-logo.webp',
-  hero: '/chirag%20all%20doctors.webp',
+  // Team photo (original: chirag doctors group image.png): 1600px, plus 900px for phones
+  hero: '/chirag-doctors-team-1600.webp',
+  heroSmall: '/chirag-doctors-team-900.webp',
   building: '/chirag%20hospital.webp',
   nabh: '/nabh-logo.webp',
   experience: '/experience-38-years.webp',

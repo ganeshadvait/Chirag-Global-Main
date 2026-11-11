@@ -36,6 +36,7 @@ import Icon from './Icon.astro';
     const a = items[index];
     img.src = a.href;
     img.alt = a.querySelector('img')?.alt || a.getAttribute('aria-label') || '';
+    img.title = img.alt;
     count.textContent = `${index + 1} / ${items.length}`;
   };
 

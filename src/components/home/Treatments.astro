@@ -24,7 +24,7 @@ const also = TREATMENTS_LIST.filter((t) => !featuredSlugs.includes(t.slug));
       >
         <img decoding="async"
           src={featured.image}
-          alt=""
+          alt={`${featured.name} illustration`}
           width="662"
           height="507"
           loading="lazy"
@@ -56,7 +56,7 @@ const also = TREATMENTS_LIST.filter((t) => !featuredSlugs.includes(t.slug));
           >
             <img decoding="async"
               src={t.image}
-              alt=""
+              alt={`${t.name} illustration`}
               width="662"
               height="507"
               loading="lazy"

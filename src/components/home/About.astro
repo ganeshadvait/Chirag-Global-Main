@@ -31,7 +31,7 @@ import { IMAGES, ABOUT_FEATURES } from '../../data/home';
         <p class="text-xs text-white/80">Patient-first care since</p>
       </div>
       <div class="absolute -bottom-6 right-4 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-xl sm:right-12">
-        <img decoding="async" src={IMAGES.nabh} alt="" width="1024" height="717" class="h-10 w-auto object-contain" onerror="this.remove()" />
+        <img decoding="async" src={IMAGES.nabh} alt="NABH Entry Level certified" width="1024" height="717" class="h-10 w-auto object-contain" onerror="this.remove()" />
         <div>
           <p class="text-sm font-semibold">NABH certified</p>
           <p class="text-meta">Entry Level</p>
@@ -52,7 +52,7 @@ import { IMAGES, ABOUT_FEATURES } from '../../data/home';
           ABOUT_FEATURES.map((f) => (
             <li class="flex gap-4">
               <span class="grid size-16 shrink-0 place-items-center rounded-2xl bg-brand-100">
-                <img src={f.image} alt="" width="256" height="256" loading="lazy" decoding="async" class="size-12" />
+                <img src={f.image} alt={`${f.title} icon`} width="256" height="256" loading="lazy" decoding="async" class="size-12" />
               </span>
               <div>
                 <h3 class="heading-4">{f.title}</h3>

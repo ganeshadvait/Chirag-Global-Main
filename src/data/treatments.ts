@@ -11,6 +11,8 @@ export interface Treatment {
   navLabel: string; // menu label
   short: string; // one sentence for cards (max ~20 words)
   image?: string;
+  /** CSS object-position for the image in 4:3 frames (default centre) */
+  imagePosition?: string;
   h1: string; // page H1, e.g. 'Piles treatment in Bangalore'
   keyword: string; // primary SEO keyword
   metaTitle: string; // SEO <title>, used exactly as written
@@ -35,6 +37,8 @@ export const TREATMENTS_LIST: Treatment[] = [
     name: 'Piles (haemorrhoids)',
     short: 'Swollen veins causing pain and bleeding, treated with laser and DG-HAL with RAR as a day-care procedure where suitable.',
     image: '/treatments/piles-hemorrhoids.webp',
+    // Portrait image: keep the whole anatomical model in the 4:3 frame
+    imagePosition: '50% 44%',
     h1: 'Piles treatment in Bangalore',
     keyword: 'piles treatment in Bangalore',
     metaTitle: 'Piles Treatment in Bangalore | Chirag Global Hospitals',

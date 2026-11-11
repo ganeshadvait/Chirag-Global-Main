@@ -17,7 +17,7 @@ const { doctor: d, as: Heading = 'h3' } = Astro.props;
       d.photo && (
         <img decoding="async"
           src={d.photo}
-          alt=""
+          alt={`${d.name}, ${d.role}`}
           width="250"
           height="250"
           loading="lazy"

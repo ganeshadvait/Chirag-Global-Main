@@ -14,29 +14,32 @@ const fieldInput = 'mt-1 w-full bg-transparent text-[0.9375rem] text-ink-900 out
 
 <section id="hero" aria-labelledby="hero-title" class="relative isolate overflow-hidden bg-ink-900 text-white">
   <!--
-    Team photo. Mobile/tablet: full-width band at the top (header floats over it).
-    Desktop: right-aligned at its natural ratio so every doctor stays in frame.
+    Team photo, always at its natural ratio so the whole team stays in frame.
+    Mobile/tablet: full-width band just below the floating header.
+    Desktop: right-aligned beside the headline.
   -->
   <div
-    class="hero-photo absolute inset-x-0 top-0 -z-10 aspect-[4/3] sm:aspect-[16/9] lg:inset-x-auto lg:bottom-20 lg:right-0 lg:top-auto lg:aspect-[1024/522] lg:w-[84%] xl:bottom-16 xl:w-[80%]"
+    class="hero-photo absolute inset-x-0 top-16 -z-10 aspect-[1600/815] sm:top-[4.5rem] lg:inset-x-auto lg:bottom-20 lg:right-0 lg:top-auto lg:w-[78%] xl:bottom-16 xl:w-[72%]"
   >
     <img decoding="async"
       src={IMAGES.hero}
+      srcset={`${IMAGES.heroSmall} 900w, ${IMAGES.hero} 1600w`}
+      sizes="(min-width: 1280px) 72vw, (min-width: 1024px) 78vw, 100vw"
       alt="The Chirag Global Hospitals team of doctors"
-      width="1024"
-      height="522"
+      width="1600"
+      height="815"
       fetchpriority="high"
-      class="size-full object-cover object-[50%_40%] lg:object-center"
+      class="size-full object-cover"
     />
     <!-- Brand tint; on desktop the edges are faded out with a mask (see .hero-photo) -->
-    <div class="absolute inset-0 bg-gradient-to-b from-ink-900/70 via-ink-900/10 to-ink-900 lg:hidden"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-ink-900/25 via-transparent via-60% to-ink-900 lg:hidden"></div>
     <div class="absolute inset-0 hidden bg-ink-900/25 lg:block"></div>
     <div class="absolute inset-0 bg-brand-700/20 mix-blend-multiply"></div>
   </div>
   <div aria-hidden="true" class="absolute -left-40 top-1/3 -z-10 size-[32rem] rounded-full bg-brand-500/25 blur-3xl"></div>
 
   <div
-    class="container-x relative pb-28 pt-[calc(75vw-3.5rem)] sm:pb-32 sm:pt-[calc(56vw-5rem)] lg:pb-32 lg:pt-44 xl:pt-48"
+    class="container-x relative pb-28 pt-[calc(51vw+2rem)] sm:pb-32 sm:pt-[calc(51vw+1.5rem)] lg:pb-32 lg:pt-44 xl:pt-48"
   >
     <ul class="flex flex-wrap gap-2 text-xs font-semibold sm:text-sm">
       <li class="btn-amber rounded-full px-3.5 py-1.5">Since 1986</li>

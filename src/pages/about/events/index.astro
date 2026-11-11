@@ -21,7 +21,7 @@ const years = [...new Set(rest.map((e) => eventDay(e.date).year))].sort((a, b) =
 
 const photos = EVENTS.flatMap((e) => e.gallery.map((src) => ({ src, title: e.title })));
 const photoCount = photos.length;
-const collage = [EVENTS[4]?.cover, EVENTS[0]?.cover, EVENTS[5]?.cover].filter(Boolean) as string[];
+const collage = [EVENTS[4], EVENTS[0], EVENTS[5]].filter(Boolean);
 
 const invite = [
   { icon: 'activity', title: 'Health camps', text: 'Screening and consultations for your community or organisation.' },
@@ -79,7 +79,7 @@ const invite = [
       <!-- Photo collage -->
       <div class="relative mx-auto aspect-[5/4] w-full max-w-xl">
         {
-          collage.map((src, i) => (
+          collage.map((e, i) => (
             <div
               class:list={[
                 'absolute overflow-hidden rounded-3xl shadow-2xl shadow-ink-950/50 ring-8 ring-white/10',
@@ -88,7 +88,7 @@ const invite = [
                 i === 2 && 'bottom-0 right-0 z-10 w-[50%] rotate-3 aspect-[4/3]',
               ]}
             >
-              <img decoding="async" src={src} alt="" class="size-full object-cover" fetchpriority={i === 1 ? 'high' : undefined} />
+              <img decoding="async" src={e.cover} alt={e.title} class="size-full object-cover" fetchpriority={i === 1 ? 'high' : undefined} />
             </div>
           ))
         }
@@ -113,7 +113,7 @@ const invite = [
             class="group grid overflow-hidden rounded-3xl bg-white text-ink-900 shadow-2xl shadow-ink-900/15 ring-1 ring-brand-100 lg:grid-cols-[1.15fr_1fr]"
           >
             <div class="relative aspect-[16/10] overflow-hidden lg:aspect-auto">
-              <img decoding="async" src={featured.cover} alt="" class="size-full object-cover transition duration-500 group-hover:scale-105" />
+              <img decoding="async" src={featured.cover} alt={featured.title} class="size-full object-cover transition duration-500 group-hover:scale-105" />
               <span class="btn-amber absolute left-5 top-5 rounded-full px-3 py-1.5 text-xs font-semibold">Latest event</span>
             </div>
             <div class="flex flex-col p-6 sm:p-8 lg:p-10">

@@ -241,8 +241,8 @@
      into the hero background instead of showing hard borders. */
   @media (min-width: 64rem) {
     .hero-photo {
-      --hero-fade-x: linear-gradient(to right, transparent 0%, #000 45%, #000 94%, transparent 100%);
-      --hero-fade-y: linear-gradient(to bottom, transparent 0%, #000 28%, #000 72%, transparent 100%);
+      --hero-fade-x: linear-gradient(to right, transparent 0%, #000 36%, #000 96%, transparent 100%);
+      --hero-fade-y: linear-gradient(to bottom, transparent 0%, #000 14%, #000 84%, transparent 100%);
       -webkit-mask-image: var(--hero-fade-x), var(--hero-fade-y);
       -webkit-mask-composite: source-in;
       mask-image: var(--hero-fade-x), var(--hero-fade-y);

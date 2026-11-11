@@ -82,13 +82,13 @@ const cardId = (c: Certificate) => `cert-${c.slug}`;
       <!-- Framed certificates -->
       <div class="relative mx-auto aspect-[5/4] w-full max-w-xl">
         <div class="absolute left-0 top-[12%] w-[44%] -rotate-6 overflow-hidden rounded-2xl bg-white p-2 shadow-2xl shadow-ink-950/50">
-          <img decoding="async" src={preview(kpme)} alt="" class="aspect-[3/4] w-full rounded-lg object-cover object-top" />
+          <img decoding="async" src={preview(kpme)} alt={kpme.title} class="aspect-[3/4] w-full rounded-lg object-cover object-top" />
         </div>
         <div class="absolute right-0 top-0 z-10 w-[78%] rotate-2 overflow-hidden rounded-2xl bg-white p-2.5 shadow-2xl shadow-ink-950/60">
           <img decoding="async" src={preview(nabh)} alt="NABH certificate of Chirag Global Hospitals" fetchpriority="high" class="w-full rounded-lg" />
         </div>
         <div class="absolute bottom-[4%] left-[6%] z-20 flex items-center gap-3 rounded-2xl bg-white p-3 pr-5 text-ink-900 shadow-xl shadow-ink-950/40">
-          <img decoding="async" src={IMAGES.nabh} alt="" width="1024" height="717" class="h-11 w-auto" />
+          <img decoding="async" src={IMAGES.nabh} alt="NABH Entry Level certified" width="1024" height="717" class="h-11 w-auto" />
           <div>
             <p class="text-sm font-semibold">NABH certified</p>
             <p class="text-meta">Entry Level</p>
@@ -139,7 +139,7 @@ const cardId = (c: Certificate) => `cert-${c.slug}`;
           </span>
         </a>
         <div>
-          <img decoding="async" src={IMAGES.nabh} alt="" width="1024" height="717" class="h-16 w-auto" />
+          <img decoding="async" src={IMAGES.nabh} alt="NABH Entry Level certified" width="1024" height="717" class="h-16 w-auto" />
           <h3 class="heading-3 mt-5">{nabh.title}</h3>
           <p class="text-meta mt-1">{nabh.issuer}</p>
           <p class="text-lead mt-4">{nabh.text}</p>

@@ -102,25 +102,26 @@ const pageLd = {
             t.image && (
               <img decoding="async"
                 src={t.image}
-                alt=""
+                alt={`${t.name} illustration`}
                 width="662"
                 height="507"
                 fetchpriority="high"
                 class="absolute inset-0 size-full object-cover"
+                style={t.imagePosition && `object-position: ${t.imagePosition}`}
                 onerror="this.remove()"
               />
             )
           }
-          {
-            rating && (
-              <p class="absolute right-4 top-4 flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs text-ink-900 shadow-lg">
-                <Icon name="star" class="size-3.5 text-amber-500" />
-                <span class="font-bold">{rating.value}</span>
-                <span class="text-ink-900/60">{rating.label.replace(/^from /, '')}</span>
-              </p>
-            )
-          }
         </div>
+        {
+          rating && (
+            <p class="mt-3 flex w-fit items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs text-ink-900 shadow-lg sm:absolute sm:right-4 sm:top-4 sm:mt-0">
+              <Icon name="star" class="size-3.5 text-amber-500" />
+              <span class="font-bold">{rating.value}</span>
+              <span class="text-ink-900/60">{rating.label.replace(/^from /, '')}</span>
+            </p>
+          )
+        }
       </div>
     </div>
   </section>
