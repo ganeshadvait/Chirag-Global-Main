@@ -37,7 +37,7 @@ const doctors: DoctorInput[] = [
     role: 'Founder and Chief Proctologist',
     quals: 'MBBS, MS',
     initials: 'RM',
-    photo: '/doctorchiragcard.avif',
+    photo: '/doctorchiragcard.webp',
     keyword: 'top proctologist in Bangalore',
     metaTitle: 'Dr. Rajasekhar M. R. | Chief Proctologist in Bangalore',
     metaDescription:
@@ -51,11 +51,11 @@ const doctors: DoctorInput[] = [
     focus: [
       'Colo-proctology',
       [
-        { text: 'Piles', href: '/treatments/piles-hemorrhoids' },
+        { text: 'Piles', href: '/piles-laser-treatment-in-bangalore' },
         ', ',
-        { text: 'fissure', href: '/treatments/fissure' },
+        { text: 'fissure', href: '/best-fissure-laser-treatment-in-bangalore' },
         ' and ',
-        { text: 'fistula', href: '/treatments/fistula' },
+        { text: 'fistula', href: '/top-fistula-laser-treatment-hospital-in-bangalore' },
       ],
       'Diagnosis and treatment planning',
     ],
@@ -65,7 +65,7 @@ const doctors: DoctorInput[] = [
     role: 'Gastroenterology and Colorectal Surgeon',
     quals: 'MBBS, MS, FSGE',
     initials: 'SK',
-    photo: '/doctorshreedevicard.avif',
+    photo: '/doctorshreedevicard.webp',
     keyword: 'colorectal surgeon in Bangalore',
     metaTitle: 'Dr. Shreedevi K. N. | Colorectal Surgeon in Bangalore',
     metaDescription:
@@ -82,7 +82,7 @@ const doctors: DoctorInput[] = [
     role: 'Proctologist',
     quals: 'BAMS, MD',
     initials: 'PC',
-    photo: '/doctorprithvicard.avif',
+    photo: '/doctorprithvicard.webp',
     metaTitle: 'Dr. Prithvija Chakravarthy | Proctologist in Bangalore',
     metaDescription:
       'Dr. Prithvija Chakravarthy is a proctologist at Chirag Global Hospitals, Bangalore, combining Ayurveda with modern diagnostics for anorectal conditions.',
@@ -98,7 +98,7 @@ const doctors: DoctorInput[] = [
     role: 'Proctologist',
     quals: 'BAMS, MS',
     initials: 'SA',
-    photo: '/doctorsuchithracard.avif',
+    photo: '/doctorsuchithracard.webp',
     metaTitle: 'Dr. Suchitra N. Adiga | Proctologist in Bangalore',
     metaDescription:
       'Dr. Suchitra N. Adiga is a consultant proctologist at Chirag Global Hospitals, Bangalore, treating anorectal disorders with Ayurvedic and modern care.',
@@ -143,7 +143,7 @@ const doctors: DoctorInput[] = [
     role: 'General Surgeon',
     quals: 'MBBS, MS (General Surgery)',
     initials: 'JV',
-    photo: '/doctorjyotsnacard.avif',
+    photo: '/doctorjyotsnacard.webp',
     metaTitle: 'Dr. Jyotsna Vemulapalli | General Surgeon in Bangalore',
     metaDescription:
       'Dr. Jyotsna Vemulapalli is a general surgeon at Chirag Global Hospitals, Bangalore, providing compassionate surgical care for anorectal conditions.',
@@ -156,7 +156,7 @@ const doctors: DoctorInput[] = [
     role: 'General Surgeon',
     quals: 'MBBS, MS (General Surgery), FRCS (Edinburgh)',
     initials: 'PB',
-    photo: '/doctorpadmanabhcard.avif',
+    photo: '/doctorpadmanabhcard.webp',
     metaTitle: 'Dr. Padmanabh R. Bhat | General Surgeon in Bangalore',
     metaDescription:
       'Dr. Padmanabh R. Bhat is a consultant general surgeon at Chirag Global Hospitals, Bangalore, with 32+ years of surgical experience.',

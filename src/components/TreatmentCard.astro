@@ -1,6 +1,7 @@
 ---
 // White card for the treatments grid: numbered photo → name → summary → common signs → link.
 import Icon from './Icon.astro';
+import { treatmentHref } from '../lib/routes';
 import type { Treatment } from '../data/treatments';
 
 interface Props {
@@ -20,7 +21,7 @@ const signs = t.symptoms
 ---
 
 <a
-  href={`/treatments/${t.slug}`}
+  href={treatmentHref(t.slug)}
   class="group flex h-full flex-col overflow-hidden rounded-3xl bg-white ring-1 ring-brand-100 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-600/10"
 >
   <div class="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-brand-400 via-brand-600 to-ink-800">

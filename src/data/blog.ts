@@ -24,10 +24,10 @@ export const POSTS: BlogPost[] = posts;
 
 export const getPost = (slug: string) => POSTS.find((p) => p.slug === slug);
 
-// Blog index pagination: page 1 is /blog, later pages /blog/page/2 and on
+// Blog index pagination: page 1 is /health-updates-2, later pages /health-updates-2/page/2 and on
 export const PER_PAGE = 12;
 export const pageCount = Math.max(1, Math.ceil(POSTS.length / PER_PAGE));
-export const pageHref = (n: number) => (n === 1 ? '/blog' : `/blog/page/${n}`);
+export { blogPageHref as pageHref } from '../lib/routes';
 
 export const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });

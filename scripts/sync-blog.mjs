@@ -19,29 +19,41 @@ const IMAGE_WIDTH = 800;
 // How many of the newest posts to import; links to older posts go to the main site
 const MAX_POSTS = 10;
 
-// Main-site pages that have an equivalent on this site
+// Main-site pages that exist on this site. Most keep the same address (this site uses the
+// WordPress URLs, see src/lib/routes.ts); the rest point to their closest page here.
+const T = {
+  piles: '/piles-laser-treatment-in-bangalore',
+  fissure: '/best-fissure-laser-treatment-in-bangalore',
+};
 const PAGE_MAP = {
   '': '/',
-  'contact-us': '/contact',
-  'contact-best-hospital-in-bangalore': '/contact',
-  'book-appointment': '/contact',
+  'contact-us': '/contact-us',
+  'contact-best-hospital-in-bangalore': '/contact-us',
+  'book-appointment': '/contact-us',
+  'about-us': '/about-us',
   treatments: '/treatments',
-  'piles-laser-treatment-in-bangalore': '/treatments/piles-hemorrhoids',
-  'laser-treatment-for-piles-2': '/treatments/piles-hemorrhoids',
-  'piles-doctor': '/treatments/piles-hemorrhoids',
-  'best-fissure-laser-treatment-in-bangalore': '/treatments/fissure',
-  'fissure-surgery-in-bangalore': '/treatments/fissure',
-  'top-fistula-laser-treatment-hospital-in-bangalore': '/treatments/fistula',
-  'best-constipation-treatment-in-bangalore': '/treatments/constipation',
-  'colon-cancer-experts-in-bangalore': '/treatments/colon-cancer',
-  'pilonidal-sinus-specialists-in-bangalore': '/treatments/pilonidal-sinus',
-  'ulcerative-colitis-treatment-in-bangalore': '/treatments/ulcerative-colitis',
-  'top-specialists-for-rectal-prolapse-treatment-in-bangalore': '/treatments/rectal-prolapse',
+  'health-updates-2': '/health-updates-2',
+  'chirag-global-hospitals-events': '/chirag-global-hospitals-events',
+  'advanced-technologies': '/advanced-technologies',
+  'educational-videos': '/educational-videos',
+  'patient-reviews': '/patient-reviews',
+  'hospital-certificates': '/hospital-certificates',
+  'piles-laser-treatment-in-bangalore': T.piles,
+  'laser-treatment-for-piles-2': T.piles,
+  'piles-doctor': T.piles,
+  'best-fissure-laser-treatment-in-bangalore': T.fissure,
+  'fissure-surgery-in-bangalore': T.fissure,
+  'top-fistula-laser-treatment-hospital-in-bangalore': '/top-fistula-laser-treatment-hospital-in-bangalore',
+  'best-constipation-treatment-in-bangalore': '/best-constipation-treatment-in-bangalore',
+  'colon-cancer-experts-in-bangalore': '/colon-cancer-experts-in-bangalore',
+  'pilonidal-sinus-specialists-in-bangalore': '/pilonidal-sinus-specialists-in-bangalore',
+  'ulcerative-colitis-treatment-in-bangalore': '/ulcerative-colitis-treatment-in-bangalore',
+  'top-specialists-for-rectal-prolapse-treatment-in-bangalore': '/top-specialists-for-rectal-prolapse-treatment-in-bangalore',
 };
-// Doctor profile pages: main site uses /dr-<name>/, this site /doctors/<name>
-const DOCTOR_SLUGS = [
-  'chandrika', 'jyotsna-vemulapalli', 'nayan-kumar', 'padmanabh-r-bhat', 'prithvija-chakravarthy',
-  'rahul-hegana', 'rajasekhar-m-r', 'shreedevi-k-n', 'suchitra-n-adiga',
+// Doctor profile pages: same /dr-<name>/ address as the main site
+const DOCTOR_PAGES = [
+  'dr-chandrika', 'dr-jyotsna-v', 'dr-nayan-kumar', 'dr-padmanabh-r-bhat', 'dr-prithvija-chakravarthy',
+  'dr-rahul-hegana', 'dr-rajasekhar-m-r', 'dr-shreedevi-k-n', 'dr-suchitra-n-adiga',
 ];
 
 // WordPress category -> treatment page on this site
@@ -110,10 +122,9 @@ function mapInternal(path, postSlugs) {
   const [pathname, hash = ''] = path.split('#');
   const slug = pathname.replace(/^\/+|\/+$/g, '');
   const suffix = hash ? `#${hash}` : '';
-  if (postSlugs.has(slug)) return `/blog/${slug}${suffix}`;
+  if (postSlugs.has(slug)) return `/${slug}${suffix}`; // posts keep their WordPress address
   if (slug in PAGE_MAP) return PAGE_MAP[slug] + suffix;
-  const doctor = slug.replace(/^dr-/, '');
-  if (slug.startsWith('dr-') && DOCTOR_SLUGS.includes(doctor)) return `/doctors/${doctor}`;
+  if (DOCTOR_PAGES.includes(slug)) return `/${slug}${suffix}`;
   return null;
 }
 

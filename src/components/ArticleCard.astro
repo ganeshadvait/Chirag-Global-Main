@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import { postHref } from '../lib/routes';
 import { formatDate, type BlogPost } from '../data/blog';
 import { publicFileExists } from '../lib/assets';
 
@@ -15,7 +16,7 @@ const hasImage = publicFileExists(p.image);
 const fallbacks = ['from-brand-300 to-brand-600', 'from-teal-400 to-teal-700', 'from-cream-100 to-amber-300'];
 ---
 
-<a href={`/blog/${p.slug}`} class="group block">
+<a href={postHref(p.slug)} class="group block">
   <div class:list={['relative aspect-[16/10] overflow-hidden rounded-3xl bg-gradient-to-br transition-shadow duration-300 group-hover:shadow-xl group-hover:shadow-brand-600/15', fallbacks[index % fallbacks.length]]}>
     {
       hasImage && (

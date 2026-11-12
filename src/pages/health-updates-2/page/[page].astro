@@ -1,0 +1,19 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Layout from '../../../layouts/Layout.astro';
+import BlogList from '../../../components/BlogList.astro';
+import { pageCount } from '../../../data/blog';
+
+// Page 1 lives at /health-updates-2; this route covers /health-updates-2/page/2 onwards
+export const getStaticPaths = (() =>
+  Array.from({ length: Math.max(0, pageCount - 1) }, (_, i) => ({ params: { page: String(i + 2) } }))) satisfies GetStaticPaths;
+
+const page = Number(Astro.params.page);
+---
+
+<Layout
+  title={`Blog: page ${page}`}
+  description="Expert articles on piles, fissure, fistula, pilonidal sinus and colorectal health from the specialists at Chirag Global Hospitals."
+>
+  <BlogList page={page} />
+</Layout>

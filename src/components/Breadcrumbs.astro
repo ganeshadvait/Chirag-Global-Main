@@ -1,0 +1,67 @@
+---
+// Breadcrumb trail for inner pages: "Home › Section › This page".
+// Renders the visible trail and the matching BreadcrumbList structured data for Google
+// (shown as the page path in search results). Every inner page uses this component.
+//
+//   <Breadcrumbs crumbs={[{ label: 'Treatments', href: '/treatments' }, { label: 'Fissure' }]} />
+//
+// "Home" is added automatically. The last crumb is the current page: it isn't a link,
+// it's marked aria-current="page", and in the structured data it points at this page's URL.
+import Icon from './Icon.astro';
+
+export interface Crumb {
+  label: string;
+  /** Link for every crumb except the last (the current page) */
+  href?: string;
+}
+
+interface Props {
+  crumbs: Crumb[];
+  class?: string;
+}
+
+const { crumbs, class: className } = Astro.props;
+const all: Crumb[] = [{ label: 'Home', href: '/' }, ...crumbs];
+
+// Absolute URLs in the same form as the canonical links and sitemap: live domain, ending in "/"
+const site = Astro.site ?? Astro.url;
+const absolute = (path: string) => new URL(path.replace(/\/?$/, '/'), site).href;
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: all.map((c, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: c.label,
+    item: i === all.length - 1 ? absolute(Astro.url.pathname) : absolute(c.href ?? '/'),
+  })),
+};
+---
+
+<!-- contain:inline-size: a long page title shortens with "…" instead of widening the hero column -->
+<nav aria-label="Breadcrumb" class:list={['w-full [contain:inline-size]', className]}>
+  <ol class="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-white/60">
+    {
+      all.map((c, i) => {
+        const current = i === all.length - 1;
+        return (
+          <li class:list={['flex min-w-0 items-center gap-1.5', current && 'max-w-full']}>
+            {i > 0 && <Icon name="chevronRight" class="size-3.5 shrink-0 text-white/40" />}
+            {current ? (
+              <span aria-current="page" class="truncate text-white/90" title={c.label}>
+                {c.label}
+              </span>
+            ) : (
+              <a href={c.href} class="rounded transition hover:text-white focus-visible:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400">
+                {c.label}
+              </a>
+            )}
+          </li>
+        );
+      })
+    }
+  </ol>
+</nav>
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />

@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import { eventHref } from '../lib/routes';
 import { CATEGORY_ICONS, eventDay, formatEventDate, type HospitalEvent } from '../data/events';
 
 interface Props {
@@ -11,7 +12,7 @@ const { event: e, as: Heading = 'h3' } = Astro.props;
 const d = eventDay(e.date);
 ---
 
-<a href={`/about/events/${e.slug}`} class="group flex h-full flex-col overflow-hidden rounded-3xl bg-white ring-1 ring-brand-100 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-200/50">
+<a href={eventHref(e.slug)} class="group flex h-full flex-col overflow-hidden rounded-3xl bg-white ring-1 ring-brand-100 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-200/50">
   <div class="relative aspect-[16/10] overflow-hidden bg-brand-100">
     <img decoding="async" src={e.cover} alt={e.title} loading="lazy" class="size-full object-cover transition duration-500 group-hover:scale-105" />
     <div class="absolute left-4 top-4 grid min-w-14 place-content-center rounded-2xl bg-white px-3 py-2 text-center shadow-lg">
