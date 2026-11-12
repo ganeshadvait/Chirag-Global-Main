@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import Videos from '../components/home/Videos.astro';
+import { SITE } from '../config';
+---
+
+<Layout
+  title="Educational Videos"
+  metaTitle="Educational Videos on Piles & Fistula | Chirag Hospitals"
+  description="Watch Chirag Global Hospitals doctors explain piles, anal fistula and rectal cancer in simple language, so you know what to expect before your visit."
+  keywords="piles and fistula educational videos"
+>
+  <PageHero
+    crumbs={[{ label: 'About Us', href: '/about-us' }, { label: 'Educational Videos' }]}
+    eyebrow="Educational videos"
+    title="Hear it from "
+    highlight="our specialists"
+    lead="Short talks from our doctors explaining common conditions, treatment options and what to expect, so you can come to your consultation informed."
+  >
+    <a href={SITE.social.youtube} target="_blank" rel="noopener" class="btn btn-lg btn-primary">
+      <Icon name="youtube" class="size-5" /> Visit our YouTube channel
+    </a>
+  </PageHero>
+
+  <Videos />
+</Layout>

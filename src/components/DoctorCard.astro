@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import { doctorHref } from '../lib/routes';
 import type { Doctor } from '../data/doctors';
 
 interface Props {
@@ -12,7 +13,7 @@ const { doctor: d, as: Heading = 'h3' } = Astro.props;
 ---
 
 <article class="group/card flex h-full flex-col rounded-3xl bg-white p-2.5 text-center shadow-sm ring-1 ring-brand-100/60 transition duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-600/15 hover:ring-brand-200">
-  <a href={`/doctors/${d.slug}`} tabindex="-1" aria-hidden="true" class="relative grid aspect-[4/3.6] place-items-center overflow-hidden rounded-2xl bg-brand-200">
+  <a href={doctorHref(d.slug)} tabindex="-1" aria-hidden="true" class="relative grid aspect-[4/3.6] place-items-center overflow-hidden rounded-2xl bg-brand-200">
     {
       d.photo && (
         <img decoding="async"
@@ -36,7 +37,7 @@ const { doctor: d, as: Heading = 'h3' } = Astro.props;
     <p class="mt-1.5 text-sm font-medium text-brand-600">{d.role}</p>
     {d.quals && <p class="text-meta mt-1">{d.quals}</p>}
     <div class="mt-auto pt-5">
-      <a href={`/doctors/${d.slug}`} class="btn btn-outline w-full px-4 py-2.5" aria-label={`View profile of ${d.name}`}>
+      <a href={doctorHref(d.slug)} class="btn btn-outline w-full px-4 py-2.5" aria-label={`View profile of ${d.name}`}>
         View profile <Icon name="arrowRight" class="size-4" />
       </a>
     </div>

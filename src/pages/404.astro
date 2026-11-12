@@ -5,12 +5,12 @@ import Icon from '../components/Icon.astro';
 const links = [
   { href: '/treatments', label: 'Treatments' },
   { href: '/doctors', label: 'Our Doctors' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/contact', label: 'Contact Us' },
+  { href: '/health-updates-2', label: 'Blog' },
+  { href: '/contact-us', label: 'Contact Us' },
 ];
 ---
 
-<Layout title="Page not found" booking={false}>
+<Layout title="Page not found" booking={false} noindex>
   <section class="relative isolate overflow-hidden bg-ink-900 text-white">
     <div aria-hidden="true" class="absolute -left-40 -top-20 -z-10 size-[30rem] rounded-full bg-brand-500/30 blur-3xl"></div>
     <div class="container-x py-20 text-center sm:py-28">
@@ -21,7 +21,7 @@ const links = [
       </p>
       <div class="mt-8 flex flex-wrap justify-center gap-3">
         <a href="/" class="btn btn-lg btn-primary">Back to home <Icon name="arrowRight" class="size-4" /></a>
-        <a href="/contact" class="btn btn-lg btn-outline-light">Contact us</a>
+        <a href="/contact-us" class="btn btn-lg btn-outline-light">Contact us</a>
       </div>
       <ul class="mt-12 flex flex-wrap justify-center gap-2">
         {

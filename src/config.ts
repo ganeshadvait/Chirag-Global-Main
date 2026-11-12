@@ -1,4 +1,4 @@
-import { slugify } from './lib/utils';
+import { ROUTES, doctorHref, treatmentHref } from './lib/routes';
 import { TREATMENTS_LIST } from './data/treatments';
 import { DOCTORS } from './data/doctors';
 
@@ -18,6 +18,10 @@ export const SITE = {
   mapsUrl: 'https://maps.google.com/?q=Chirag+Global+Hospitals+BTM+2nd+Stage+Bengaluru',
   hours: { weekdays: '9am to 7pm', sunday: '10am to 12pm' },
   accreditation: 'NABH Entry Level certified',
+  // Search engine indexing for the whole site. false = every page carries
+  // <meta name="robots" content="noindex, nofollow">, so Google and others keep it out of
+  // search results (used while the new site is being prepared). Set to true at launch.
+  indexing: false,
   // Google Apps Script web app that appends "Request an appointment" form leads to the
   // leads Google Sheet (same script the WordPress site posts to). The browser posts to it
   // directly, so the URL is public; the script must be deployed with access "Anyone".
@@ -47,26 +51,33 @@ export interface NavLink {
   children?: { href: string; label: string }[];
 }
 
-const ABOUT_PAGES = ['Patient Reviews', 'Events', 'Advanced Technologies', 'Educational Videos', 'Hospital Certificates'];
+// About sub-pages: label → address (WordPress URLs, see src/lib/routes.ts)
+const ABOUT_PAGES = [
+  { label: 'Patient Reviews', href: ROUTES.patientReviews },
+  { label: 'Events', href: ROUTES.events },
+  { label: 'Advanced Technologies', href: ROUTES.advancedTechnologies },
+  { label: 'Educational Videos', href: ROUTES.educationalVideos },
+  { label: 'Hospital Certificates', href: ROUTES.hospitalCertificates },
+];
 
 // Treatment and doctor sub-menus are generated from their data files, so the menu always matches the pages.
 export const NAV_LINKS: NavLink[] = [
   { href: '/', label: 'Home' },
   {
-    href: '/about',
+    href: '/about-us',
     label: 'About Us',
-    children: ABOUT_PAGES.map((label) => ({ label, href: `/about/${slugify(label)}` })),
+    children: ABOUT_PAGES,
   },
   {
     href: '/treatments',
     label: 'Treatments',
-    children: TREATMENTS_LIST.map((t) => ({ label: t.navLabel, href: `/treatments/${t.slug}` })),
+    children: TREATMENTS_LIST.map((t) => ({ label: t.navLabel, href: treatmentHref(t.slug) })),
   },
   {
     href: '/doctors',
     label: 'Our Doctors',
-    children: DOCTORS.filter((d) => !d.hideFromMenu).map((d) => ({ label: d.name, href: `/doctors/${d.slug}` })),
+    children: DOCTORS.filter((d) => !d.hideFromMenu).map((d) => ({ label: d.name, href: doctorHref(d.slug) })),
   },
-  { href: '/blog', label: 'Blog' },
-  { href: '/contact', label: 'Contact Us' },
+  { href: '/health-updates-2', label: 'Blog' },
+  { href: '/contact-us', label: 'Contact Us' },
 ];

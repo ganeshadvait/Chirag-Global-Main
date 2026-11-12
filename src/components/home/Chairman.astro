@@ -1,12 +1,13 @@
 ---
 import Icon from '../Icon.astro';
+import { doctorHref } from '../../lib/routes';
 import SectionHeader from '../SectionHeader.astro';
 import { IMAGES } from '../../data/home';
 import { DOCTORS } from '../../data/doctors';
 
 // The founder's own profile page
 const founder = DOCTORS.find((d) => d.name === 'Dr. Rajasekhar M. R.');
-const founderHref = founder ? `/doctors/${founder.slug}` : '/doctors';
+const founderHref = founder ? doctorHref(founder.slug) : '/doctors';
 ---
 
 <section id="chairman" class="section">

@@ -1,5 +1,6 @@
 ---
 import Icon from '../Icon.astro';
+import { treatmentHref } from '../../lib/routes';
 import SectionHeader from '../SectionHeader.astro';
 import { getTreatment, TREATMENTS_LIST, type Treatment } from '../../data/treatments';
 
@@ -39,7 +40,7 @@ const also = TREATMENTS_LIST.filter((t) => !featuredSlugs.includes(t.slug));
             <p class="text-body mt-2">{featured.short}</p>
           </div>
           <a
-            href={`/treatments/${featured.slug}`}
+            href={treatmentHref(featured.slug)}
             aria-label={`Learn about ${featured.name}`}
             class="grid size-11 shrink-0 place-items-center rounded-full bg-ink-900 text-white transition hover:bg-brand-600"
           >
@@ -51,7 +52,7 @@ const also = TREATMENTS_LIST.filter((t) => !featuredSlugs.includes(t.slug));
       {
         rest.map((t, i) => (
           <a
-            href={`/treatments/${t.slug}`}
+            href={treatmentHref(t.slug)}
             class="group relative flex min-h-64 flex-col justify-end overflow-hidden rounded-3xl bg-gradient-to-br from-brand-400 to-ink-800 p-5 text-white sm:p-6"
           >
             <img decoding="async"
@@ -85,7 +86,7 @@ const also = TREATMENTS_LIST.filter((t) => !featuredSlugs.includes(t.slug));
             also.map((t, i) => (
               <li>
                 <a
-                  href={`/treatments/${t.slug}`}
+                  href={treatmentHref(t.slug)}
                   class:list={[
                     'block rounded-full px-3.5 py-2 text-xs font-medium transition',
                     i === also.length - 1 ? 'btn-amber hover:brightness-105' : 'border border-white/30 hover:bg-white/10',

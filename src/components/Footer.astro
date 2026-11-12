@@ -1,19 +1,20 @@
 ---
 import { SITE, digits } from '../config';
+import { treatmentHref } from '../lib/routes';
 import { TREATMENTS_LIST } from '../data/treatments';
 import Icon from './Icon.astro';
 import Logo from './Logo.astro';
 
 const year = new Date().getFullYear();
 
-const treatments = TREATMENTS_LIST.slice(0, 5).map((t) => ({ label: t.name, href: `/treatments/${t.slug}` }));
+const treatments = TREATMENTS_LIST.slice(0, 5).map((t) => ({ label: t.name, href: treatmentHref(t.slug) }));
 
 const hospital = [
-  { label: 'About us', href: '/about' },
+  { label: 'About us', href: '/about-us' },
   { label: 'Our doctors', href: '/doctors' },
-  { label: 'Advanced technologies', href: '/about/advanced-technologies' },
+  { label: 'Advanced technologies', href: '/advanced-technologies' },
   { label: 'Patient stories', href: '/#stories' },
-  { label: 'Blog', href: '/blog' },
+  { label: 'Blog', href: '/health-updates-2' },
   { label: 'International patients', href: '/#international' },
 ];
 

@@ -4,10 +4,9 @@
 import videos from './videos.json';
 
 export const IMAGES = {
-  // WebP versions sized for display (originals: Cirag-Logo-Header.png, NABH-Cirag-Logo-1024x717.png,
-  // chitrag-38_transparent-logo.png, Chirag-Chairman.png)
+  // All site images are WebP, sized for display
   logo: '/chirag-logo.webp',
-  // Team photo (original: chirag doctors group image.png): 1600px, plus 900px for phones
+  // Team photo: 1600px, plus 900px for phones
   hero: '/chirag-doctors-team-1600.webp',
   heroSmall: '/chirag-doctors-team-900.webp',
   building: '/chirag%20hospital.webp',

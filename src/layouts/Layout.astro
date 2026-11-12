@@ -19,20 +19,42 @@ interface Props {
   booking?: boolean;
   /** Add a map card beside the booking section */
   bookingMap?: boolean;
+  /** Keep the page out of search results (no canonical link), e.g. the 404 page */
+  noindex?: boolean;
 }
 
-const { title, metaTitle, description = SITE.description, keywords, overlayHeader = false, booking = true, bookingMap = false } = Astro.props;
+const { title, metaTitle, description = SITE.description, keywords, overlayHeader = false, booking = true, bookingMap = false, noindex = false } = Astro.props;
 const pageTitle = metaTitle ?? (title ? `${title} | ${SITE.name}` : SITE.name);
+
+// Canonical URL: the live domain + this page's path, always ending in "/" like the sitemap
+// (each page is built as a folder with index.html), e.g. https://www.chiragglobalhospitals.com/about/
+const canonical = new URL(Astro.url.pathname.replace(/\/?$/, '/'), Astro.site ?? Astro.url).href;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <!-- Google Tag Manager -->
+    <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-WFRRMC43');</script>
+    <!-- End Google Tag Manager -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     {keywords && <meta name="keywords" content={keywords} />}
     <meta name="generator" content={Astro.generator} />
+    {
+      !SITE.indexing ? (
+        <meta name="robots" content="noindex, nofollow" />
+      ) : noindex ? (
+        <meta name="robots" content="noindex, follow" />
+      ) : null
+    }
+    {!noindex && <link rel="canonical" href={canonical} />}
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
     <meta name="theme-color" content="#231b3f" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png" />
@@ -54,7 +76,11 @@ const pageTitle = metaTitle ?? (title ? `${title} | ${SITE.name}` : SITE.name);
     <title>{pageTitle}</title>
   </head>
   <body class="flex min-h-screen flex-col overflow-x-hidden bg-white pb-[calc(4rem+env(safe-area-inset-bottom))] text-ink-900 antialiased lg:pb-0">
-    <Header overlay={overlayHeader} bookHref={booking ? '#book' : '/contact#book'} />
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WFRRMC43"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <Header overlay={overlayHeader} bookHref={booking ? '#book' : '/contact-us#book'} />
     <main class="flex-1">
       <slot />
       {booking && <BookCta withMap={bookingMap} />}
