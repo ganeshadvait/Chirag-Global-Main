@@ -4,7 +4,7 @@ import Select from '../Select.astro';
 import DatePicker from '../DatePicker.astro';
 import PhoneInput from '../PhoneInput.astro';
 import SectionHeader from '../SectionHeader.astro';
-import { SITE, digits, whatsappLink, WHATSAPP_MESSAGE } from '../../config';
+import { SITE, digits, whatsappLink } from '../../config';
 import { CONCERNS } from '../../data/home';
 
 interface Props {
@@ -16,6 +16,11 @@ const { withMap = false } = Astro.props;
 
 const field =
   'w-full min-w-0 rounded-xl bg-brand-50 px-4 py-3.5 outline-none ring-brand-400 transition placeholder:text-ink-900/55 hover:bg-brand-100 focus:ring-2';
+
+// Field wrapper: red outline on the field while [data-invalid] is set
+const wrap =
+  'min-w-0 [&>:first-child]:rounded-xl [&[data-invalid]>:first-child]:ring-2 [&[data-invalid]>:first-child]:ring-red-500';
+const error = 'mt-1.5 px-1 text-xs font-medium text-red-600';
 
 const tiles = [
   { label: 'Call', value: SITE.phone, href: `tel:${digits(SITE.phone)}` },
@@ -67,20 +72,57 @@ const tiles = [
         </p>
       </div>
 
-      <form data-whatsapp-form class="relative rounded-3xl bg-white p-6 text-ink-900 shadow-2xl sm:p-8">
+      <form data-lead-form novalidate class="relative rounded-3xl bg-white p-6 text-ink-900 shadow-2xl sm:p-8">
+        <div data-lead-fields>
         <h3 class="heading-3">Request an appointment</h3>
+        <!-- Spam trap: hidden from people, bots fill it in -->
+        <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" class="absolute -left-[9999px] size-px opacity-0" />
+        <!-- Each field + its error line; [data-invalid] on the wrapper outlines the field in red -->
         <div class="mt-5 grid gap-4 sm:grid-cols-2">
-          <input name="name" required autocomplete="name" placeholder="Name*" aria-label="Name" class={field} />
-          <input name="email" type="email" required autocomplete="email" placeholder="Email Address*" aria-label="Email address" class={field} />
-          <PhoneInput name="phone" label="Phone number" placeholder="Phone Number*" required />
-          <DatePicker name="date" label="Preferred date and time" placeholder="Choose Date & Time" />
-          <Select name="concern" label="Reason for visit" placeholder="For Reason" options={CONCERNS} variant="plain" class="sm:col-span-2" />
-          <textarea name="message" rows="4" placeholder="Write Message" aria-label="Message" class:list={[field, 'resize-y sm:col-span-2']}></textarea>
+          <div data-field="name" class={wrap}>
+            <input name="name" required maxlength="60" autocomplete="name" placeholder="Name*" aria-label="Name" class={field} />
+            <p data-error class={error} hidden></p>
+          </div>
+          <div data-field="email" class={wrap}>
+            <input name="email" type="email" required maxlength="120" autocomplete="email" inputmode="email" placeholder="Email Address*" aria-label="Email address" class={field} />
+            <p data-error class={error} hidden></p>
+          </div>
+          <div data-field="phone" class={wrap}>
+            <PhoneInput name="phone" label="Phone number" placeholder="Phone Number*" required />
+            <p data-error class={error} hidden></p>
+          </div>
+          <div data-field="date" class={wrap}>
+            <DatePicker name="date" label="Preferred date and time" placeholder="Choose Date & Time" />
+            <p data-error class={error} hidden></p>
+          </div>
+          <div data-field="concern" class:list={[wrap, 'sm:col-span-2']}>
+            <Select name="concern" label="Reason for visit" placeholder="For Reason" options={CONCERNS} variant="plain" />
+            <p data-error class={error} hidden></p>
+          </div>
+          <div data-field="message" class:list={[wrap, 'sm:col-span-2']}>
+            <textarea name="message" rows="4" maxlength="1000" placeholder="Write Message" aria-label="Message" class:list={[field, 'resize-y']}></textarea>
+            <p data-error class={error} hidden></p>
+          </div>
         </div>
-        <button type="submit" class="btn btn-lg btn-primary mt-6 w-full">
+        <button type="submit" data-lead-submit class="btn btn-lg btn-primary mt-6 w-full disabled:cursor-wait disabled:opacity-70">
           Book Appointment
         </button>
+        <p data-lead-status role="status" aria-live="polite" class="mt-3 text-center text-sm font-medium text-red-600 empty:hidden"></p>
         <p class="text-meta mt-3 text-center">Seen only by our care team.</p>
+        </div>
+
+        <!-- Shown after a successful submission -->
+        <div data-lead-success hidden class="py-6 text-center">
+          <span class="mx-auto grid size-14 place-items-center rounded-full bg-brand-100 text-brand-600">
+            <Icon name="check" class="size-7" />
+          </span>
+          <h3 class="heading-3 mt-5" tabindex="-1" data-lead-success-title>Thank you, we've received your request</h3>
+          <p class="text-body mx-auto mt-3 max-w-sm">
+            Our care team will call you shortly to confirm your appointment. For anything urgent, call
+            <a href={`tel:${digits(SITE.phone)}`} class="font-semibold text-brand-700 underline underline-offset-2">{SITE.phone}</a>.
+          </p>
+          <a href={whatsappLink()} target="_blank" rel="noopener" class="btn btn-outline mt-6">Chat with us on WhatsApp</a>
+        </div>
       </form>
     </div>
     {
@@ -106,26 +148,124 @@ const tiles = [
   </div>
 </section>
 
-<script define:vars={{ whatsapp: SITE.whatsapp.replace(/\D/g, ''), greeting: WHATSAPP_MESSAGE }}>
-  // No backend yet: forms open a pre-filled WhatsApp message to the care team.
-  // Swap this for a real form endpoint when one is available.
-  document.querySelectorAll('[data-whatsapp-form]').forEach((form) =>
-    form.addEventListener('submit', (e) => {
+<script define:vars={{ endpoint: SITE.leadsEndpoint, whatsappUrl: whatsappLink() }}>
+  // "Request an appointment" leads go to the Google Sheet through the hospital's Apps Script
+  // web app (SITE.leadsEndpoint), with the same fields the WordPress site sends.
+  document.querySelectorAll('[data-lead-form]').forEach((form) => {
+    const fields = form.querySelector('[data-lead-fields]');
+    const success = form.querySelector('[data-lead-success]');
+    const status = form.querySelector('[data-lead-status]');
+    const submit = form.querySelector('[data-lead-submit]');
+
+    const value = (name) => String(form.elements[name]?.value || '').trim();
+    const wrapper = (name) => form.querySelector(`[data-field="${name}"]`);
+    // The control a person actually types in or clicks (phone, date and reason submit through hidden inputs)
+    // (a typing field first, so the phone's country-code button isn't picked over the number box)
+    const control = (name) =>
+      wrapper(name).querySelector('input:not([type=hidden]), textarea') || wrapper(name).querySelector('button');
+
+    // Each rule returns an error message, or '' when the field is fine
+    const rules = {
+      name: () => {
+        const v = value('name');
+        if (!v) return 'Please enter your name.';
+        if (v.length < 2) return 'Please enter your full name.';
+        if (!/^[\p{L}\p{M}][\p{L}\p{M}\s.'-]*$/u.test(v)) return 'Please use letters only in your name.';
+        return '';
+      },
+      email: () => {
+        const v = value('email');
+        if (!v) return 'Please enter your email address.';
+        if (!/^[^\s@]+@[^\s@.]+(\.[^\s@.]+)*\.[a-z]{2,}$/i.test(v)) return 'Please enter a valid email address, e.g. name@example.com.';
+        return '';
+      },
+      phone: () => {
+        const input = control('phone');
+        if (!input.value.replace(/\D/g, '')) return 'Please enter your phone number.';
+        // PhoneInput checks the digit count for the chosen country (and 6–9 start for India)
+        return input.checkValidity() ? '' : input.validationMessage;
+      },
+      date: () =>
+        form.elements.date?.hasAttribute('data-incomplete') ? 'Please choose a time for your appointment, or clear the date.' : '',
+      message: () => (value('message').length > 1000 ? 'Please keep your message under 1000 characters.' : ''),
+    };
+
+    const check = (name) => {
+      const message = rules[name]();
+      const box = wrapper(name);
+      const error = box.querySelector('[data-error]');
+      const input = control(name);
+      error.id ||= `lead-${name}-error`;
+      error.textContent = message;
+      error.hidden = !message;
+      box.toggleAttribute('data-invalid', !!message);
+      input.toggleAttribute('aria-invalid', !!message);
+      if (message) input.setAttribute('aria-describedby', error.id);
+      else input.removeAttribute('aria-describedby');
+      return !message;
+    };
+
+    // After the first attempt, re-check a field as soon as it changes
+    let attempted = false;
+    Object.keys(rules).forEach((name) => {
+      const box = wrapper(name);
+      const recheck = () => attempted && check(name);
+      box.addEventListener('input', recheck);
+      box.addEventListener('change', recheck);
+      box.addEventListener('focusout', recheck);
+    });
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const data = new FormData(form);
-      const labels = {
-        name: 'Name',
-        email: 'Email',
-        phone: 'Phone',
-        date: 'Preferred date and time',
-        concern: 'Concern',
-        when: 'Preferred time',
-        message: 'Message',
-      };
-      const lines = Object.entries(labels)
-        .filter(([key]) => data.get(key))
-        .map(([key, label]) => `${label}: ${data.get(key)}`);
-      const msg = [greeting, ...lines].join('\n');
-      window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
-    }),
-  );</script>
+      status.textContent = '';
+      if (value('company')) return; // spam trap filled in: drop silently
+
+      attempted = true;
+      const invalid = Object.keys(rules).filter((name) => !check(name));
+      if (invalid.length) {
+        control(invalid[0]).focus();
+        status.textContent = invalid.length === 1 ? 'Please fix the highlighted field.' : `Please fix the ${invalid.length} highlighted fields.`;
+        return;
+      }
+
+      const lead = new URLSearchParams({
+        name: value('name'),
+        email: value('email'),
+        phone: value('phone'),
+        appointment: value('date'),
+        reason: value('concern'),
+        message: value('message'),
+        // Same format as the WordPress site: "YYYY-MM-DD HH:mm:ss", India time
+        submit_time: new Date().toLocaleString('sv-SE', { timeZone: 'Asia/Kolkata' }),
+        page_url: location.href,
+      });
+
+      submit.disabled = true;
+      submit.textContent = 'Sending…';
+      try {
+        // Apps Script doesn't send CORS headers, so the response can't be read ("no-cors");
+        // a network error still throws, which is the failure we can detect.
+        await fetch(endpoint, { method: 'POST', mode: 'no-cors', body: lead });
+        fields.hidden = true;
+        success.hidden = false;
+        success.querySelector('[data-lead-success-title]')?.focus();
+      } catch {
+        status.innerHTML = '';
+        status.append(
+          'Sorry, we could not send your request. Please check your connection and try again, or ',
+          Object.assign(document.createElement('a'), {
+            href: whatsappUrl,
+            target: '_blank',
+            rel: 'noopener',
+            className: 'underline',
+            textContent: 'message us on WhatsApp',
+          }),
+          '.',
+        );
+      } finally {
+        submit.disabled = false;
+        submit.textContent = 'Book Appointment';
+      }
+    });
+  });
+</script>

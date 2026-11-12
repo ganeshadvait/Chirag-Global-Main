@@ -21,7 +21,7 @@ const barBtn =
 <nav aria-label="Quick contact" class="fixed bottom-6 right-6 z-30 hidden lg:block">
   <ul class="flex flex-col items-end gap-2">
     <li>
-      <a href="/#callback" data-callback-link class={pill}>
+      <a href="#book" data-callback-link class={pill}>
         <span class:list={[pillIcon, 'btn-amber']}><Icon name="phone" class="size-5" /></span>
         <span class={pillLabel}>Get a call back</span>
       </a>
@@ -83,10 +83,10 @@ const barBtn =
 </nav>
 
 <script>
-  // "Get a call back" jumps to the hero form and puts the cursor in the name field
+  // "Get a call back" jumps to the appointment form and puts the cursor in the name field
   document.querySelector('[data-callback-link]')?.addEventListener('click', (e) => {
-    const form = document.getElementById('callback');
-    if (!form) return; // other pages: let the link navigate to the home page
+    const form = document.querySelector('#book form');
+    if (!form) return; // no form on this page: let the link jump to #book
     e.preventDefault();
     form.scrollIntoView({ behavior: 'smooth', block: 'center' });
     form.querySelector<HTMLInputElement>('input[name=name]')?.focus({ preventScroll: true });

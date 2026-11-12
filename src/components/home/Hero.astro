@@ -1,15 +1,9 @@
 ---
 import Icon from '../Icon.astro';
-import Select from '../Select.astro';
-import PhoneInput from '../PhoneInput.astro';
-import { IMAGES, STATS, CONCERNS } from '../../data/home';
+import { IMAGES, STATS } from '../../data/home';
 
 const avatars = ['RM', 'SK', 'JV', 'PB'];
 const DOCTORS_ON_TEAM = 9;
-
-const field = 'block rounded-2xl bg-brand-50 px-5 py-3.5 ring-brand-400 transition focus-within:ring-2';
-const fieldLabel = 'block text-[0.6875rem] font-semibold uppercase tracking-wider text-brand-700';
-const fieldInput = 'mt-1 w-full bg-transparent text-[0.9375rem] text-ink-900 outline-none placeholder:text-ink-900/45';
 ---
 
 <section id="hero" aria-labelledby="hero-title" class="relative isolate overflow-hidden bg-ink-900 text-white">
@@ -105,32 +99,11 @@ const fieldInput = 'mt-1 w-full bg-transparent text-[0.9375rem] text-ink-900 out
   </div>
 </section>
 
-<!-- Quick call-back form overlapping the hero's flat bottom edge -->
-<section id="callback" aria-labelledby="callback-title" class="relative z-10 -mt-20 sm:-mt-24 lg:-mt-16">
+<!-- Key facts, in a card overlapping the hero's flat bottom edge -->
+<section aria-labelledby="facts-title" class="relative z-10 -mt-20 sm:-mt-24 lg:-mt-16">
   <div class="container-x">
-    <h2 id="callback-title" class="sr-only">Request a call back</h2>
-    <form
-      aria-labelledby="callback-title"
-      data-whatsapp-form
-      class="grid grid-cols-1 gap-2.5 rounded-3xl bg-white p-2.5 text-ink-900 shadow-2xl shadow-ink-900/15 ring-1 ring-brand-100 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1.25fr_auto]"
-    >
-      <label class={field}>
-        <span class={fieldLabel}>Your name</span>
-        <input name="name" required autocomplete="name" placeholder="Full name" class={fieldInput} />
-      </label>
-      <PhoneInput name="phone" label="Phone" placeholder="Phone number" required variant="field" />
-      <Select name="concern" label="Concern" options={CONCERNS} variant="field" class="sm:col-span-2 lg:col-span-1" />
-      <button
-        type="submit"
-        class="inline-flex items-center justify-center gap-3 rounded-2xl bg-ink-900 px-7 py-4 font-semibold xl:px-10 text-white transition hover:bg-ink-700 sm:col-span-2 lg:col-span-1"
-      >
-        Get a call back <Icon name="arrowRight" class="size-4" />
-      </button>
-    </form>
-    <p class="text-meta mt-3 px-1">Confidential. Your details are only seen by our care team.</p>
-
-    <!-- Stats -->
-    <dl class="mt-10 grid grid-cols-2 gap-y-8 lg:grid-cols-4">
+    <h2 id="facts-title" class="sr-only">Chirag Global Hospitals at a glance</h2>
+    <dl class="grid grid-cols-2 gap-y-6 rounded-3xl bg-white px-5 py-6 text-ink-900 shadow-2xl shadow-ink-900/15 ring-1 ring-brand-100 sm:px-8 sm:py-7 lg:grid-cols-4 lg:px-10">
       {
         STATS.map((s, i) => (
           <div

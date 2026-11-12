@@ -18,6 +18,11 @@ export const SITE = {
   mapsUrl: 'https://maps.google.com/?q=Chirag+Global+Hospitals+BTM+2nd+Stage+Bengaluru',
   hours: { weekdays: '9am to 7pm', sunday: '10am to 12pm' },
   accreditation: 'NABH Entry Level certified',
+  // Google Apps Script web app that appends "Request an appointment" form leads to the
+  // leads Google Sheet (same script the WordPress site posts to). The browser posts to it
+  // directly, so the URL is public; the script must be deployed with access "Anyone".
+  leadsEndpoint:
+    'https://script.google.com/macros/s/AKfycbxXPCnZmTUfwpWBVY5N_QmuElvPOj59s0dFykd_ZxYKsn8sfuNwyQW8VEDyES7ihhjA/exec',
   social: {
     facebook: '#',
     instagram: '#',
