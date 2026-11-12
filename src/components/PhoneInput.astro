@@ -144,9 +144,14 @@ const COUNTRIES = [
       const c = countries[current];
       const digits = input.value.replace(/\D/g, '').replace(/^0+/, ''); // drop a leading trunk 0 (e.g. UK 07911…)
       hidden.value = digits ? `+${c.code} ${digits}` : '';
-      const ok = !digits || (digits.length >= c.min && digits.length <= c.max && (c.iso !== 'IN' || /^[6-9]/.test(digits)));
+      const lengthOk = digits.length >= c.min && digits.length <= c.max;
+      const startOk = c.iso !== 'IN' || /^[6-9]/.test(digits);
       input.setCustomValidity(
-        ok ? '' : `Please enter a valid ${c.name} number (${c.min === c.max ? c.min : `${c.min}–${c.max}`} digits after +${c.code}).`,
+        !digits || (lengthOk && startOk)
+          ? ''
+          : !lengthOk
+            ? `Please enter a valid ${c.name} number (${c.min === c.max ? c.min : `${c.min}–${c.max}`} digits after +${c.code}).`
+            : 'Indian mobile numbers start with 6, 7, 8 or 9.',
       );
     };
 

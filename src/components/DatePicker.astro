@@ -154,6 +154,8 @@ const hours = { weekdays: [9, 19], sunday: [10, 12] };
     const update = () => {
       const text = selected ? `${dateLabel(selected)}${time !== null ? `, ${timeLabel(time)}` : ''}` : '';
       input.value = text;
+      // Lets forms tell "date picked but no time yet" apart from a complete choice
+      input.toggleAttribute('data-incomplete', !!selected && time === null);
       valueEl.textContent = text || valueEl.dataset.placeholder!;
       valueEl.toggleAttribute('data-empty', !text);
       hint.textContent = !selected ? 'Select a date, then a time' : time === null ? 'Now select a time' : text;
