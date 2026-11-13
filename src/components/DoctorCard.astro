@@ -1,4 +1,5 @@
 ---
+import { altFor } from '../data/image-alts';
 import Icon from './Icon.astro';
 import { doctorHref } from '../lib/routes';
 import type { Doctor } from '../data/doctors';
@@ -18,7 +19,7 @@ const { doctor: d, as: Heading = 'h3' } = Astro.props;
       d.photo && (
         <img decoding="async"
           src={d.photo}
-          alt={`${d.name}, ${d.role}`}
+          alt={altFor(d.photo, `${d.name}, ${d.role}`)}
           width="250"
           height="250"
           loading="lazy"

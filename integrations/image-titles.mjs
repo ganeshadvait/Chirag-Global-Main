@@ -23,7 +23,10 @@ export default function imageTitles() {
         let images = 0;
         for await (const file of htmlFiles(fileURLToPath(dir))) {
           const html = await readFile(file, 'utf8');
-          const next = html.replace(/<img\b[^>]*>/g, (tag) => {
+          const next = html.replace(/<img\b[^>]*>/g, (original) => {
+            // Astro writes an empty alt as a bare `alt`; spell it out as alt="" (decorative image)
+            // so SEO audit tools that look for alt="" don't report it as missing
+            const tag = original.replace(/\salt(?=[\s>/])/, ' alt=""');
             if (/\stitle=/.test(tag)) return tag;
             const alt = tag.match(/\salt="([^"]+)"/)?.[1];
             if (!alt) return tag;

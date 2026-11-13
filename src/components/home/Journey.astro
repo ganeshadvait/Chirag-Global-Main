@@ -1,4 +1,5 @@
 ---
+import { altFor } from '../../data/image-alts';
 import SectionHeader from '../SectionHeader.astro';
 import { JOURNEY } from '../../data/home';
 ---
@@ -31,7 +32,7 @@ import { JOURNEY } from '../../data/home';
                 class="group flex w-full cursor-pointer flex-col items-center rounded-2xl pb-2 text-center outline-none [-webkit-tap-highlight-color:transparent] focus-visible:ring-2 focus-visible:ring-amber-400"
               >
                 <span class="grid size-14 place-items-center rounded-full border border-brand-200 bg-white ring-[6px] ring-brand-100 transition duration-300 ease-out sm:size-16 sm:ring-8 group-hover:-translate-y-1 group-hover:bg-brand-50 group-hover:ring-brand-200 group-hover:shadow-lg group-hover:shadow-brand-600/25 group-active:scale-95 group-aria-selected:scale-110 group-aria-selected:border-transparent group-aria-selected:bg-amber-400 group-aria-selected:ring-amber-400/30 group-aria-selected:shadow-lg group-aria-selected:shadow-amber-500/30 group-aria-selected:group-hover:translate-y-0">
-                  <img src={s.image} alt={`${s.title} icon`} width="256" height="256" loading="lazy" decoding="async" class="size-9 transition-transform duration-300 group-hover:scale-110 sm:size-10" />
+                  <img src={s.image} alt={altFor(s.image, `${s.title} icon`)} width="256" height="256" loading="lazy" decoding="async" class="size-9 transition-transform duration-300 group-hover:scale-110 sm:size-10" />
                 </span>
                 <span class="text-kicker mt-4 text-brand-400 transition-colors group-hover:text-brand-600 group-aria-selected:text-amber-500">
                   STEP {String(i + 1).padStart(2, '0')}

@@ -1,4 +1,5 @@
 ---
+import { altFor } from '../../data/image-alts';
 import Icon from '../Icon.astro';
 import { doctorHref } from '../../lib/routes';
 import SectionHeader from '../SectionHeader.astro';
@@ -51,7 +52,7 @@ const founderHref = founder ? doctorHref(founder.slug) : '/doctors';
       <div class="relative order-1 min-h-96 bg-cream-100 lg:order-2 lg:min-h-full">
         <img decoding="async"
           src={IMAGES.chairman}
-          alt="Dr. Rajasekhar M. R., Founder and Chairman"
+          alt={altFor(IMAGES.chairman, 'Dr. Rajasekhar M. R., Founder and Chairman')}
           loading="lazy"
           width="462"
           height="650"

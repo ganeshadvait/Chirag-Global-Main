@@ -1,4 +1,5 @@
 ---
+import { altFor } from '../data/image-alts';
 import type { GetStaticPaths } from 'astro';
 import { treatmentHref } from '../lib/routes';
 
@@ -60,7 +61,7 @@ const articleLd = {
         {
           hasCover && (
             <div class="relative mb-10 aspect-[3/2] overflow-hidden rounded-3xl bg-brand-100">
-              <img decoding="async" src={p.image} alt={p.imageAlt} width="800" height="533" class="size-full object-cover" onerror="this.parentElement.remove()" />
+              <img decoding="async" src={p.image} alt={altFor(p.image, p.imageAlt)} width="800" height="533" class="size-full object-cover" onerror="this.parentElement.remove()" />
             </div>
           )
         }

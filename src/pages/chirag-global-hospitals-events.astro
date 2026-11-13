@@ -1,4 +1,5 @@
 ---
+import { altFor } from '../data/image-alts';
 import Layout from '../layouts/Layout.astro';
 import { eventHref } from '../lib/routes';
 import SectionHeader from '../components/SectionHeader.astro';
@@ -79,7 +80,7 @@ const invite = [
                 i === 2 && 'bottom-0 right-0 z-10 w-[50%] rotate-3 aspect-[4/3]',
               ]}
             >
-              <img decoding="async" src={e.cover} alt={e.title} class="size-full object-cover" fetchpriority={i === 1 ? 'high' : undefined} />
+              <img decoding="async" src={e.cover} alt={altFor(e.cover, e.title)} class="size-full object-cover" fetchpriority={i === 1 ? 'high' : undefined} />
             </div>
           ))
         }
@@ -104,7 +105,7 @@ const invite = [
             class="group grid overflow-hidden rounded-3xl bg-white text-ink-900 shadow-2xl shadow-ink-900/15 ring-1 ring-brand-100 lg:grid-cols-[1.15fr_1fr]"
           >
             <div class="relative aspect-[16/10] overflow-hidden lg:aspect-auto">
-              <img decoding="async" src={featured.cover} alt={featured.title} class="size-full object-cover transition duration-500 group-hover:scale-105" />
+              <img decoding="async" src={featured.cover} alt={altFor(featured.cover, featured.title)} class="size-full object-cover transition duration-500 group-hover:scale-105" />
               <span class="btn-amber absolute left-5 top-5 rounded-full px-3 py-1.5 text-xs font-semibold">Latest event</span>
             </div>
             <div class="flex flex-col p-6 sm:p-8 lg:p-10">
@@ -197,7 +198,7 @@ const invite = [
           photos.map((p, i) => (
             <li class="break-inside-avoid">
               <a href={p.src} data-lightbox="all-events" aria-label={`Photo ${i + 1}: ${p.title}`} class="group block overflow-hidden rounded-2xl bg-brand-100">
-                <img decoding="async" src={p.src} alt={p.title} loading="lazy" class="w-full transition duration-500 group-hover:scale-105" />
+                <img decoding="async" src={p.src} alt={altFor(p.src, p.title)} loading="lazy" class="w-full transition duration-500 group-hover:scale-105" />
               </a>
             </li>
           ))

@@ -1,4 +1,5 @@
 ---
+import { altFor } from '../../data/image-alts';
 import type { GetStaticPaths } from 'astro';
 import { eventHref } from '../../lib/routes';
 import { eventPath } from '../../lib/routes';
@@ -81,7 +82,7 @@ const eventLd = {
                   <a href={g} data-lightbox={e.slug} class="group block h-full overflow-hidden rounded-2xl bg-brand-100">
                     <img decoding="async"
                       src={g}
-                      alt={`${e.title}, photo ${n + 1}`}
+                      alt={altFor(g, `${e.title}, photo ${n + 1}`)}
                       loading="lazy"
                       class="aspect-square size-full object-cover transition duration-500 group-hover:scale-105"
                     />

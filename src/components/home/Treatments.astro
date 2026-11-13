@@ -1,4 +1,5 @@
 ---
+import { altFor } from '../../data/image-alts';
 import Icon from '../Icon.astro';
 import { treatmentHref } from '../../lib/routes';
 import SectionHeader from '../SectionHeader.astro';
@@ -25,7 +26,7 @@ const also = TREATMENTS_LIST.filter((t) => !featuredSlugs.includes(t.slug));
       >
         <img decoding="async"
           src={featured.image}
-          alt={`${featured.name} illustration`}
+          alt={altFor(featured.image, `${featured.name} illustration`)}
           width="662"
           height="507"
           loading="lazy"
@@ -57,7 +58,7 @@ const also = TREATMENTS_LIST.filter((t) => !featuredSlugs.includes(t.slug));
           >
             <img decoding="async"
               src={t.image}
-              alt={`${t.name} illustration`}
+              alt={altFor(t.image, `${t.name} illustration`)}
               width="662"
               height="507"
               loading="lazy"

@@ -1,4 +1,5 @@
 ---
+import { altFor } from '../data/image-alts';
 import type { GetStaticPaths } from 'astro';
 import { postHref } from '../lib/routes';
 import { TREATMENT_PATHS } from '../lib/routes';
@@ -83,7 +84,7 @@ const pageLd = {
             t.image && (
               <img decoding="async"
                 src={t.image}
-                alt={`${t.name} illustration`}
+                alt={altFor(t.image, `${t.name} illustration`)}
                 width="662"
                 height="507"
                 fetchpriority="high"

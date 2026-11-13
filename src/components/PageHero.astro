@@ -1,4 +1,5 @@
 ---
+import { altFor } from '../data/image-alts';
 // Dark banner at the top of every inner page: breadcrumbs → eyebrow → h1 → lead → actions.
 // Optional image on the right from lg up.
 import Breadcrumbs, { type Crumb } from './Breadcrumbs.astro';
@@ -52,7 +53,7 @@ const { title, highlight, eyebrow, lead, crumbs, image, imageAlt = '', imageFit 
         >
           <img decoding="async"
             src={image}
-            alt={imageAlt}
+            alt={altFor(image, imageAlt)}
             fetchpriority="high"
             class:list={[
               'absolute inset-0 size-full',

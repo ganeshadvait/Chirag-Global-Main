@@ -1,4 +1,5 @@
 ---
+import { altFor } from '../data/image-alts';
 import { SITE, NAV_LINKS, digits } from '../config';
 import { IMAGES } from '../data/home';
 import Icon from './Icon.astro';
@@ -64,14 +65,14 @@ const isCurrent = (href: string) => href === current;
       <Logo class="shadow-sm" />
       <img decoding="async"
         src={IMAGES.experience}
-        alt="38+ years of experience"
+        alt={altFor(IMAGES.experience, '38+ years of experience')}
         width="125"
         height="125"
         class="hidden size-14 drop-shadow-lg xl:block"
       />
       <img decoding="async"
         src={IMAGES.nabh}
-        alt="NABH Entry Level certified"
+        alt={altFor(IMAGES.nabh, 'NABH Entry Level certified')}
         width="1024"
         height="717"
         class="hidden h-12 w-auto drop-shadow-lg xl:block"
@@ -222,8 +223,8 @@ const isCurrent = (href: string) => href === current;
         }
       </ul>
       <div class="mt-6 flex items-center gap-3 rounded-2xl bg-white p-3">
-        <img decoding="async" src={IMAGES.experience} alt="38+ years of experience" width="125" height="125" class="size-12" />
-        <img decoding="async" src={IMAGES.nabh} alt="NABH Entry Level certified" width="1024" height="717" class="h-11 w-auto" />
+        <img decoding="async" src={IMAGES.experience} alt={altFor(IMAGES.experience, '38+ years of experience')} width="125" height="125" class="size-12" />
+        <img decoding="async" src={IMAGES.nabh} alt={altFor(IMAGES.nabh, 'NABH Entry Level certified')} width="1024" height="717" class="h-11 w-auto" />
         <p class="text-xs font-medium text-ink-900/70">{SITE.accreditation}</p>
       </div>
       <div class="mt-auto space-y-3 pt-8">

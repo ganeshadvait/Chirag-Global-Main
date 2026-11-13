@@ -6,6 +6,7 @@ import imageTitles from './integrations/image-titles.mjs';
 import sitemap from '@astrojs/sitemap';
 import devSitemap from './integrations/dev-sitemap.mjs';
 import { readFileSync } from 'node:fs';
+import { REDIRECTS } from './src/data/redirects.mjs';
 
 const SITE = 'https://www.chiragglobalhospitals.com';
 
@@ -27,6 +28,8 @@ const isEvent = (path) => path === '/chirag-global-hospitals-events' || path.sta
 export default defineConfig({
   // Live domain: used for the sitemap, canonical links and structured data
   site: SITE,
+  // 301 redirects for old URLs (see src/data/redirects.mjs)
+  redirects: REDIRECTS,
   // Every image with alt text also gets a matching title attribute;
   // @astrojs/sitemap writes sitemap-index.xml on build, pointing to separate sitemaps for pages,
   // blogs and events. devSitemap serves the built files on the dev server too.

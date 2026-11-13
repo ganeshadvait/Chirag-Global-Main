@@ -1,4 +1,5 @@
 ---
+import { altFor } from '../data/image-alts';
 // White card for the treatments grid: numbered photo → name → summary → common signs → link.
 import Icon from './Icon.astro';
 import { treatmentHref } from '../lib/routes';
@@ -29,7 +30,7 @@ const signs = t.symptoms
       t.image && (
         <img decoding="async"
           src={t.image}
-          alt={`${t.name} illustration`}
+          alt={altFor(t.image, `${t.name} illustration`)}
           width="662"
           height="507"
           loading="lazy"
