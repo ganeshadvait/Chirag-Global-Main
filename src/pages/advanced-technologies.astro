@@ -7,15 +7,13 @@ import Layout from '../layouts/Layout.astro';
 import { treatmentHref } from '../lib/routes';
 import Icon from '../components/Icon.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import WhatsAppIcon from '../components/WhatsAppIcon.astro';
-import { whatsappLink } from '../config';
 import { IMAGES } from '../data/home';
 import { CONDITION_LABELS, INNOVATIONS, VRS, FISTULA_SCAN, PROCEDURES, PRINCIPLES, PILLARS } from '../data/technologies';
 
 const heroCards = [
-  { icon: 'target', title: 'Early detection', text: 'Spotting anal gland infection before it becomes a fistula.', href: '#innovations' },
-  { icon: 'scan', title: '360° mapping', text: 'Real-time ultrasound shows the complete extent of disease.', href: '#fistula-scan' },
-  { icon: 'zap', title: 'Day-care surgery', text: 'Minimally invasive procedures designed for faster recovery.', href: '#procedures' },
+  { icon: 'target', title: 'Early detection', text: 'Spotting anal gland infection before it becomes a fistula.' },
+  { icon: 'scan', title: '360° mapping', text: 'Real-time ultrasound shows the complete extent of disease.' },
+  { icon: 'zap', title: 'Day-care surgery', text: 'Minimally invasive procedures designed for faster recovery.' },
 ] as const;
 
 const features = [
@@ -195,9 +193,6 @@ const crumbs = [{ label: 'About Us', href: '/about-us' }, { label: 'Advanced Tec
               </span>
               <h2 class="heading-3 mt-4">{c.title}</h2>
               <p class="text-body mt-2 max-w-xs">{c.text}</p>
-              <a href={c.href} class="mt-5 inline-flex items-center gap-1 text-sm font-semibold hover:text-brand-700">
-                Read more <Icon name="chevronRight" class="size-4" />
-              </a>
             </li>
           ))
         }
@@ -229,9 +224,6 @@ const crumbs = [{ label: 'About Us', href: '/about-us' }, { label: 'Advanced Tec
           protecting continence and keeping recovery short. Our surgeons choose the technique after examining you, never
           the other way round.
         </p>
-        <a href="/about-us" class="mt-5 inline-flex items-center gap-1 text-sm font-semibold hover:text-brand-700">
-          About Chirag <Icon name="chevronRight" class="size-4" />
-        </a>
         <ul class="mt-10 grid grid-cols-1 gap-x-6 gap-y-6 min-[360px]:grid-cols-2 min-[360px]:gap-y-8">
           {
             trustStats.map((s) => (
@@ -317,7 +309,6 @@ const crumbs = [{ label: 'About Us', href: '/about-us' }, { label: 'Advanced Tec
               ))
             }
           </ul>
-          <a href="#book" class="btn btn-primary mt-8">Book an examination</a>
         </div>
 
         <div class="relative mx-auto aspect-square w-full max-w-sm">
@@ -367,9 +358,6 @@ const crumbs = [{ label: 'About Us', href: '/about-us' }, { label: 'Advanced Tec
             ))
           }
         </div>
-        <a href="/treatments" class="inline-flex shrink-0 items-center gap-1 text-xs font-semibold uppercase tracking-wide text-brand-700 hover:underline">
-          Go to treatments <Icon name="arrowRight" class="size-3.5 -rotate-45" />
-        </a>
       </div>
 
       <ul class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" aria-live="polite">
@@ -398,16 +386,6 @@ const crumbs = [{ label: 'About Us', href: '/about-us' }, { label: 'Advanced Tec
                     </>
                   ))}
                 </p>
-                <div class="mt-auto pt-5">
-                  <a
-                    href={whatsappLink(`Hi, I'd like to know if ${p.name.toLowerCase()} is suitable for me.`)}
-                    target="_blank"
-                    rel="noopener"
-                    class="btn btn-primary"
-                  >
-                    Ask about this
-                  </a>
-                </div>
               </article>
             </li>
           ))
@@ -439,7 +417,6 @@ const crumbs = [{ label: 'About Us', href: '/about-us' }, { label: 'Advanced Tec
             ))
           }
         </ul>
-        <a href="/top-fistula-laser-treatment-hospital-in-bangalore" class="btn btn-lg btn-primary mt-8">Make an appointment</a>
       </div>
       <div class="relative mx-auto w-full max-w-sm">
         <img decoding="async"
@@ -480,14 +457,6 @@ const crumbs = [{ label: 'About Us', href: '/about-us' }, { label: 'Advanced Tec
     <div class="container-x">
       <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <h2 class="heading-2 max-w-xl">Right treatment, <span class="text-brand-600">not just surgery</span></h2>
-        <a
-          href={whatsappLink('Hi, I would like to know which treatment is right for me.')}
-          target="_blank"
-          rel="noopener"
-          class="btn btn-outline shrink-0"
-        >
-          <WhatsAppIcon class="size-5" /> WhatsApp a health expert
-        </a>
       </div>
       <p class="text-lead mt-4 max-w-2xl">
         Some conditions need surgery, some respond to medicines, and some benefit from integrated Ayurvedic care.

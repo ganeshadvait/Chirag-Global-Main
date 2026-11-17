@@ -139,21 +139,73 @@ const [first] = INTERNATIONAL;
   const heading = root.querySelector('[data-intl-heading]');
   const list = root.querySelector('[data-intl-points]');
   const template = list.firstElementChild.cloneNode(true);
+  const panel = root.querySelector('#intl-panel');
+
+  // Desktop autoplay: move to the next step every few seconds, looping forever. Pauses while the
+  // pointer is over a step (its icon or labels) or the content card (not the whole section or row,
+  // where the cursor rests while reading), while keyboard focus is inside, while the section is out of view or the
+  // browser tab is hidden. Off below 1024px, where the steps are tapped.
+  const autoplay = (region, hoverTargets, next) => {
+    const DELAY = 4000;
+    const desktop = window.matchMedia('(min-width: 1024px)');
+    let timer = 0;
+    let hovering = false;
+    let focused = false;
+    let visible = false;
+    const stop = () => clearInterval(timer);
+    const start = () => {
+      stop();
+      if (desktop.matches && visible && !hovering && !focused && !document.hidden) {
+        timer = setInterval(next, DELAY);
+      }
+    };
+    hoverTargets.forEach((el) => {
+      el.addEventListener('mouseenter', () => { hovering = true; stop(); });
+      el.addEventListener('mouseleave', () => { hovering = false; start(); });
+    });
+    // Keyboard focus pauses too (a mouse click focuses the button but shouldn't hold the pause)
+    region.addEventListener('focusin', (e) => {
+      if (!e.target.matches(':focus-visible')) return;
+      focused = true;
+      stop();
+    });
+    region.addEventListener('focusout', (e) => {
+      if (region.contains(e.relatedTarget)) return;
+      focused = false;
+      start();
+    });
+    new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; start(); }, { threshold: 0.2 }).observe(region);
+    document.addEventListener('visibilitychange', start);
+    desktop.addEventListener('change', start);
+    // A manual choice restarts the countdown from the step picked
+    return { restart: start };
+  };
+
+  // auto: chosen by the autoplay (no screen-reader announcement)
+  const show = (tab, auto = false) => {
+    const i = Number(tab.dataset.stage);
+    const s = stages[i];
+    panel.setAttribute('aria-live', auto ? 'off' : 'polite');
+    tabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
+    label.textContent = `Stage ${i + 1} · ${s.label}`;
+    heading.textContent = s.heading;
+    list.replaceChildren(
+      ...s.points.map((p) => {
+        const li = template.cloneNode(true);
+        li.lastChild.textContent = ` ${p}`;
+        return li;
+      }),
+    );
+  };
+
+  const current = () => [...tabs].findIndex((t) => t.getAttribute('aria-selected') === 'true');
+  // Hover pause: each stage's icon and labels, and the content card
+  const loop = autoplay(root, [...[...tabs].flatMap((t) => [...t.children]), panel], () => show(tabs[(current() + 1) % tabs.length], true));
 
   tabs.forEach((tab) =>
     tab.addEventListener('click', () => {
-      const i = Number(tab.dataset.stage);
-      const s = stages[i];
-      tabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
-      label.textContent = `Stage ${i + 1} · ${s.label}`;
-      heading.textContent = s.heading;
-      list.replaceChildren(
-        ...s.points.map((p) => {
-          const li = template.cloneNode(true);
-          li.lastChild.textContent = ` ${p}`;
-          return li;
-        }),
-      );
+      show(tab);
+      loop.restart();
     }),
   );
 </script>

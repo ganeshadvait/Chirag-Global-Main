@@ -84,10 +84,54 @@ import { JOURNEY } from '../../data/home';
   const body = root.querySelector('[data-step-body]');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const select = (tab, focus = false) => {
+  const panel = root.querySelector('#journey-panel');
+
+  // Desktop autoplay: move to the next step every few seconds, looping forever. Pauses while the
+  // pointer is over a step (its icon or labels) or the content card (not the whole section or row,
+  // where the cursor rests while reading), while keyboard focus is inside, while the section is out of view or the
+  // browser tab is hidden. Off below 1024px, where the steps are tapped.
+  const autoplay = (region, hoverTargets, next) => {
+    const DELAY = 4000;
+    const desktop = window.matchMedia('(min-width: 1024px)');
+    let timer = 0;
+    let hovering = false;
+    let focused = false;
+    let visible = false;
+    const stop = () => clearInterval(timer);
+    const start = () => {
+      stop();
+      if (desktop.matches && visible && !hovering && !focused && !document.hidden) {
+        timer = setInterval(next, DELAY);
+      }
+    };
+    hoverTargets.forEach((el) => {
+      el.addEventListener('mouseenter', () => { hovering = true; stop(); });
+      el.addEventListener('mouseleave', () => { hovering = false; start(); });
+    });
+    // Keyboard focus pauses too (a mouse click focuses the button but shouldn't hold the pause)
+    region.addEventListener('focusin', (e) => {
+      if (!e.target.matches(':focus-visible')) return;
+      focused = true;
+      stop();
+    });
+    region.addEventListener('focusout', (e) => {
+      if (region.contains(e.relatedTarget)) return;
+      focused = false;
+      start();
+    });
+    new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; start(); }, { threshold: 0.2 }).observe(region);
+    document.addEventListener('visibilitychange', start);
+    desktop.addEventListener('change', start);
+    // A manual choice restarts the countdown from the step picked
+    return { restart: start };
+  };
+
+  // auto: chosen by the autoplay (no page scrolling, no screen-reader announcement)
+  const select = (tab, focus = false, auto = false) => {
     const i = Number(tab.dataset.step);
     const s = steps[i];
     if (tab.getAttribute('aria-selected') === 'true') return;
+    panel.setAttribute('aria-live', auto ? 'off' : 'polite');
     tabs.forEach((t) => {
       t.setAttribute('aria-selected', String(t === tab));
       t.tabIndex = t === tab ? 0 : -1;
@@ -102,13 +146,21 @@ import { JOURNEY } from '../../data/home';
       cta.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300, easing: 'ease-out' });
     }
     if (focus) tab.focus();
+    if (auto) return;
     // Mobile: the steps scroll sideways, so bring the tapped step to the middle
     tab.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest', inline: 'center' });
   };
 
+  const current = () => [...tabs].findIndex((t) => t.getAttribute('aria-selected') === 'true');
+  // Hover pause: each step's icon and labels, and the content card
+  const loop = autoplay(root, [...[...tabs].flatMap((t) => [...t.children]), panel], () => select(tabs[(current() + 1) % tabs.length], false, true));
+
   tabs.forEach((tab, i) => {
     tab.tabIndex = i === 0 ? 0 : -1;
-    tab.addEventListener('click', () => select(tab));
+    tab.addEventListener('click', () => {
+      select(tab);
+      loop.restart();
+    });
     // Arrow keys move between steps, as in a standard tab list
     tab.addEventListener('keydown', (e) => {
       const n = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
