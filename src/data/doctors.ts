@@ -37,7 +37,7 @@ const doctors: DoctorInput[] = [
     role: 'Founder and Chief Proctologist',
     quals: 'MBBS, MS',
     initials: 'RM',
-    photo: '/doctorchiragcard.webp',
+    photo: '/doctors/rajasekhar-m-r.webp',
     keyword: 'top proctologist in Bangalore',
     metaTitle: 'Dr. Rajasekhar M. R. | Chief Proctologist in Bangalore',
     metaDescription:
@@ -65,7 +65,7 @@ const doctors: DoctorInput[] = [
     role: 'Gastroenterology and Colorectal Surgeon',
     quals: 'MBBS, MS, FSGE',
     initials: 'SK',
-    photo: '/doctorshreedevicard.webp',
+    photo: '/doctors/shreedevi-k-n.webp',
     keyword: 'colorectal surgeon in Bangalore',
     metaTitle: 'Dr. Shreedevi K. N. | Colorectal Surgeon in Bangalore',
     metaDescription:
@@ -82,7 +82,7 @@ const doctors: DoctorInput[] = [
     role: 'Proctologist',
     quals: 'BAMS, MD',
     initials: 'PC',
-    photo: '/doctorprithvicard.webp',
+    photo: '/doctors/prithvija-chakravarthy.webp',
     metaTitle: 'Dr. Prithvija Chakravarthy | Proctologist in Bangalore',
     metaDescription:
       'Dr. Prithvija Chakravarthy is a proctologist at Chirag Global Hospitals, Bangalore, combining Ayurveda with modern diagnostics for anorectal conditions.',
@@ -98,7 +98,7 @@ const doctors: DoctorInput[] = [
     role: 'Proctologist',
     quals: 'BAMS, MS',
     initials: 'SA',
-    photo: '/doctorsuchithracard.webp',
+    photo: '/doctors/suchitra-n-adiga.webp',
     metaTitle: 'Dr. Suchitra N. Adiga | Proctologist in Bangalore',
     metaDescription:
       'Dr. Suchitra N. Adiga is a consultant proctologist at Chirag Global Hospitals, Bangalore, treating anorectal disorders with Ayurvedic and modern care.',
@@ -110,7 +110,7 @@ const doctors: DoctorInput[] = [
   },
   {
     name: 'Dr. Rahul Hegana',
-    // TODO: add photo
+    photo: '/doctors/rahul-hegana.webp',
     role: 'Anaesthesiologist',
     quals: 'BAMS, MD',
     initials: 'RH',
@@ -125,7 +125,7 @@ const doctors: DoctorInput[] = [
   },
   {
     name: 'Dr. Nayan Kumar',
-    // TODO: add photo
+    photo: '/doctors/nayan-kumar.webp',
     role: 'Anaesthesiologist',
     quals: 'MBBS, DNB',
     initials: 'NK',
@@ -143,7 +143,7 @@ const doctors: DoctorInput[] = [
     role: 'General Surgeon',
     quals: 'MBBS, MS (General Surgery)',
     initials: 'JV',
-    photo: '/doctorjyotsnacard.webp',
+    photo: '/doctors/jyotsna-vemulapalli.webp',
     metaTitle: 'Dr. Jyotsna Vemulapalli | General Surgeon in Bangalore',
     metaDescription:
       'Dr. Jyotsna Vemulapalli is a general surgeon at Chirag Global Hospitals, Bangalore, providing compassionate surgical care for anorectal conditions.',

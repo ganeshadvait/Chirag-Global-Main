@@ -56,7 +56,7 @@ const physicianLd = {
     imageAlt={d.name}
     imageFit="portrait"
   >
-    <a href="#book" class="btn btn-lg btn-primary">Book with {d.name.split(' ').slice(0, 2).join(' ')} <Icon name="arrowRight" class="size-4" /></a>
+    <a href="#book" class="btn btn-lg btn-primary">Book Appointment <Icon name="arrowRight" class="size-4" /></a>
     <a
       href={whatsappLink(`Hi, I'd like to book an appointment with ${d.name}.`)}
       target="_blank"
@@ -138,7 +138,7 @@ const physicianLd = {
           </dl>
           <p class="mt-6 text-xs text-white/60">Timings for individual doctors may vary. Call us to confirm availability.</p>
           <div class="mt-6 grid gap-3">
-            <a href="#book" class="btn btn-primary w-full">Book an appointment</a>
+            <a href="#book" class="btn btn-primary w-full">Book Appointment</a>
             <a href={`tel:${digits(SITE.phone)}`} class="btn btn-outline-light w-full"><Icon name="phone" class="size-4" /> Call {SITE.phone}</a>
           </div>
         </div>

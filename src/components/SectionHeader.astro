@@ -12,10 +12,14 @@ interface Props {
   tone?: 'default' | 'dark';
   /** Extra classes for the eyebrow chip (e.g. a translucent background on tinted panels) */
   eyebrowClass?: string;
+  /** Replaces the highlight's gradient (e.g. a solid colour over a busy background) */
+  highlightClass?: string;
+  /** Extra classes for the lead paragraph */
+  leadClass?: string;
   id?: string;
 }
 
-const { eyebrow, title, highlight, lead, align = 'left', tone = 'default', eyebrowClass, id } = Astro.props;
+const { eyebrow, title, highlight, lead, align = 'left', tone = 'default', eyebrowClass, highlightClass, leadClass, id } = Astro.props;
 const hasAction = Astro.slots.has('action');
 const dark = tone === 'dark';
 ---
@@ -30,9 +34,9 @@ const dark = tone === 'dark';
     <span class:list={['eyebrow', dark && 'bg-white/10 text-amber-400', eyebrowClass]}>{eyebrow}</span>
     <h2 id={id} class:list={['heading-2 mt-4', dark && 'text-white']}>
       {title}
-      {highlight && <span class={dark ? 'text-amber-400' : 'text-gradient-brand'}>{highlight}</span>}
+      {highlight && <span class={highlightClass ?? (dark ? 'text-amber-400' : 'text-gradient-brand')}>{highlight}</span>}
     </h2>
-    {lead && <p class:list={['text-lead mt-4', dark && 'text-white/75']}>{lead}</p>}
+    {lead && <p class:list={['text-lead mt-4', dark && 'text-white/75', leadClass]}>{lead}</p>}
   </div>
   {hasAction && <div class="shrink-0"><slot name="action" /></div>}
 </div>

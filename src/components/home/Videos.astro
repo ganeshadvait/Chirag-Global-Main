@@ -78,12 +78,13 @@ const watchUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;
             </div>
           </article>
 
-          <!-- Playlist: as tall as the player on large screens; the list scrolls when longer,
-               and a shortened list ends with a card linking to every talk -->
+          <!-- Playlist. Phones/tablets: the whole list, scrolling with the page (no box-in-a-box scrolling).
+               Desktop: as tall as the player, scrolling on its own when longer; at either end the wheel
+               carries on scrolling the page. A shortened list ends with a card linking to every talk. -->
           <div class="relative">
             <div class="flex flex-col gap-3 lg:absolute lg:inset-0">
             <ul
-              class="flex max-h-[26rem] min-h-0 flex-col gap-2 overflow-y-auto overscroll-contain pr-1.5 [scrollbar-color:var(--color-brand-200)_transparent] [scrollbar-width:thin] lg:max-h-none"
+              class="flex min-h-0 flex-col gap-2 lg:overflow-y-auto lg:pr-1.5 lg:[scrollbar-color:var(--color-brand-400)_transparent] lg:[scrollbar-width:thin]"
               aria-label="Doctor talk videos"
               data-video-list
             >

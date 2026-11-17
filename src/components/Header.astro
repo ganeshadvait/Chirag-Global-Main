@@ -61,21 +61,22 @@ const isCurrent = (href: string) => href === current;
     class="container-x flex items-center justify-between gap-4 py-3 transition-all duration-300 lg:py-5 group-data-scrolled/header:lg:py-3"
   >
     <!-- Logo with accreditation badges -->
-    <div class="flex shrink-0 items-center gap-3">
+    <!-- Badges on phones, tablets and wide desktops; hidden at 1024–1279px, where the menu and both buttons need the room -->
+    <div class="flex min-w-0 shrink-0 items-center gap-2 sm:gap-3 xl:gap-2 2xl:gap-3">
       <Logo class="shadow-sm" />
       <img decoding="async"
         src={IMAGES.experience}
         alt={altFor(IMAGES.experience, '38+ years of experience')}
         width="125"
         height="125"
-        class="hidden size-14 drop-shadow-lg xl:block"
+        class="size-10 shrink-0 drop-shadow-lg min-[400px]:size-11 sm:size-12 lg:hidden xl:block xl:size-12 2xl:size-14"
       />
       <img decoding="async"
         src={IMAGES.nabh}
         alt={altFor(IMAGES.nabh, 'NABH Entry Level certified')}
         width="1024"
         height="717"
-        class="hidden h-12 w-auto drop-shadow-lg xl:block"
+        class="h-9 w-auto shrink-0 drop-shadow-lg min-[400px]:h-10 sm:h-11 lg:hidden xl:block xl:h-10 2xl:h-12"
       />
     </div>
 
@@ -143,16 +144,18 @@ const isCurrent = (href: string) => href === current;
     </nav>
 
     <div class="flex items-center gap-2 sm:gap-3">
+      <!-- Call: round icon up to 1279px, the phone number from 1280px up -->
       <a
         href={`tel:${digits(SITE.phone)}`}
-        class="grid size-11 place-items-center rounded-full border border-white/25 transition hover:border-white/60 hover:bg-white/10 active:scale-95"
         aria-label={`Call ${SITE.phone}`}
+        class="flex size-11 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full border border-white/25 text-sm font-semibold transition hover:border-white/60 hover:bg-white/10 active:scale-95 xl:w-auto xl:px-4 2xl:text-base"
       >
-        <Icon name="phone" class="size-4" />
+        <Icon name="phone" class="size-4 shrink-0" />
+        <span class="hidden tabular-nums xl:inline">{digits(SITE.phone)}</span>
       </a>
       <a
         href={bookHref}
-        class="btn-amber hidden rounded-full px-5 py-3 text-sm font-semibold shadow-lg shadow-amber-500/20 transition duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-amber-500/35 hover:brightness-105 active:translate-y-0 active:scale-[0.97] sm:inline-block lg:hidden xl:inline-block xl:px-7 xl:text-base"
+        class="btn-amber hidden whitespace-nowrap rounded-full px-5 py-3 text-sm font-semibold shadow-lg shadow-amber-500/20 transition duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-amber-500/35 hover:brightness-105 active:translate-y-0 active:scale-[0.97] sm:inline-block 2xl:px-7 2xl:text-base"
       >
         Book Appointment
       </a>

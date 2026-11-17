@@ -10,10 +10,32 @@ const [first] = INTERNATIONAL;
 
 <section id="international" class="section">
   <div class="container-x">
-    <div class="panel bg-brand-100/70" data-intl>
+    <div class="panel relative isolate overflow-hidden bg-brand-100/70" data-intl>
+      <!--
+        Background: world map with a plane flying to Bangalore. Landscape video from 768px,
+        portrait below. Blended into the lavender panel (white becomes the panel colour, the map
+        shows faintly). Loaded only when the section is near the screen, paused off screen, and
+        left on its still first frame for visitors who prefer reduced motion.
+      -->
+      <video
+        data-intl-video
+        data-src-wide="/videos/world-map-bg-video.webm"
+        data-src-tall="/videos/world-map-mobile-bg-video.webm"
+        muted
+        loop
+        playsinline
+        preload="none"
+        disablepictureinpicture
+        disableremoteplayback
+        aria-hidden="true"
+        tabindex="-1"
+        class="pointer-events-none absolute inset-0 -z-10 size-full object-cover opacity-15 mix-blend-multiply"
+      ></video>
       <SectionHeader
         eyebrow="International patients"
         eyebrowClass="bg-white/70"
+        highlightClass="text-brand-700"
+        leadClass="text-ink-900/85"
         title="International patient services "
         highlight="in Bangalore"
         lead="Travelling from abroad? Here's your journey with us. Our medical travel team supports international patients at every stage of treatment in Bangalore."
@@ -36,7 +58,7 @@ const [first] = INTERNATIONAL;
                   <span class="grid size-14 place-items-center rounded-full border border-brand-200 bg-white text-ink-900 transition group-hover:scale-105 group-aria-selected:border-transparent group-aria-selected:bg-amber-400 group-aria-selected:ring-8 group-aria-selected:ring-amber-400/25">
                     <img src={s.image} alt={altFor(s.image, `${s.label} icon`)} width="256" height="256" loading="lazy" decoding="async" class="size-10" />
                   </span>
-                  <span class="text-kicker mt-4 text-brand-400">Stage {i + 1}</span>
+                  <span class="text-kicker mt-4 text-brand-700">Stage {i + 1}</span>
                   <span class="heading-5 mt-1">{s.label}</span>
                 </button>
               </li>
@@ -85,6 +107,32 @@ const [first] = INTERNATIONAL;
 </section>
 
 <script define:vars={{ stages: INTERNATIONAL }}>
+  // Background video: pick the landscape or portrait file for the screen, load it only when
+  // the section comes near, play while visible, pause when scrolled away.
+  const video = document.querySelector('[data-intl-video]');
+  if (video) {
+    const wide = matchMedia('(min-width: 768px)');
+    const still = matchMedia('(prefers-reduced-motion: reduce)');
+    let visible = false;
+    const pick = () => {
+      const src = wide.matches ? video.dataset.srcWide : video.dataset.srcTall;
+      if (video.getAttribute('src') === src) return;
+      video.src = src;
+      video.preload = 'auto';
+      if (visible && !still.matches) video.play().catch(() => {});
+    };
+    new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        if (!visible) return video.pause();
+        pick();
+        if (!still.matches) video.play().catch(() => {});
+      },
+      { rootMargin: '200px 0px' },
+    ).observe(video);
+    wide.addEventListener('change', () => video.getAttribute('src') && pick());
+  }
+
   const root = document.querySelector('[data-intl]');
   const tabs = root.querySelectorAll('[data-stage]');
   const label = root.querySelector('[data-intl-label]');

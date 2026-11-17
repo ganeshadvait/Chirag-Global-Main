@@ -47,8 +47,11 @@ const { title, highlight, eyebrow, lead, crumbs, image, imageAlt = '', imageFit 
       image && (
         <div
           class:list={[
-            'relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-400/40 to-ink-800 lg:rounded-[2.5rem]',
-            imageFit === 'portrait' ? 'mx-auto aspect-square w-full max-w-md' : 'aspect-[4/3]',
+            'relative overflow-hidden rounded-[2rem] lg:rounded-[2.5rem]',
+            // Portrait (doctor photos): light lavender, the same background as the treatment images
+            imageFit === 'portrait'
+              ? 'mx-auto aspect-square w-full max-w-md bg-brand-100'
+              : 'aspect-[4/3] bg-gradient-to-br from-brand-400/40 to-ink-800',
           ]}
         >
           <img decoding="async"
