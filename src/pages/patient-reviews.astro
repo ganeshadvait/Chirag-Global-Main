@@ -1,4 +1,5 @@
 ---
+import { GOOGLE_RATING } from '../data/reviews';
 import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
 import SectionHeader from '../components/SectionHeader.astro';
@@ -8,7 +9,7 @@ import { SITE, whatsappLink } from '../config';
 import { REVIEWS } from '../data/home';
 
 const GOOGLE_REVIEWS = 'https://www.google.com/maps/search/Chirag+Global+Hospitals+Bengaluru';
-const RATING = { value: '4.7', count: '1,428' };
+const RATING = { value: GOOGLE_RATING.rating, count: GOOGLE_RATING.count };
 const stars = Array.from({ length: 5 });
 
 const highlights = [

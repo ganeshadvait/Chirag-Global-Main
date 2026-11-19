@@ -32,30 +32,6 @@ const isCurrent = (href: string) => href === current;
   >
   </div>
 
-  <!-- Top info bar (collapses when scrolled) -->
-  <div
-    class="hidden overflow-hidden bg-ink-950/90 text-xs transition-all duration-300 md:block md:max-h-12 group-data-scrolled/header:md:max-h-0"
-  >
-    <div class="container-x flex items-center justify-between gap-4 py-2">
-      <ul class="flex items-center gap-6 text-white/80">
-        <li class="flex items-center gap-2">
-          <Icon name="clock" class="size-3.5 text-amber-400" />
-          Mon to Sat {SITE.hours.weekdays} · Sun {SITE.hours.sunday}
-        </li>
-        <li class="hidden lg:block">
-          <a href={`mailto:${SITE.email}`} class="flex items-center gap-2 transition-colors hover:text-white">
-            <Icon name="mail" class="size-3.5 text-amber-400" />
-            {SITE.email}
-          </a>
-        </li>
-        <li class="hidden xl:block">{SITE.shortAddress}</li>
-      </ul>
-      <a href={`tel:${digits(SITE.emergency)}`} class="font-semibold text-amber-400 transition-colors hover:text-amber-300">
-        24×7 Emergency: {SITE.emergency}
-      </a>
-    </div>
-  </div>
-
   <!-- Main nav -->
   <div
     class="container-x flex items-center justify-between gap-4 py-3 transition-all duration-300 lg:py-5 group-data-scrolled/header:lg:py-3"

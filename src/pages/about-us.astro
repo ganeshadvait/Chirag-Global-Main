@@ -1,4 +1,5 @@
 ---
+import { GOOGLE_RATING } from '../data/reviews';
 import { altFor } from '../data/image-alts';
 // About Us — follows the supplied About reference layout, with content from the live
 // About Us page (vision, mission, "Pioneers / Leaders / Innovators", conditions treated, full team).
@@ -23,7 +24,7 @@ const crumbs = [{ label: 'About Us' }];
 const stats = [
   { value: '38+', label: 'Years of experience' },
   { value: String(DOCTORS.length), label: 'Specialists on one team' },
-  { value: '4.7★', label: 'From 1,428 Google reviews' },
+  { value: `${GOOGLE_RATING.rating}★`, label: `From ${GOOGLE_RATING.count} Google reviews` },
   { value: 'NABH', label: 'Entry Level certified' },
 ];
 
@@ -48,7 +49,7 @@ const purpose = [
 ];
 
 const eras = [
-  { image: '/icons/vision/pioneers.webp', title: 'Pioneers from the past', text: 'Focused on colorectal and anorectal care in Bengaluru since 1986.' },
+  { image: '/icons/vision/pioneers.webp', title: 'Pioneers from the past', text: 'Focused on colorectal and anorectal care in Bengaluru since 1996.' },
   { image: '/icons/vision/leaders.webp', title: 'Leaders at present', text: 'Thousands of patients treated each year by one dedicated specialist team.' },
   { image: '/icons/vision/innovators.webp', title: 'Innovators of the future', text: 'Techniques such as CHIPRO sign, 360° fistula scan and CEREG surgery.' },
 ] as const;
@@ -91,7 +92,7 @@ const news = [
   bookingMap
   title="About Us"
   metaTitle="About Chirag Global Hospitals | Colorectal Care Bangalore"
-  description="Since 1986, Chirag Global Hospitals in Bangalore has been offering NABH-certified proctology and colorectal care with private consultations."
+  description="Since 1996, Chirag Global Hospitals in Bangalore has been offering NABH-certified proctology and colorectal care with private consultations."
   keywords="colorectal care in Bangalore"
 >
   <!-- ============ HERO (matches home hero) ============ -->
@@ -105,7 +106,7 @@ const news = [
       <div>
         <Breadcrumbs crumbs={crumbs} />
         <ul class="mt-6 flex flex-wrap gap-2 text-xs font-semibold sm:text-sm">
-          <li class="btn-amber rounded-full px-3.5 py-1.5">Since 1986</li>
+          <li class="btn-amber rounded-full px-3.5 py-1.5">Since 1996</li>
           <li class="rounded-full border border-white/30 bg-ink-900/30 px-3.5 py-1.5 backdrop-blur-sm">NABH certified</li>
           <li class="hidden rounded-full border border-white/30 bg-ink-900/30 px-3.5 py-1.5 backdrop-blur-sm sm:block">Referral centre</li>
         </ul>
@@ -184,7 +185,7 @@ const news = [
         <SectionHeader eyebrow="Who we are" title="A proctology and colorectal hospital, built for " highlight="one purpose." />
         <div class="text-lead mt-5 space-y-4">
           <p>
-            Since 1986, Chirag Global Hospitals has been a pioneer in proctology and colorectal care in South India. Our
+            Since 1996, Chirag Global Hospitals has been a pioneer in proctology and colorectal care in South India. Our
             experience has helped us bring innovative techniques and advanced technology to the treatment of rectal and
             colon disorders, at our BTM Layout hospital in Bangalore.
           </p>
@@ -204,7 +205,7 @@ const news = [
   <!-- ============ Our purpose: vision / mission image cards + three eras ============ -->
   <section class="section bg-brand-50/60">
     <div class="container-x">
-      <SectionHeader align="center" eyebrow="Vision and mission" title="Our purpose, " highlight="since 1986" lead="Why we exist, and where we are going." />
+      <SectionHeader align="center" eyebrow="Vision and mission" title="Our purpose, " highlight="since 1996" lead="Why we exist, and where we are going." />
       <ul class="section-body grid gap-5 md:grid-cols-2">
         {
           purpose.map((p) => (

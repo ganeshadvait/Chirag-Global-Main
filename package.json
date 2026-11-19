@@ -7,12 +7,13 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "node scripts/sync-youtube.mjs && node scripts/sync-blog.mjs",
+    "prebuild": "node scripts/sync-youtube.mjs && node scripts/sync-blog.mjs && node --env-file-if-exists=.env scripts/sync-reviews.mjs",
     "build": "astro build",
     "videos:sync": "node scripts/sync-youtube.mjs",
     "blog:sync": "node scripts/sync-blog.mjs",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "reviews:sync": "node --env-file-if-exists=.env scripts/sync-reviews.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

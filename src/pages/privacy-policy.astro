@@ -1,56 +1,274 @@
 ---
-// Describes what this website actually does today. Update it if analytics, a form backend
-// or other tracking is added.
-// TODO: have this reviewed by the hospital's legal/compliance advisor before launch.
+// Privacy Policy, as supplied by the hospital (19 November 2026).
+// SEO title, description and focus keyword are set below; update "updated" when the text changes.
 import LegalPage from '../layouts/LegalPage.astro';
-import { SITE } from '../config';
+import { SITE, digits } from '../config';
+
+const site = 'https://www.chiragglobalhospitals.com/';
 ---
 
-<LegalPage title="Privacy policy" description={`How the ${SITE.name} website handles your personal information.`} updated="October 2026">
-  <p>
-    {SITE.name} ("we", "us") respects your privacy. This policy explains what information this website handles and how
-    it is used. Medical records created during your care at the hospital are covered separately by the hospital's
-    patient privacy practices.
-  </p>
+<LegalPage
+  title="Privacy Policy"
+  metaTitle="Privacy Policy | Chirag Global Hospitals"
+  description="Read the Chirag Global Hospitals Privacy Policy to understand how we collect, use, store and protect your personal information."
+  keywords="Chirag Global Hospitals Privacy Policy"
+  updated="19 November 2026"
+>
+  <p>Website: <a href={site}>{site}</a></p>
 
-  <h2>Information you share with us</h2>
+  <h2>1. Introduction</h2>
+  <p>Welcome to {SITE.name} (<a href={site}>{site}</a>).</p>
   <p>
-    The appointment and call-back forms on this website do not store your details on our web server. When you submit a
-    form, it opens WhatsApp with your name, phone number and concern already typed in, and nothing is sent until you
-    press send in WhatsApp. Messages you send us on WhatsApp, by phone or by email are seen only by our care team and are
-    used to arrange your appointment and respond to your enquiry.
+    At {SITE.name}, we respect the privacy of our patients, website visitors and individuals who contact us. We are
+    committed to handling personal information responsibly and maintaining the confidentiality of information shared
+    with us.
   </p>
+  <p>
+    This Privacy Policy explains how we collect, use, store, protect and share personal information when you visit our
+    website, submit an appointment request or communicate with our hospital.
+  </p>
+  <p>By accessing or using our website, you acknowledge that you have read this Privacy Policy.</p>
 
-  <h2>Third-party services on this website</h2>
+  <h2>2. Information We Collect</h2>
+  <p>We may collect personal information when you browse our website, contact our hospital or request an appointment.</p>
+
+  <h3>A. Personal Information</h3>
+  <p>Depending on how you interact with our website, we may collect:</p>
   <ul>
-    <li><strong>WhatsApp</strong> (Meta) handles messages you choose to send us. Its own privacy policy applies.</li>
-    <li><strong>Google Fonts</strong> supplies the typefaces used on this site, which means your browser connects to Google's servers.</li>
-    <li><strong>Google Maps</strong> is embedded on our contact page to show our location.</li>
-    <li><strong>YouTube</strong> videos, when played, load from YouTube's privacy-enhanced mode.</li>
+    <li>Full name</li>
+    <li>Email address</li>
+    <li>Mobile or contact number</li>
+    <li>Appointment date and preferred time</li>
+    <li>Enquiry or message details</li>
+    <li>Other information voluntarily provided through website forms or communication channels.</li>
   </ul>
-  <p>These providers may receive technical information such as your IP address and browser type.</p>
 
-  <h2>Analytics and advertising</h2>
-  <p>This website does not currently use analytics or advertising trackers.</p>
-
-  <h2>How we protect your information</h2>
+  <h3>B. Health-Related Information</h3>
   <p>
-    Information you share with our care team is used only to provide and arrange your care, is not sold, and is shared
-    only where needed for your treatment or where required by law.
+    When you contact us regarding medical consultations or treatment, you may voluntarily provide health-related
+    information, including:
+  </p>
+  <ul>
+    <li>Symptoms or health concerns</li>
+    <li>Medical history</li>
+    <li>Previous treatments</li>
+    <li>Treatment or consultation enquiries</li>
+    <li>Other information relevant to your healthcare requirements.</li>
+  </ul>
+  <p>
+    We handle health-related information with appropriate confidentiality and use it only for relevant healthcare,
+    communication and administrative purposes, subject to applicable laws.
   </p>
 
-  <h2>Your choices</h2>
+  <h3>C. Automatically Collected Information</h3>
+  <p>When you visit our website, certain technical information may be collected automatically, including:</p>
+  <ul>
+    <li>IP address</li>
+    <li>Browser type and version</li>
+    <li>Device information</li>
+    <li>Operating system</li>
+    <li>Pages visited</li>
+    <li>Date and time of visits</li>
+    <li>Referring website or traffic source.</li>
+  </ul>
+
+  <h2>3. How We Use Your Information</h2>
+  <p>{SITE.name} may use collected information for the following purposes:</p>
+  <ul>
+    <li>To respond to appointment requests and enquiries.</li>
+    <li>To schedule and coordinate consultations.</li>
+    <li>To communicate information about hospital services and treatments.</li>
+    <li>To facilitate communication between patients and authorised hospital representatives.</li>
+    <li>To improve website performance and user experience.</li>
+    <li>To understand website traffic and visitor behaviour.</li>
+    <li>To maintain website security and prevent spam or fraudulent activities.</li>
+    <li>To maintain relevant administrative and healthcare records.</li>
+    <li>To comply with applicable legal and regulatory requirements.</li>
+  </ul>
   <p>
-    You can ask us what information we hold about you, or ask us to correct or delete it, by writing to
-    <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+    We process personal information for specified and legitimate purposes in accordance with applicable data protection
+    laws.
   </p>
 
-  <h2>Changes to this policy</h2>
-  <p>We may update this policy from time to time. The date at the top of this page shows when it was last changed.</p>
-
-  <h2>Contact</h2>
+  <h2>4. Appointment Booking and Enquiries</h2>
   <p>
-    {SITE.name}, {SITE.address}. Email <a href={`mailto:${SITE.email}`}>{SITE.email}</a> or call
-    <a href={`tel:${SITE.phone.replace(/[^\d+]/g, '')}`}>{SITE.phone}</a>.
+    Our website provides appointment booking facilities through which visitors may submit details such as their name,
+    email address, phone number and preferred appointment date and time.
+  </p>
+  <p>When you submit an appointment request:</p>
+  <ul>
+    <li>Your information may be used to contact you regarding your appointment.</li>
+    <li>Authorised hospital personnel may access the submitted details to coordinate your consultation.</li>
+    <li>Your contact details may be used for appointment confirmations, scheduling changes and related communication.</li>
+    <li>Additional information may be requested when necessary to facilitate your consultation.</li>
+  </ul>
+  <p>
+    Submitting an appointment request does not automatically guarantee confirmation of an appointment. The hospital may
+    contact you to confirm availability and other details.
+  </p>
+
+  <h2>5. Cookies and Tracking Technologies</h2>
+  <p>
+    Our website may use cookies and similar technologies to improve website functionality and understand how visitors
+    interact with our content.
+  </p>
+  <p>Cookies may help us:</p>
+  <ul>
+    <li>Analyse website traffic and usage.</li>
+    <li>Improve website navigation and functionality.</li>
+    <li>Understand visitor preferences.</li>
+    <li>Monitor website performance.</li>
+    <li>Support website security.</li>
+  </ul>
+  <p>You can manage or disable cookies through your browser settings.</p>
+  <p>
+    Where required by applicable law, we will obtain consent before using non-essential cookies and tracking
+    technologies.
+  </p>
+
+  <h2>6. Google Analytics and Third-Party Tools</h2>
+  <p>
+    We may use third-party services, such as Google Analytics, to analyse website traffic and understand visitor
+    interactions.
+  </p>
+  <p>
+    These services may collect technical and usage-related information, including pages visited, session duration,
+    device information, browser details and traffic sources.
+  </p>
+  <p>Third-party services process information according to their respective privacy policies.</p>
+  <p>
+    For more information about Google's privacy practices, visit:
+    <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">https://policies.google.com/privacy</a>
+  </p>
+
+  <h2>7. WhatsApp and Other Communication Channels</h2>
+  <p>Our website may provide communication options such as WhatsApp, telephone calls and email.</p>
+  <p>If you choose to contact us through these channels:</p>
+  <ul>
+    <li>We may receive your contact details and the information you voluntarily share.</li>
+    <li>Your information may be used to respond to your enquiry or coordinate an appointment.</li>
+    <li>Communication through third-party platforms is also subject to the privacy policies and terms of those platforms.</li>
+  </ul>
+  <p>
+    We encourage visitors to avoid sharing unnecessary sensitive medical information through unsecured communication
+    channels.
+  </p>
+
+  <h2>8. Sharing of Personal Information</h2>
+  <p>{SITE.name} does not sell personal information to third parties.</p>
+  <p>We may share personal information in limited circumstances, including:</p>
+  <ul>
+    <li>
+      <strong>Authorised Hospital Personnel:</strong> With authorised employees and healthcare professionals who require
+      the information to provide healthcare services or respond to enquiries.
+    </li>
+    <li>
+      <strong>Service Providers:</strong> With trusted third-party providers involved in website hosting, maintenance,
+      security, analytics, appointment management or communication services.
+    </li>
+    <li>
+      <strong>Healthcare Coordination:</strong> Where necessary for consultations, treatment coordination, referrals or
+      other relevant healthcare activities, subject to applicable confidentiality requirements.
+    </li>
+    <li>
+      <strong>Legal Requirements:</strong> When disclosure is required by applicable law, court orders, regulatory
+      authorities or lawful government requests.
+    </li>
+  </ul>
+  <p>We take reasonable steps to ensure that personal information shared with service providers is handled appropriately.</p>
+
+  <h2>9. Data Security and Patient Confidentiality</h2>
+  <p>
+    We take reasonable technical and organisational measures to protect personal information against unauthorised
+    access, misuse, disclosure, alteration or loss.
+  </p>
+  <p>
+    Access to personal information is intended to be limited to authorised individuals who require it for relevant
+    operational or healthcare purposes.
+  </p>
+  <p>
+    Patient information and medical records are handled with appropriate confidentiality, subject to applicable legal and
+    professional requirements.
+  </p>
+  <p>However, no electronic storage or internet transmission method can be guaranteed to be completely secure.</p>
+
+  <h2>10. Data Retention</h2>
+  <p>
+    We retain personal information only for as long as reasonably necessary to fulfil the purposes for which it was
+    collected, including:
+  </p>
+  <ul>
+    <li>Responding to enquiries.</li>
+    <li>Managing appointment requests.</li>
+    <li>Providing healthcare services.</li>
+    <li>Maintaining relevant administrative and medical records.</li>
+    <li>Meeting applicable legal and regulatory obligations.</li>
+  </ul>
+  <p>Medical records may be retained in accordance with applicable healthcare and record-retention requirements.</p>
+  <p>
+    When personal information is no longer required, we will take reasonable steps to securely delete or dispose of it,
+    subject to applicable legal obligations.
+  </p>
+
+  <h2>11. Your Privacy Rights</h2>
+  <p>Subject to applicable data protection laws, you may have the right to:</p>
+  <ul>
+    <li>Request access to your personal information.</li>
+    <li>Request correction or updating of inaccurate information.</li>
+    <li>Request deletion of personal information where legally permitted.</li>
+    <li>Withdraw consent where processing is based on consent.</li>
+    <li>Raise concerns regarding the handling of your personal information.</li>
+    <li>Submit a privacy-related grievance through our contact details.</li>
+  </ul>
+  <p>We will review and respond to requests in accordance with applicable legal requirements.</p>
+
+  <h2>12. External Website Links</h2>
+  <p>Our website may contain links to external websites, social media platforms or third-party resources.</p>
+  <p>
+    These external websites operate independently and may follow different privacy policies and data collection
+    practices.
+  </p>
+  <p>
+    {SITE.name} is not responsible for the privacy practices, content or security of third-party websites. We recommend
+    reviewing their privacy policies before sharing personal information.
+  </p>
+
+  <h2>13. Children's Privacy</h2>
+  <p>
+    Where personal information relating to children is collected in connection with healthcare services, we will handle
+    such information in accordance with applicable laws and obtain verifiable parental or guardian consent where
+    required.
+  </p>
+  <p>We take appropriate care when handling information relating to children and their healthcare requirements.</p>
+
+  <h2>14. Changes to This Privacy Policy</h2>
+  <p>
+    We may update this Privacy Policy periodically to reflect changes in our website, hospital services, technology or
+    applicable legal requirements.
+  </p>
+  <p>Any updates will be published on this page with a revised Last Updated date.</p>
+  <p>Visitors are encouraged to review this policy periodically.</p>
+
+  <h2>15. Contact Us</h2>
+  <p>
+    If you have questions, concerns or requests regarding this Privacy Policy or the handling of your personal
+    information, please contact us:
+  </p>
+  <p>
+    <strong>{SITE.name}</strong><br />
+    Address: 103, 6th Cross Road, Dollar Layout, BTM 2nd Stage, Bengaluru, Karnataka – 560076, India.<br />
+    Email: <a href={`mailto:${SITE.email}`}>{SITE.email}</a><br />
+    Phone: <a href="tel:08065916422">08065916422</a><br />
+    Emergency Contact: <a href={`tel:${digits(SITE.emergency)}`}>{SITE.emergency}</a><br />
+    Website: <a href={site}>{site}</a>
+  </p>
+  <p>
+    We will make reasonable efforts to address privacy-related enquiries and grievances in accordance with applicable
+    laws.
+  </p>
+
+  <hr class="my-10 border-brand-100" />
+  <p>
+    By using the {SITE.name} website, you acknowledge that you have read and understood this Privacy Policy.
   </p>
 </LegalPage>

@@ -2,6 +2,7 @@
 // falls back to a brand gradient, so the page still renders cleanly.
 
 import videos from './videos.json';
+import { GOOGLE_RATING } from './reviews';
 
 export const IMAGES = {
   // All site images are WebP, sized for display
@@ -16,8 +17,8 @@ export const IMAGES = {
 };
 
 export const STATS = [
-  { value: '4.7', suffix: '★', label: 'from 1,428 Google reviews' },
-  { value: '1986', label: 'Colorectal care since' },
+  { value: GOOGLE_RATING.rating, suffix: '★', label: `from ${GOOGLE_RATING.count} Google reviews` },
+  { value: '1996', label: 'Colorectal care since' },
   { value: '9', label: 'Doctors on one team' },
   { value: '8', label: 'Conditions treated' },
 ];
@@ -195,7 +196,7 @@ export const FAQS = [
 export const HOME_FAQS = [
   {
     q: 'Which is the best hospital for piles treatment in Bangalore?',
-    a: 'Chirag Global Hospitals in BTM Layout has treated piles, fissure and fistula since 1986, with a dedicated team of proctologists and colorectal surgeons. The best hospital for you is one where the doctor explains your options clearly, so meet the team before you decide.',
+    a: 'Chirag Global Hospitals in BTM Layout has treated piles, fissure and fistula since 1996, with a dedicated team of proctologists and colorectal surgeons. The best hospital for you is one where the doctor explains your options clearly, so meet the team before you decide.',
   },
   {
     q: 'When should I see a doctor for piles?',
