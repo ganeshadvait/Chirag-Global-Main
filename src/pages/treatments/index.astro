@@ -91,7 +91,9 @@ const approach: { image: string; title: string; text: string }[] = [
       </div>
 
       <!-- Team photo with condition picker -->
-      <div class="relative w-full max-w-2xl sm:pb-40 xl:max-w-none">
+      <!-- The picker card hangs 3rem into the photo's bottom edge (below the faces): its margin-top is
+           the photo's height (photo ratio 815/1600 of the width) minus 3rem -->
+      <div class="relative w-full max-w-2xl sm:pb-48 xl:max-w-none">
         <!-- Team photo at its natural ratio, so no doctor is cropped -->
         <div class="relative aspect-[1600/815] overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-400/40 to-ink-800 lg:rounded-[2.5rem]">
           <img decoding="async"
@@ -108,7 +110,7 @@ const approach: { image: string; title: string; text: string }[] = [
         </div>
         {
           rating && (
-            <p class="mt-3 flex w-fit items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs text-ink-900 shadow-lg sm:absolute sm:right-4 sm:top-4 sm:mt-0">
+            <p class="mt-3 flex w-fit items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs text-ink-900 shadow-lg sm:absolute sm:-top-3 sm:right-4 sm:mt-0">
               <Icon name="star" class="size-3.5 text-amber-500" />
               <span class="font-bold">{rating.value}</span>
               <span class="text-ink-900/60">{rating.label.replace(/^from /, '')}</span>
@@ -118,7 +120,7 @@ const approach: { image: string; title: string; text: string }[] = [
 
         <div
           data-picker
-          class="relative mt-4 rounded-3xl bg-white p-5 text-ink-900 shadow-2xl shadow-ink-950/30 sm:absolute sm:bottom-0 sm:right-4 sm:mt-0 sm:w-[29rem] sm:p-6"
+          class="relative mt-4 rounded-3xl bg-white p-5 text-ink-900 shadow-2xl shadow-ink-950/30 sm:absolute sm:right-4 sm:top-0 sm:mt-[calc(50.9375%-3rem)] sm:w-[29rem] sm:p-6"
         >
           <p id="picker-label" class="heading-5">What would you like help with?</p>
           <div role="group" aria-labelledby="picker-label" class="mt-3 flex flex-wrap gap-2">

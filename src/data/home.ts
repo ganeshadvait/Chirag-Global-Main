@@ -7,8 +7,8 @@ export const IMAGES = {
   // All site images are WebP, sized for display
   logo: '/chirag-logo.webp',
   // Team photo: 1600px, plus 900px for phones
-  hero: '/chirag-doctors-team-1600.webp',
-  heroSmall: '/chirag-doctors-team-900.webp',
+  hero: '/chirag-doctors-hero-1600.webp',
+  heroSmall: '/chirag-doctors-hero-900.webp',
   building: '/chirag%20hospital.webp',
   nabh: '/nabh-logo.webp',
   experience: '/experience-38-years.webp',
