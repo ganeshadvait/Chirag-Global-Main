@@ -78,5 +78,6 @@ export const NAV_LINKS: NavLink[] = [
     label: 'Our Doctors',
     children: DOCTORS.filter((d) => !d.hideFromMenu).map((d) => ({ label: d.name, href: doctorHref(d.slug) })),
   },
+  { href: '/our-blogs', label: 'Blog' },
   { href: '/contact-us', label: 'Contact Us' },
 ];

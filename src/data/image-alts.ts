@@ -81,7 +81,7 @@ const DECORATIVE = ['/icons/', '/videos/'];
 
 /**
  * Alt text for an image path. Decorative icons and video thumbnails get ''.
- * Images not listed above keep the `fallback` given by the component.
+ * Images not listed above (e.g. blog covers) keep the `fallback` given by the component.
  */
 export const altFor = (src: string | undefined, fallback = ''): string => {
   if (!src) return fallback;

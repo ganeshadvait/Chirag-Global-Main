@@ -10,6 +10,7 @@ export const ROUTES = {
   contact: '/contact-us',
   treatments: '/treatments',
   doctors: '/doctors',
+  blog: '/our-blogs',
   events: '/chirag-global-hospitals-events',
   advancedTechnologies: '/advanced-technologies',
   educationalVideos: '/educational-videos',
@@ -50,6 +51,10 @@ export const treatmentHref = (slug: string) => `/${TREATMENT_PATHS[slug] ?? slug
 /** "/dr-rajasekhar-m-r" */
 export const doctorHref = (slug: string) => `/${doctorPath(slug)}`;
 export const doctorPath = (slug: string) => DOCTOR_PATHS[slug] ?? `dr-${slug}`;
+/** Blog posts sit at the top level, as on WordPress: "/sitz-bath-for-piles" */
+export const postHref = (slug: string) => `/${slug}`;
 /** "/event/world-piles-day-2" */
 export const eventHref = (slug: string) => `/event/${eventPath(slug)}`;
 export const eventPath = (slug: string) => EVENT_PATHS[slug] ?? slug;
+/** Blog list pages: "/our-blogs", "/our-blogs/page/2" */
+export const blogPageHref = (n: number) => (n === 1 ? ROUTES.blog : `${ROUTES.blog}/page/${n}`);

@@ -1,6 +1,7 @@
 ---
 import { altFor } from '../data/image-alts';
 import type { GetStaticPaths } from 'astro';
+import { postHref } from '../lib/routes';
 import { TREATMENT_PATHS } from '../lib/routes';
 import Layout from '../layouts/Layout.astro';
 import SectionHeader from '../components/SectionHeader.astro';
@@ -13,6 +14,7 @@ import Faq from '../components/home/Faq.astro';
 import { SITE, whatsappLink } from '../config';
 import { TREATMENTS_LIST, type Treatment } from '../data/treatments';
 import { DOCTORS } from '../data/doctors';
+import { POSTS } from '../data/blog';
 import { STATS } from '../data/home';
 
 export const getStaticPaths = (() =>
@@ -26,6 +28,8 @@ const { treatment: t } = Astro.props;
 
 const others = TREATMENTS_LIST.filter((o) => o.slug !== t.slug).slice(0, 4);
 const team = DOCTORS.filter((d) => d.photo).slice(0, 4);
+// Latest three articles about this condition
+const related = POSTS.filter((p) => p.treatmentSlug === t.slug).slice(0, 3);
 const rating = STATS.find((s) => s.suffix === '★');
 const ask = whatsappLink(`Hi, I need help with ${t.name.toLowerCase()}. I'd like to book an appointment.`);
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -228,6 +232,30 @@ const pageLd = {
       </ul>
     </div>
   </section>
+
+  {
+    related.length > 0 && (
+      <section class="section">
+        <div class="container-x">
+          <SectionHeader eyebrow="Read more" title="Related " highlight="articles" />
+          <ul class="section-body grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {related.map((p) => (
+              <li>
+                <a href={postHref(p.slug)} class="card group flex h-full flex-col bg-white ring-1 ring-brand-100 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-600/10">
+                  <span class="text-kicker text-brand-400">{p.tag} · {p.readMinutes} min read</span>
+                  <h3 class="heading-4 mt-2 group-hover:text-brand-700">{p.title}</h3>
+                  <p class="text-body mt-2">{p.excerpt}</p>
+                  <span class="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-semibold text-ink-900 group-hover:text-brand-600">
+                    Read article <Icon name="arrowRight" class="size-4" />
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
 
   <Faq items={t.faqs} eyebrow="Common questions" title={`${t.name}: `} highlight="your questions answered" />
 

@@ -5,13 +5,22 @@ import tailwindcss from '@tailwindcss/vite';
 import imageTitles from './integrations/image-titles.mjs';
 import sitemap from '@astrojs/sitemap';
 import devSitemap from './integrations/dev-sitemap.mjs';
+import { readFileSync } from 'node:fs';
 import { REDIRECTS } from './src/data/redirects.mjs';
 
 const SITE = 'https://www.chiragglobalhospitals.com';
 
-// Sitemap groups: sitemap-events-0.xml; everything else → sitemap-pages-0.xml
+// Blog posts sit at the top level (/sitz-bath-for-piles/, as on WordPress), so list their paths
+/** @type {Set<string>} */
+const POST_PATHS = new Set(
+  JSON.parse(readFileSync(new URL('./src/data/blog-posts.json', import.meta.url), 'utf8')).map((/** @type {{ slug: string }} */ p) => `/${p.slug}`),
+);
+
+// Sitemap groups: sitemap-blogs-0.xml, sitemap-events-0.xml; everything else → sitemap-pages-0.xml
 /** @param {string} url */
 const pathOf = (url) => new URL(url).pathname.replace(/\/$/, '');
+/** @param {string} path */
+const isBlog = (path) => path.startsWith('/our-blogs') || POST_PATHS.has(path);
 /** @param {string} path */
 const isEvent = (path) => path === '/chirag-global-hospitals-events' || path.startsWith('/event/');
 
@@ -22,12 +31,13 @@ export default defineConfig({
   // 301 redirects for old URLs (see src/data/redirects.mjs)
   redirects: REDIRECTS,
   // Every image with alt text also gets a matching title attribute;
-  // @astrojs/sitemap writes sitemap-index.xml on build, pointing to separate sitemaps for pages
-  // and events. devSitemap serves the built files on the dev server too.
+  // @astrojs/sitemap writes sitemap-index.xml on build, pointing to separate sitemaps for pages,
+  // blogs and events. devSitemap serves the built files on the dev server too.
   integrations: [
     imageTitles(),
     sitemap({
       chunks: {
+        blogs: (item) => (isBlog(pathOf(item.url)) ? item : undefined),
         events: (item) => (isEvent(pathOf(item.url)) ? item : undefined),
       },
     }),
