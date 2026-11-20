@@ -17,7 +17,7 @@ const RULES = {
   '/laser-treatment-for-piles-2': '/laser-treatment-for-piles-in-bangalore',
   '/fissure-vs-piles': '/fissure-vs-piles-difference-guide-bangalore',
   // Old WordPress listing pages
-  '/health-updates-2': '/our-blogs',
+  '/health-updates-2': '/treatments',
   '/health-updates': '/treatments',
 };
 

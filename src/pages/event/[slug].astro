@@ -1,7 +1,8 @@
 ---
 import { altFor } from '../../data/image-alts';
 import type { GetStaticPaths } from 'astro';
-import { eventHref, eventPath } from '../../lib/routes';
+import { eventHref } from '../../lib/routes';
+import { eventPath } from '../../lib/routes';
 import Layout from '../../layouts/Layout.astro';
 import PageHero from '../../components/PageHero.astro';
 import SectionHeader from '../../components/SectionHeader.astro';
@@ -30,20 +31,20 @@ const eventLd = {
   '@type': 'Event',
   name: e.title,
   startDate: e.date,
-  ...(e.excerpt && { description: e.excerpt }),
+  description: e.excerpt,
   eventStatus: 'https://schema.org/EventScheduled',
-  location: { '@type': 'Place', name: e.venue || SITE.name },
-  image: (e.gallery.length ? e.gallery : [e.cover]).map((g) => new URL(g, site).href),
+  location: { '@type': 'Place', name: e.venue },
+  image: e.gallery.map((g) => new URL(g, site).href),
   organizer: { '@type': 'Hospital', name: SITE.name, url: site.href },
 };
 ---
 
-<Layout title={e.title} description={e.excerpt || `${e.category} · ${formatEventDate(e)}${e.venue ? ` · ${e.venue}` : ''}`}>
+<Layout title={e.title} description={e.excerpt}>
   <PageHero
     crumbs={[{ label: 'About Us', href: '/about-us' }, { label: 'Events', href: '/chirag-global-hospitals-events' }, { label: e.title }]}
     eyebrow={e.category}
     title={e.title}
-    lead={e.excerpt || undefined}
+    lead={e.excerpt}
     image={e.cover}
     imageAlt={e.title}
   />
@@ -51,19 +52,11 @@ const eventLd = {
   <section class="section">
     <div class="container-x grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16">
       <article class="min-w-0">
-        {e.body.length > 0 && <div class="text-lead mb-10 space-y-4">{e.body.map((p) => <p>{p}</p>)}</div>}
-
-        {
-          e.video && (
-            <a href={e.video} target="_blank" rel="noopener" class="btn btn-primary mb-10">
-              <Icon name="youtube" class="size-5" /> Watch the video
-            </a>
-          )
-        }
+        <div class="text-lead space-y-4">{e.body.map((p) => <p>{p}</p>)}</div>
 
         {
           e.highlights && (
-            <section class="mb-12" aria-labelledby="highlights-title">
+            <section class="mt-10" aria-labelledby="highlights-title">
               <h2 id="highlights-title" class="heading-3">Highlights</h2>
               <ul class="mt-5 grid gap-3 sm:grid-cols-2">
                 {e.highlights.map((h) => (
@@ -77,8 +70,7 @@ const eventLd = {
           )
         }
 
-        {e.gallery.length > 0 && (
-        <section aria-labelledby="gallery-title">
+        <section class="mt-12" aria-labelledby="gallery-title">
           <div class="flex items-end justify-between gap-4">
             <h2 id="gallery-title" class="heading-3">Photo gallery</h2>
             <p class="text-meta">{e.gallery.length} photos · select to enlarge</p>
@@ -100,7 +92,6 @@ const eventLd = {
             }
           </ul>
         </section>
-        )}
 
         <!-- Previous / next -->
         <nav aria-label="More events" class="mt-12 grid gap-4 border-t border-brand-100 pt-8 sm:grid-cols-2">
@@ -132,15 +123,11 @@ const eventLd = {
               <Icon name="clock" class="mt-0.5 size-4 shrink-0 text-brand-500" />
               <dd class="font-medium">{formatEventDate(e)}</dd>
             </div>
-            {
-              e.venue && (
-                <div class="flex gap-3">
-                  <dt class="sr-only">Venue</dt>
-                  <Icon name="pin" class="mt-0.5 size-4 shrink-0 text-brand-500" />
-                  <dd class="font-medium">{e.venue}</dd>
-                </div>
-              )
-            }
+            <div class="flex gap-3">
+              <dt class="sr-only">Venue</dt>
+              <Icon name="pin" class="mt-0.5 size-4 shrink-0 text-brand-500" />
+              <dd class="font-medium">{e.venue}</dd>
+            </div>
             <div class="flex gap-3">
               <dt class="sr-only">Type</dt>
               <Icon name={CATEGORY_ICONS[e.category]} class="mt-0.5 size-4 shrink-0 text-brand-500" />

@@ -4,7 +4,7 @@ import { altFor } from '../data/image-alts';
 // About Us — follows the supplied About reference layout, with content from the live
 // About Us page (vision, mission, "Pioneers / Leaders / Innovators", conditions treated, full team).
 import Layout from '../layouts/Layout.astro';
-import { eventHref, postHref } from '../lib/routes';
+import { eventHref } from '../lib/routes';
 import SectionHeader from '../components/SectionHeader.astro';
 import Icon from '../components/Icon.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
@@ -17,7 +17,6 @@ import { ABOUT_LINKS } from '../data/about';
 import { EVENTS, eventDay } from '../data/events';
 import { DOCTORS } from '../data/doctors';
 import { PROCEDURES } from '../data/technologies';
-import { POSTS } from '../data/blog';
 
 const crumbs = [{ label: 'About Us' }];
 
@@ -83,7 +82,6 @@ const recentEvents = EVENTS.slice(0, 4);
 
 const news = [
   ...VIDEOS.slice(0, 1).map((v) => ({ icon: 'youtube', kind: 'Doctor talk', title: v.title, meta: v.speaker, href: '/educational-videos' })),
-  ...POSTS.slice(0, 2).map((p) => ({ icon: 'file', kind: 'In proctology', title: p.title, meta: `${p.tag} · ${p.readMinutes} min read`, href: postHref(p.slug) })),
 ] as const;
 ---
 

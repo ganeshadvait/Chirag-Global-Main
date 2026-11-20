@@ -10,7 +10,6 @@ export const ROUTES = {
   contact: '/contact-us',
   treatments: '/treatments',
   doctors: '/doctors',
-  blog: '/our-blogs',
   events: '/chirag-global-hospitals-events',
   advancedTechnologies: '/advanced-technologies',
   educationalVideos: '/educational-videos',
@@ -36,15 +35,21 @@ const DOCTOR_PATHS: Record<string, string> = {
   'jyotsna-vemulapalli': 'dr-jyotsna-v',
 };
 
+/** Event slug (src/data/events.ts) → its /event/<slug>/ page on the WordPress site */
+export const EVENT_PATHS: Record<string, string> = {
+  'founders-day-2026': 'founders-day-celebration-2026-a-journey-of-vision-service-innovation',
+  'kscasicon-2026': 'dr-rajasekhar-m-r-invited-as-chairperson-at-kscasicon-2026',
+  'cme-goa-2026': 'cme-12-january-2026-goa',
+  'arogya-samvada-2025': 'republic-kannada-arogya-samvada-2025',
+  'health-camp-maralegavi': 'health-camp-conducted-at-shree-kshetra-maralegavi-mutt-6th-december-2025',
+  'world-piles-day-2025': 'world-piles-day-2',
+};
+
 /** "/piles-laser-treatment-in-bangalore" */
 export const treatmentHref = (slug: string) => `/${TREATMENT_PATHS[slug] ?? slug}`;
 /** "/dr-rajasekhar-m-r" */
 export const doctorHref = (slug: string) => `/${doctorPath(slug)}`;
 export const doctorPath = (slug: string) => DOCTOR_PATHS[slug] ?? `dr-${slug}`;
-/** Blog posts sit at the top level, as on WordPress: "/sitz-bath-for-piles" */
-export const postHref = (slug: string) => `/${slug}`;
-/** "/event/world-piles-day-2": events keep their slug from the blog site (src/data/events.ts) */
+/** "/event/world-piles-day-2" */
 export const eventHref = (slug: string) => `/event/${eventPath(slug)}`;
 export const eventPath = (slug: string) => EVENT_PATHS[slug] ?? slug;
-/** Blog list pages: "/our-blogs", "/our-blogs/page/2" */
-export const blogPageHref = (n: number) => (n === 1 ? ROUTES.blog : `${ROUTES.blog}/page/${n}`);

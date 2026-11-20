@@ -1,13 +1,6 @@
-// Hospital events, managed on the blog site's WordPress (blogs.chiragglobalhospitals.com, "Events").
-// scripts/sync-events.mjs imports them into events.json (`npm run events:sync`, before every build
-// and on a schedule), with photos in /public/events/cms/<slug>/. Add or edit events there rather
-// than in events.json, which is overwritten on each sync.
-//
-// EVENT_OVERRIDES below corrects or rewrites what the sync reads from an event (title, date,
-// venue, category, text, photos), keyed by the event's slug on the blog site.
+// Hospital events — content from chiragglobalhospitals.com/chirag-global-hospitals-events
+// and each event's page. Photos in /public/events/<slug>/. Newest first.
 import type { IconName } from '../components/Icon.astro';
-import synced from './events.json';
-import { IMAGES } from './home';
 
 export type EventCategory = 'Celebration' | 'Conference' | 'Health camp' | 'Medical education' | 'Media' | 'Awareness';
 
@@ -27,24 +20,21 @@ export interface HospitalEvent {
   date: string;
   /** Shown instead of the formatted date when the exact date isn't known, or for ranges */
   dateLabel?: string;
-  /** '' when not known */
   venue: string;
   category: EventCategory;
-  /** One sentence for cards ('' when the event has no text) */
+  /** One sentence for cards */
   excerpt: string;
   body: string[];
   highlights?: string[];
-  /** YouTube link, when the event has a video */
-  video?: string;
-  /** The hospital building when the event has no photos */
   cover: string;
   gallery: string[];
 }
 
 const img = (slug: string, ...n: number[]) => n.map((i) => `/events/${slug}/${i}.webp`);
 
-export const EVENT_OVERRIDES: Record<string, Partial<HospitalEvent>> = {
-  'founders-day-celebration-2026-a-journey-of-vision-service-innovation': {
+export const EVENTS: HospitalEvent[] = [
+  {
+    slug: 'founders-day-2026',
     title: 'Founders Day Celebration 2026: a journey of vision, service and innovation',
     date: '2026-05-23',
     venue: 'Chirag Global Hospitals, Bengaluru',
@@ -63,7 +53,8 @@ export const EVENT_OVERRIDES: Record<string, Partial<HospitalEvent>> = {
     cover: '/events/founders-day-2026/1.webp',
     gallery: img('founders-day-2026', 1, 2),
   },
-  'dr-rajasekhar-m-r-invited-as-chairperson-at-kscasicon-2026': {
+  {
+    slug: 'kscasicon-2026',
     title: 'Dr. Rajasekhar M. R. invited as Chairperson at KSCASICON 2026',
     date: '2026-02-13',
     dateLabel: '13–15 February 2026',
@@ -82,7 +73,8 @@ export const EVENT_OVERRIDES: Record<string, Partial<HospitalEvent>> = {
     cover: '/events/kscasicon-2026/1.webp',
     gallery: img('kscasicon-2026', 1, 2),
   },
-  'cme-12-january-2026-goa': {
+  {
+    slug: 'cme-goa-2026',
     title: 'CME in Goa: Recent Advances in Proctology',
     date: '2026-01-12',
     venue: 'Gomantak Ayurveda Mahavidyalaya & Research Centre, Shiroda, Goa',
@@ -100,7 +92,8 @@ export const EVENT_OVERRIDES: Record<string, Partial<HospitalEvent>> = {
     cover: '/events/cme-goa-2026/2.webp',
     gallery: img('cme-goa-2026', 2, 1, 3),
   },
-  'republic-kannada-arogya-samvada-2025': {
+  {
+    slug: 'arogya-samvada-2025',
     title: 'Republic Kannada Arogya Samvada 2025',
     date: '2026-01-16',
     dateLabel: 'January 2026',
@@ -113,7 +106,8 @@ export const EVENT_OVERRIDES: Record<string, Partial<HospitalEvent>> = {
     cover: '/events/arogya-samvada-2025/1.webp',
     gallery: img('arogya-samvada-2025', 1, 2),
   },
-  'health-camp-conducted-at-shree-kshetra-maralegavi-mutt-6th-december-2025': {
+  {
+    slug: 'health-camp-maralegavi',
     title: 'Health camp at Shree Kshetra Maralegavi Mutt',
     date: '2025-12-06',
     venue: 'Shree Kshetra Maralegavi Mutt, Kanakapura Taluk',
@@ -132,7 +126,8 @@ export const EVENT_OVERRIDES: Record<string, Partial<HospitalEvent>> = {
     cover: '/events/health-camp-maralegavi/1.webp',
     gallery: img('health-camp-maralegavi', 1, 2, 3, 4, 5, 6),
   },
-  'world-piles-day-2': {
+  {
+    slug: 'world-piles-day-2025',
     title: 'World Piles Day and the opening of our Constipation Clinic',
     date: '2025-11-20',
     venue: 'Chirag Global Hospitals, BTM 2nd Stage, Bengaluru',
@@ -146,13 +141,7 @@ export const EVENT_OVERRIDES: Record<string, Partial<HospitalEvent>> = {
     cover: '/events/world-piles-day-2025/3.webp',
     gallery: img('world-piles-day-2025', 3, 2, 4, 5),
   },
-};
-
-/** Every event, newest first */
-export const EVENTS: HospitalEvent[] = (synced as HospitalEvent[])
-  .map((e) => ({ ...e, ...EVENT_OVERRIDES[e.slug] }))
-  .map((e) => ({ ...e, cover: e.cover || IMAGES.building }))
-  .sort((a, b) => b.date.localeCompare(a.date));
+];
 
 export const getEvent = (slug: string) => EVENTS.find((e) => e.slug === slug);
 
