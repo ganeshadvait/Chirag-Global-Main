@@ -8,6 +8,7 @@ import { decode } from "html-entities";
 
 import { getAllWordPressPosts, getPostImage, type WPPost } from "./wordpress";
 import type { BlogPost } from "../data/blog";
+import { publicFileExists } from "./assets";
 
 /** A blog post for cards and lists (BlogPost without the article body) */
 export type DisplayBlog = Omit<BlogPost, "html" | "headings">;
@@ -179,7 +180,9 @@ function mapWordPressPost(post: WPPost, postSlugs: Set<string>): BlogPost {
     title,
     tag: (topic && CATEGORY_LABEL[topic.slug]) || (topic ? decode(topic.name) : "Health tips"),
     treatmentSlug: (topic && CATEGORY_TREATMENT[topic.slug]) || "",
-    image: getPostImage(post),
+    // The blog site's cover; for older posts whose cover is missing from its media library, the
+    // copy saved in public/blog by scripts/save-blog-covers.mjs
+    image: getPostImage(post) || (publicFileExists(`/blog/${post.slug}.webp`) ? `/blog/${post.slug}.webp` : ""),
     imageAlt: featured?.alt_text ? stripHtml(featured.alt_text) : title,
     excerpt: summary.length > 160 ? summary.slice(0, 157).replace(/\s+\S*$/, "") + "…" : summary,
     date: post.date,

@@ -10,6 +10,7 @@
     "prebuild": "node scripts/sync-youtube.mjs && node --env-file-if-exists=.env scripts/sync-reviews.mjs",
     "build": "astro build",
     "videos:sync": "node scripts/sync-youtube.mjs",
+    "blog:covers": "node scripts/save-blog-covers.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "reviews:sync": "node --env-file-if-exists=.env scripts/sync-reviews.mjs"
