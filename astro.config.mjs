@@ -20,7 +20,7 @@ const POST_PATHS = new Set(
 /** @param {string} url */
 const pathOf = (url) => new URL(url).pathname.replace(/\/$/, '');
 /** @param {string} path */
-const isBlog = (path) => path.startsWith('/health-updates-2') || POST_PATHS.has(path);
+const isBlog = (path) => path.startsWith('/our-blogs') || POST_PATHS.has(path);
 /** @param {string} path */
 const isEvent = (path) => path === '/chirag-global-hospitals-events' || path.startsWith('/event/');
 

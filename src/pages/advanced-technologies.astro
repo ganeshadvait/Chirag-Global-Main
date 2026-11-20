@@ -1,4 +1,5 @@
 ---
+import { GOOGLE_RATING } from '../data/reviews';
 import { altFor } from '../data/image-alts';
 // Layout follows two reference designs (light medical-equipment showcase):
 // circle hero + overlapping icon cards, outline-icon feature row, trust split with a cut-out photo,
@@ -26,7 +27,7 @@ const features = [
 const trustStats = [
   { icon: 'clipboard', value: '38+ years', label: 'in proctology' },
   { icon: 'zap', value: `${PROCEDURES.length} advanced`, label: 'procedures' },
-  { icon: 'star', value: '4.7 rating', label: 'on Google' },
+  { icon: 'star', value: `${GOOGLE_RATING.rating} rating`, label: `${GOOGLE_RATING.count} Google reviews` },
   { icon: 'shield', value: 'NABH', label: 'certified' },
 ] as const;
 
@@ -64,7 +65,7 @@ const crumbs = [{ label: 'About Us', href: '/about-us' }, { label: 'Advanced Tec
         <ul class="mt-6 flex flex-wrap gap-2 text-xs font-semibold sm:text-sm">
           <li class="btn-amber rounded-full px-3.5 py-1.5">Advanced proctology</li>
           <li class="rounded-full border border-white/30 bg-ink-900/30 px-3.5 py-1.5 backdrop-blur-sm">Day-care procedures</li>
-          <li class="hidden rounded-full border border-white/30 bg-ink-900/30 px-3.5 py-1.5 backdrop-blur-sm sm:block">Since 1986</li>
+          <li class="hidden rounded-full border border-white/30 bg-ink-900/30 px-3.5 py-1.5 backdrop-blur-sm sm:block">Since 1996</li>
         </ul>
 
         <h1 class="heading-1 mt-5 max-w-2xl lg:mt-6">
@@ -91,7 +92,7 @@ const crumbs = [{ label: 'About Us', href: '/about-us' }, { label: 'Advanced Tec
           <div>
             <dt class="sr-only">Google rating</dt>
             <dd class="flex items-center gap-1 text-xl font-black sm:gap-1.5 sm:text-2xl">
-              4.7 <Icon name="star" class="size-5 text-amber-400" />
+              {GOOGLE_RATING.rating} <Icon name="star" class="size-5 text-amber-400" />
               <span class="text-xs font-medium text-white/70 sm:text-sm">Google</span>
             </dd>
           </div>

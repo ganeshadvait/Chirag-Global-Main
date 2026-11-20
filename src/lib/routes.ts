@@ -1,4 +1,4 @@
-// Every page address on the site, in one place. The URLs match the main WordPress site's
+// Every page address on the site, in one place. Most URLs match the main WordPress site's
 // sitemap (chiragglobalhospitals.com/sitemap_index.xml), so pages keep the addresses Google
 // has already indexed and links shared over the years keep working.
 // Pages and components build links with these helpers rather than writing paths by hand.
@@ -10,15 +10,13 @@ export const ROUTES = {
   contact: '/contact-us',
   treatments: '/treatments',
   doctors: '/doctors',
-  blog: '/health-updates-2',
+  blog: '/our-blogs',
   events: '/chirag-global-hospitals-events',
   advancedTechnologies: '/advanced-technologies',
   educationalVideos: '/educational-videos',
   patientReviews: '/patient-reviews',
   hospitalCertificates: '/hospital-certificates',
   privacyPolicy: '/privacy-policy',
-  cookiePolicy: '/cookie-policy',
-  medicalDisclaimer: '/medical-disclaimer',
 } as const;
 
 /** Treatment slug (src/data/treatments.ts) → its page on the WordPress site */
@@ -47,6 +45,6 @@ export const doctorPath = (slug: string) => DOCTOR_PATHS[slug] ?? `dr-${slug}`;
 export const postHref = (slug: string) => `/${slug}`;
 /** "/event/world-piles-day-2": events keep their slug from the blog site (src/data/events.ts) */
 export const eventHref = (slug: string) => `/event/${eventPath(slug)}`;
-export const eventPath = (slug: string) => slug;
-/** Blog list pages: "/health-updates-2", "/health-updates-2/page/2" (WordPress pagination) */
+export const eventPath = (slug: string) => EVENT_PATHS[slug] ?? slug;
+/** Blog list pages: "/our-blogs", "/our-blogs/page/2" */
 export const blogPageHref = (n: number) => (n === 1 ? ROUTES.blog : `${ROUTES.blog}/page/${n}`);

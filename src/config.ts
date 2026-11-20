@@ -7,7 +7,7 @@ export const SITE = {
   name: 'Chirag Global Hospitals',
   shortName: 'Chirag',
   description:
-    "Bengaluru's specialist hospital for piles, fissure, fistula and colorectal conditions since 1986.",
+    "Bengaluru's specialist hospital for piles, fissure, fistula and colorectal conditions since 1996.",
   email: 'info@chiragglobalhospitals.com',
   phone: '080 6591 6422',
   emergency: '+91 90199 54658',
@@ -78,6 +78,6 @@ export const NAV_LINKS: NavLink[] = [
     label: 'Our Doctors',
     children: DOCTORS.filter((d) => !d.hideFromMenu).map((d) => ({ label: d.name, href: doctorHref(d.slug) })),
   },
-  { href: '/health-updates-2', label: 'Blog' },
+  { href: '/our-blogs', label: 'Blog' },
   { href: '/contact-us', label: 'Contact Us' },
 ];

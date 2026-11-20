@@ -41,7 +41,7 @@ const articleLd = {
 ---
 
 <Layout title={p.title} description={p.excerpt}>
-  <PageHero crumbs={[{ label: 'Blog', href: '/health-updates-2' }, { label: p.title }]} eyebrow={p.tag} title={p.title} lead={p.excerpt}>
+  <PageHero crumbs={[{ label: 'Blog', href: '/our-blogs' }, { label: p.title }]} eyebrow={p.tag} title={p.title} lead={p.excerpt}>
     <span class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/70">
       <span class="inline-flex items-center gap-2">
         <Icon name="calendar" class="size-4 text-amber-400" />
@@ -70,7 +70,7 @@ const articleLd = {
 
         <p class="text-meta mt-12 border-t border-brand-100 pt-6">
           This article is for general information and is not a substitute for medical advice. Please consult a specialist
-          about your symptoms. <a href="/medical-disclaimer" class="underline hover:text-brand-700">Medical disclaimer</a>
+          about your symptoms.
         </p>
       </article>
 
@@ -122,7 +122,7 @@ const articleLd = {
       <section class="section bg-brand-50/60">
         <div class="container-x">
           <SectionHeader eyebrow="Keep reading" title="More " highlight="articles">
-            <a slot="action" href="/health-updates-2" class="btn btn-outline">All articles <Icon name="arrowRight" class="size-4" /></a>
+            <a slot="action" href="/our-blogs" class="btn btn-outline">All articles <Icon name="arrowRight" class="size-4" /></a>
           </SectionHeader>
           <ul class="section-body grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {more.map((o, i) => <li><ArticleCard post={o} index={i + 1} /></li>)}

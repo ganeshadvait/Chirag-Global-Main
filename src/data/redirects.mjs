@@ -16,6 +16,9 @@ const RULES = {
   '/about-top-hospital-in-bangalore': '/about-us',
   '/laser-treatment-for-piles-2': '/laser-treatment-for-piles-in-bangalore',
   '/fissure-vs-piles': '/fissure-vs-piles-difference-guide-bangalore',
+  // Old WordPress listing pages
+  '/health-updates-2': '/our-blogs',
+  '/health-updates': '/treatments',
 };
 
 /** Astro redirects config: every rule as a 301 */

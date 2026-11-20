@@ -1,6 +1,6 @@
-// Blog posts, managed on the blog site's WordPress (blogs.chiragglobalhospitals.com).
-// Refreshed by scripts/sync-blog.mjs (`npm run blog:sync`, before every build and on a schedule);
-// edit posts on the blog site rather than in blog-posts.json, which is overwritten on each sync.
+// Blog posts imported from the main WordPress site (its blog page was chiragglobalhospitals.com/our-blogs/).
+// Refreshed by scripts/sync-blog.mjs (`npm run blog:sync`, and before every build); edit posts
+// on the main site rather than in blog-posts.json, which is overwritten on each sync.
 
 import posts from './blog-posts.json';
 
@@ -24,7 +24,7 @@ export const POSTS: BlogPost[] = posts;
 
 export const getPost = (slug: string) => POSTS.find((p) => p.slug === slug);
 
-// Blog index pagination: page 1 is /health-updates-2, later pages /health-updates-2/page/2 and on
+// Blog index pagination: page 1 is /our-blogs, later pages /our-blogs/page/2 and on
 export const PER_PAGE = 12;
 export const pageCount = Math.max(1, Math.ceil(POSTS.length / PER_PAGE));
 export { blogPageHref as pageHref } from '../lib/routes';
