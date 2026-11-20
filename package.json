@@ -7,10 +7,12 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "node scripts/sync-youtube.mjs && node scripts/sync-blog.mjs",
+    "prebuild": "node scripts/sync-youtube.mjs && node scripts/sync-blog.mjs && node scripts/sync-events.mjs",
     "build": "astro build",
     "videos:sync": "node scripts/sync-youtube.mjs",
     "blog:sync": "node scripts/sync-blog.mjs",
+    "events:sync": "node scripts/sync-events.mjs",
+    "cms:sync": "node scripts/sync-blog.mjs && node scripts/sync-events.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

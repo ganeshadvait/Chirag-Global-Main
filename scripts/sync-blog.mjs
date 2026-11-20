@@ -1,23 +1,20 @@
-// Imports the latest blog posts from the main WordPress site into
-// src/data/blog-posts.json and saves their images to public/blog/.
+// Imports every published blog post from the blog site's WordPress
+// (blogs.chiragglobalhospitals.com, the CMS) into src/data/blog-posts.json and saves their
+// images to public/blog/.
 //
 //   npm run blog:sync
 //
-// Runs automatically before `npm run build`. Uses the WordPress REST API, so no
-// key is needed. Images already downloaded are skipped, so later runs only fetch
-// new posts' images. If the main site can't be reached, the existing
-// blog-posts.json is kept and the build carries on.
+// Runs automatically before `npm run build`, and on a schedule from
+// .github/workflows/sync-cms.yml, so a post published on the blog site appears here on the next
+// build. Images already downloaded are skipped, so later runs only fetch new posts' images. If
+// the blog site can't be reached, the existing blog-posts.json is kept and the build carries on.
 
 import { mkdir, readFile, writeFile, readdir, rm } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { getAll, getJson, API, plain, slugify, saveImage as save, mapLimit, featuredImages } from './lib/wordpress.mjs';
 
-const API = 'https://www.chiragglobalhospitals.com/wp-json/wp/v2';
 const DATA_FILE = new URL('../src/data/blog-posts.json', import.meta.url);
 const IMAGE_DIR = new URL('../public/blog/', import.meta.url);
-const IMAGE_WIDTH = 800;
-// How many of the newest posts to import; links to older posts go to the main site
-const MAX_POSTS = 10;
 
 // Main-site pages that exist on this site. Most keep the same address (this site uses the
 // WordPress URLs, see src/lib/routes.ts); the rest point to their closest page here.
@@ -93,28 +90,11 @@ const RENAME_TAGS = { b: 'strong', i: 'em', h1: 'h2', h6: 'h5' };
 
 const log = (msg) => console.log(`[blog] ${msg}`);
 
-const ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', hellip: '…', ndash: '–', mdash: '—', rsquo: '’', lsquo: '‘', rdquo: '”', ldquo: '“' };
-const decode = (s) =>
-  s
-    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
-    .replace(/&#x([\da-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
-    .replace(/&([a-z]+);/gi, (m, n) => ENTITIES[n.toLowerCase()] ?? m);
-const plain = (html) => decode(html.replace(/<[^>]*>/g, ' ')).replace(/\s+/g, ' ').trim();
-const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-
-async function getJson(url) {
-  const res = await fetch(url, { headers: { 'User-Agent': 'chirag-site-build' }, signal: AbortSignal.timeout(60000) });
-  if (!res.ok) throw new Error(`${res.status} for ${url}`);
-  return { data: await res.json(), totalPages: Number(res.headers.get('x-wp-totalpages')) || 1 };
-}
-
 async function fetchAll() {
-  const fields = 'id,slug,date,modified,title,excerpt,content,categories,yoast_head_json.description,_links,_embedded';
-  const { data: posts } = await getJson(
-    `${API}/posts?per_page=${MAX_POSTS}&orderby=date&order=desc&_embed=wp:featuredmedia&_fields=${fields}`,
-  );
+  const fields = 'id,slug,date,modified,title,excerpt,content,categories,featured_media,yoast_head_json.description,_links,_embedded';
+  const posts = await getAll('posts', `&_embed=wp:featuredmedia&_fields=${fields}`);
   const { data: categories } = await getJson(`${API}/categories?per_page=100&_fields=id,slug,name`);
-  return { posts, categories: new Map(categories.map((c) => [c.id, c])) };
+  return { posts, categories: new Map(categories.map((c) => [c.id, c])), covers: await featuredImages(posts) };
 }
 
 /** Where a link to the main site should point on this site (null = leave as is) */
@@ -145,7 +125,7 @@ function clean(html, postSlugs, imageMap) {
     const attr = (name) => attrs.match(new RegExp(`\\s${name}="([^"]*)"`, 'i'))?.[1];
     if (tag === 'a') {
       let href = attr('href') || '';
-      const m = href.match(/^https?:\/\/(?:www\.)?chiragglobalhospitals?\.com(\/[^"]*)?$/i);
+      const m = href.match(/^https?:\/\/(?:www\.|blogs\.)?chiragglobalhospitals?\.com(\/[^"]*)?$/i);
       const mapped = m ? mapInternal(m[1] || '/', postSlugs) : null;
       if (mapped) return `<a href="${mapped}">`;
       if (/^https?:/i.test(href)) return `<a href="${href}" target="_blank" rel="noopener">`;
@@ -188,38 +168,24 @@ function clean(html, postSlugs, imageMap) {
   return { html: out, headings };
 }
 
-async function saveImage(url, name) {
-  const file = new URL(`${name}.webp`, IMAGE_DIR);
-  const path = `/blog/${name}.webp`;
-  if (existsSync(file)) return path;
-  const res = await fetch(url, { signal: AbortSignal.timeout(30000) });
-  if (!res.ok) throw new Error(`image ${res.status} for ${url}`);
-  // sharp ships with Astro as an optional dependency; loaded here so a host
-  // without it falls back to the saved posts instead of crashing the build
-  const { default: sharp } = await import('sharp');
-  await sharp(Buffer.from(await res.arrayBuffer()))
-    .resize({ width: IMAGE_WIDTH, withoutEnlargement: true })
-    .webp({ quality: 70 })
-    .toFile(fileURLToPath(file));
-  return path;
-}
+const saveImage = (url, name) => save(url, new URL(`${name}.webp`, IMAGE_DIR), `/blog/${name}.webp`);
 
 try {
-  const { posts, categories } = await fetchAll();
+  const { posts, categories, covers } = await fetchAll();
   if (!posts.length) throw new Error('no posts returned');
   const postSlugs = new Set(posts.map((p) => p.slug));
   await mkdir(IMAGE_DIR, { recursive: true });
 
-  const out = [];
   let imageErrors = 0;
-  for (const p of posts) {
+  const out = await mapLimit(posts, 6, async (p) => {
     const cats = p.categories.map((id) => categories.get(id)).filter(Boolean);
     const topic = cats.find((c) => !SKIP_CATEGORIES.has(c.slug));
 
     // Featured image, plus any images inside the article
-    let image = '';
-    const featured = p._embedded?.['wp:featuredmedia']?.[0];
-    if (featured?.source_url) {
+    // (a cover saved on an earlier run is kept even if its source is no longer reachable)
+    let image = existsSync(new URL(`${p.slug}.webp`, IMAGE_DIR)) ? `/blog/${p.slug}.webp` : '';
+    const featured = covers.get(p.id);
+    if (!image && featured?.source_url) {
       try {
         image = await saveImage(featured.source_url, p.slug);
       } catch (err) {
@@ -240,7 +206,7 @@ try {
     const words = plain(html).split(' ').length;
     const summary = plain(p.yoast_head_json?.description || p.excerpt.rendered).replace(/\s*\[…\]$|\s*\[&hellip;\]$/, '');
 
-    out.push({
+    return {
       slug: p.slug,
       title: plain(p.title.rendered),
       tag: CATEGORY_LABEL[topic?.slug] || (topic ? plain(topic.name) : 'Health tips'),
@@ -253,8 +219,8 @@ try {
       readMinutes: Math.max(1, Math.round(words / 200)),
       headings,
       html,
-    });
-  }
+    };
+  });
   out.sort((a, b) => b.date.localeCompare(a.date));
 
   // Remove images of posts that were deleted on the main site

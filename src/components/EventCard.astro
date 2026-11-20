@@ -28,11 +28,15 @@ const d = eventDay(e.date);
   <div class="flex flex-1 flex-col p-6">
     <p class="text-meta">{formatEventDate(e)}</p>
     <Heading class="heading-4 mt-1.5 group-hover:text-brand-700">{e.title}</Heading>
-    <p class="text-body mt-2">{e.excerpt}</p>
-    <p class="text-meta mt-4 flex items-start gap-1.5">
-      <Icon name="pin" class="mt-0.5 size-3.5 shrink-0 text-brand-500" />
-      {e.venue}
-    </p>
+    {e.excerpt && <p class="text-body mt-2">{e.excerpt}</p>}
+    {
+      e.venue && (
+        <p class="text-meta mt-4 flex items-start gap-1.5">
+          <Icon name="pin" class="mt-0.5 size-3.5 shrink-0 text-brand-500" />
+          {e.venue}
+        </p>
+      )
+    }
     <span class="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-semibold text-brand-600">
       View event <Icon name="arrowRight" class="size-4 transition group-hover:translate-x-1" />
     </span>

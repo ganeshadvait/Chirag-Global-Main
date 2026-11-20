@@ -1,6 +1,6 @@
-// Blog posts imported from the main WordPress site (chiragglobalhospitals.com/health-updates-2/).
-// Refreshed by scripts/sync-blog.mjs (`npm run blog:sync`, and before every build); edit posts
-// on the main site rather than in blog-posts.json, which is overwritten on each sync.
+// Blog posts, managed on the blog site's WordPress (blogs.chiragglobalhospitals.com).
+// Refreshed by scripts/sync-blog.mjs (`npm run blog:sync`, before every build and on a schedule);
+// edit posts on the blog site rather than in blog-posts.json, which is overwritten on each sync.
 
 import posts from './blog-posts.json';
 
