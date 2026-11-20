@@ -168,7 +168,7 @@ const doctors: DoctorInput[] = [
   },
   {
     name: 'Dr. Chandrika',
-    // TODO: add photo
+    photo: '/doctors/chandrika.webp',
     role: 'Senior Gynaecologist',
     quals: 'MBBS, DGO',
     initials: 'CH',

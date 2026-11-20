@@ -20,6 +20,7 @@ const ALTS: Record<string, string> = {
   '/doctors/jyotsna-vemulapalli.webp': 'Dr. Jyotsna Vemulapalli, General Surgeon at Chirag Global Hospitals',
   '/doctors/rahul-hegana.webp': 'Dr. Rahul Hegana, Anaesthesiologist at Chirag Global Hospitals',
   '/doctors/nayan-kumar.webp': 'Dr. Nayan Kumar, Anaesthesiologist at Chirag Global Hospitals',
+  '/doctors/chandrika.webp': 'Dr. Chandrika, Senior Gynaecologist at Chirag Global Hospitals',
   '/doctorpadmanabhcard.webp': 'Dr. Padmanabh R. Bhat, General Surgeon at Chirag Global Hospitals',
   '/chirag-chairman.webp': 'Dr. Rajasekhar M. R., Founder and Chairman of Chirag Global Hospitals',
 
