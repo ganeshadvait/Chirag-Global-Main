@@ -3,8 +3,6 @@
 // SEO title, description and focus keyword are set below; update "updated" when the text changes.
 import LegalPage from '../layouts/LegalPage.astro';
 import { SITE, digits } from '../config';
-
-const site = 'https://www.chiragglobalhospitals.com/';
 ---
 
 <LegalPage
@@ -14,10 +12,8 @@ const site = 'https://www.chiragglobalhospitals.com/';
   keywords="Chirag Global Hospitals Privacy Policy"
   updated="19 November 2026"
 >
-  <p>Website: <a href={site}>{site}</a></p>
-
   <h2>1. Introduction</h2>
-  <p>Welcome to {SITE.name} (<a href={site}>{site}</a>).</p>
+  <p>Welcome to {SITE.name}.</p>
   <p>
     At {SITE.name}, we respect the privacy of our patients, website visitors and individuals who contact us. We are
     committed to handling personal information responsibly and maintaining the confidentiality of information shared
@@ -259,8 +255,7 @@ const site = 'https://www.chiragglobalhospitals.com/';
     Address: 103, 6th Cross Road, Dollar Layout, BTM 2nd Stage, Bengaluru, Karnataka – 560076, India.<br />
     Email: <a href={`mailto:${SITE.email}`}>{SITE.email}</a><br />
     Phone: <a href="tel:08065916422">08065916422</a><br />
-    Emergency Contact: <a href={`tel:${digits(SITE.emergency)}`}>{SITE.emergency}</a><br />
-    Website: <a href={site}>{site}</a>
+    Emergency Contact: <a href={`tel:${digits(SITE.emergency)}`}>{SITE.emergency}</a>
   </p>
   <p>
     We will make reasonable efforts to address privacy-related enquiries and grievances in accordance with applicable
