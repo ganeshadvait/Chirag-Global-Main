@@ -3,7 +3,7 @@ import { altFor } from '../data/image-alts';
 import Icon from './Icon.astro';
 import { postHref } from '../lib/routes';
 import { formatDate, type BlogPost } from '../data/blog';
-import { publicFileExists } from '../lib/assets';
+import { imageExists } from '../lib/assets';
 
 interface Props {
   post: BlogPost;
@@ -13,7 +13,7 @@ interface Props {
 
 const { post: p, index = 0, as: Heading = 'h3' } = Astro.props;
 // Shown while an article has no cover photo
-const hasImage = publicFileExists(p.image);
+const hasImage = imageExists(p.image);
 const fallbacks = ['from-brand-300 to-brand-600', 'from-teal-400 to-teal-700', 'from-cream-100 to-amber-300'];
 ---
 

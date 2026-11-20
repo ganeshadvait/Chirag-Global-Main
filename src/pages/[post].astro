@@ -11,7 +11,7 @@ import Icon from '../components/Icon.astro';
 import { SITE, digits } from '../config';
 import { POSTS, formatDate, type BlogPost } from '../data/blog';
 import { getTreatment } from '../data/treatments';
-import { publicFileExists } from '../lib/assets';
+import { imageExists } from '../lib/assets';
 
 export const getStaticPaths = (() => POSTS.map((post) => ({ params: { post: post.slug }, props: { post } }))) satisfies GetStaticPaths;
 
@@ -21,7 +21,7 @@ interface Props {
 
 const { post: p } = Astro.props;
 const treatment = getTreatment(p.treatmentSlug);
-const hasCover = publicFileExists(p.image);
+const hasCover = imageExists(p.image);
 const updated = p.modified.slice(0, 10) > p.date.slice(0, 10);
 
 // Three more articles: same topic first, then the latest

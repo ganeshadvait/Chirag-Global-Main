@@ -28,15 +28,9 @@ const numbers = [...new Set([1, page - 2, page - 1, page, page + 1, page + 2, pa
 
 <section class="section">
   <div class="container-x">
-    {
-      POSTS.length === 0 ? (
-        <p class="text-body rounded-2xl bg-brand-50 p-8 text-center sm:text-base">New articles are on their way. Please check back soon.</p>
-      ) : (
-        <p class="text-meta mb-8">
-          {POSTS.length} articles · page {page} of {pageCount}
-        </p>
-      )
-    }
+    <p class="text-meta mb-8">
+      {POSTS.length} articles · page {page} of {pageCount}
+    </p>
     <ul class="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
       {
         posts.map((p, i) => (
