@@ -11,3 +11,6 @@ const publicDir = join(process.cwd(), 'public') + '/';
  *  request missing files (each one is a wasted request and a 404 in speed reports). */
 export const publicFileExists = (url?: string) =>
   !!url && url.startsWith('/') && existsSync(publicDir + decodeURIComponent(url.slice(1)));
+
+/** True for an image hosted elsewhere (e.g. a blog cover on the blog site) or a real file in /public */
+export const imageExists = (url?: string) => !!url && (/^https?:\/\//.test(url) || publicFileExists(url));

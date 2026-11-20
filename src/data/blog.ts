@@ -1,15 +1,15 @@
-// Blog posts imported from the main WordPress site (its blog page was chiragglobalhospitals.com/our-blogs/).
-// Refreshed by scripts/sync-blog.mjs (`npm run blog:sync`, and before every build); edit posts
-// on the main site rather than in blog-posts.json, which is overwritten on each sync.
+// Blog posts, managed on the blog site's WordPress (blogs.chiragglobalhospitals.com) and fetched
+// when the site is built (src/lib/wordpress-blog-feed.ts). Publish or edit posts there; they
+// appear here after the next build. Listed on /our-blogs; each post has a page at /<slug>.
 
-import posts from './blog-posts.json';
+import { getAllBlogPosts } from '../lib/wordpress-blog-feed';
 
 export interface BlogPost {
   slug: string;
   title: string;
   tag: string; // category chip
   treatmentSlug: string; // related treatment page slug ('' when none)
-  image: string; // self-hosted cover in /public/blog ('' when the post has none)
+  image: string; // cover image URL on the blog site ('' when the post has none)
   imageAlt: string;
   excerpt: string; // card text and meta description, up to ~160 characters
   date: string; // ISO date published
@@ -20,12 +20,12 @@ export interface BlogPost {
 }
 
 /** Newest first */
-export const POSTS: BlogPost[] = posts;
+export const POSTS: BlogPost[] = await getAllBlogPosts();
 
 export const getPost = (slug: string) => POSTS.find((p) => p.slug === slug);
 
 // Blog index pagination: page 1 is /our-blogs, later pages /our-blogs/page/2 and on
-export const PER_PAGE = 12;
+export const PER_PAGE = 9;
 export const pageCount = Math.max(1, Math.ceil(POSTS.length / PER_PAGE));
 export { blogPageHref as pageHref } from '../lib/routes';
 

@@ -81,10 +81,25 @@ const equipment = PROCEDURES.slice(0, 4);
 
 const recentEvents = EVENTS.slice(0, 4);
 
+
 const news = [
-  ...VIDEOS.slice(0, 1).map((v) => ({ icon: 'youtube', kind: 'Doctor talk', title: v.title, meta: v.speaker, href: '/educational-videos' })),
-  ...POSTS.slice(0, 2).map((p) => ({ icon: 'file', kind: 'In proctology', title: p.title, meta: `${p.tag} · ${p.readMinutes} min read`, href: postHref(p.slug) })),
-] as const;
+  ...VIDEOS.slice(0, 1).map((v) => ({
+    icon: 'youtube' as const,
+    kind: 'Doctor talk',
+    title: v.title,
+    meta: v.speaker,
+    href: '/educational-videos',
+  })),
+
+  ...POSTS.slice(0, 2).map((p) => ({
+    icon: 'file' as const,
+    kind: 'In proctology',
+    title: p.title,
+    meta: `${p.tag} · ${p.readMinutes} min read`,
+    href: postHref(p.slug),
+  })),
+];
+
 ---
 
 <Layout
